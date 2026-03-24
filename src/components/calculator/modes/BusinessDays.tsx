@@ -1,11 +1,30 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { getBusinessDays } from '@/lib/calculator';
+import { useRecentCalculations } from '@/hooks/useRecentCalculations';
+import { Share2, Check, BookmarkPlus } from 'lucide-react';
+import { format } from 'date-fns';
 
 export function BusinessDays() {
     const [start, setStart] = useState<string>('');
     const [end, setEnd] = useState<string>('');
+    const [copied, setCopied] = useState(false);
+    const { addCalculation } = useRecentCalculations();
+
+    useEffect(() => {
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('start')) setStart(params.get('start')!);
+        if (params.get('end')) setEnd(params.get('end')!);
+    }, []);
+
+    useEffect(() => {
+        if (!start && !end) return;
+        const url = new URL(window.location.href);
+        if (start) url.searchParams.set('start', start);
+        if (end) url.searchParams.set('end', end);
+        window.history.replaceState({}, '', url);
+    }, [start, end]);
 
     const calculate = () => {
         if (!start || !end) return null;
@@ -13,6 +32,22 @@ export function BusinessDays() {
     };
 
     const result = calculate();
+
+    const handleSave = () => {
+        if (result !== null) {
+            addCalculation({
+                type: 'business_days',
+                title: `Werktage zw. ${format(new Date(start), 'dd.MM')} u. ${format(new Date(end), 'dd.MM')}`,
+                result: `${Math.abs(result)} Tage`
+            });
+        }
+    };
+
+    const shareUrl = () => {
+        navigator.clipboard.writeText(window.location.href);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+    };
 
     return (
         <div className="space-y-6 animate-in fade-in duration-300">
@@ -23,7 +58,7 @@ export function BusinessDays() {
                         type="date"
                         value={start}
                         onChange={(e) => setStart(e.target.value)}
-                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-neon transition-colors"
+                        className="w-full bg-[#1a1a1a] border border-white/5 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-neon transition-colors"
                     />
                 </div>
                 <div className="space-y-2">
@@ -32,18 +67,30 @@ export function BusinessDays() {
                         type="date"
                         value={end}
                         onChange={(e) => setEnd(e.target.value)}
-                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-neon transition-colors"
+                        className="w-full bg-[#1a1a1a] border border-white/5 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-neon transition-colors"
                     />
                 </div>
             </div>
 
             {result !== null && (
-                <div className="mt-8 p-6 rounded-2xl bg-gradient-to-br from-white/5 to-white/0 border border-white/10 space-y-4">
-                    <h3 className="text-lg font-medium text-white/80">Arbeitstage</h3>
-                    <p className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-neon to-neon-blue">
-                        {Math.abs(result)} Tage
-                    </p>
-                    <p className="text-sm text-white/50">Ohne Wochenenden (Samstag & Sonntag).</p>
+                <div className="mt-8 p-6 rounded-2xl bg-gradient-to-br from-white/5 to-white/0 border border-neon/30 shadow-[0_0_30px_rgba(255,0,85,0.05)] space-y-4 relative">
+                    <div className="flex justify-between items-start">
+                        <div>
+                            <h3 className="text-lg font-medium text-white/80">Arbeitstage</h3>
+                            <p className="text-3xl mt-2 font-bold bg-clip-text text-transparent bg-gradient-to-r from-neon to-neon-blue">
+                                {Math.abs(result)} Tage
+                            </p>
+                            <p className="text-sm text-white/50 mt-1">Ohne Wochenenden (Samstag & Sonntag).</p>
+                        </div>
+                        <div className="flex gap-2">
+                            <button onClick={handleSave} className="bg-white/5 hover:bg-white/10 border border-white/10 p-2 rounded-xl transition-colors tooltip" title="Speichern">
+                                <BookmarkPlus className="w-5 h-5 text-neon-blue" />
+                            </button>
+                            <button onClick={shareUrl} className="bg-white/5 hover:bg-white/10 border border-white/10 p-2 rounded-xl transition-colors tooltip" title="Link kopieren">
+                                {copied ? <Check className="w-5 h-5 text-green-400" /> : <Share2 className="w-5 h-5 text-neon" />}
+                            </button>
+                        </div>
+                    </div>
                 </div>
             )}
         </div>

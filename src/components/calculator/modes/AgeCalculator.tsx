@@ -1,10 +1,27 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { calculateAge } from '@/lib/calculator';
+import { useRecentCalculations } from '@/hooks/useRecentCalculations';
+import { Share2, Check, BookmarkPlus } from 'lucide-react';
+import { format } from 'date-fns';
 
 export function AgeCalculator() {
     const [birthdate, setBirthdate] = useState<string>('');
+    const [copied, setCopied] = useState(false);
+    const { addCalculation } = useRecentCalculations();
+
+    useEffect(() => {
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('dob')) setBirthdate(params.get('dob')!);
+    }, []);
+
+    useEffect(() => {
+        if (!birthdate) return;
+        const url = new URL(window.location.href);
+        url.searchParams.set('dob', birthdate);
+        window.history.replaceState({}, '', url);
+    }, [birthdate]);
 
     const calculate = () => {
         if (!birthdate) return null;
@@ -12,6 +29,22 @@ export function AgeCalculator() {
     };
 
     const result = calculate();
+
+    const handleSave = () => {
+        if (result && birthdate) {
+            addCalculation({
+                type: 'age',
+                title: `Alter für Geboren am ${format(new Date(birthdate), 'dd.MM.yyyy')}`,
+                result: `${result.years} Jahre`
+            });
+        }
+    };
+
+    const shareUrl = () => {
+        navigator.clipboard.writeText(window.location.href);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+    };
 
     return (
         <div className="space-y-6 animate-in fade-in duration-300">
@@ -22,29 +55,42 @@ export function AgeCalculator() {
                         type="date"
                         value={birthdate}
                         onChange={(e) => setBirthdate(e.target.value)}
-                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-neon transition-colors"
+                        className="w-full bg-[#1a1a1a] border border-white/5 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-neon transition-colors"
                     />
                 </div>
             </div>
 
             {result && (
-                <div className="mt-8 p-6 rounded-2xl bg-gradient-to-br from-white/5 to-white/0 border border-white/10 space-y-4">
-                    <h3 className="text-lg font-medium text-white/80">Dein Alter</h3>
-                    <p className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-neon to-neon-blue">
-                        {result.years} Jahre
-                    </p>
+                <div className="mt-8 p-6 rounded-2xl bg-gradient-to-br from-white/5 to-white/0 border border-neon/30 shadow-[0_0_30px_rgba(255,0,85,0.05)] space-y-6 relative overflow-hidden">
+                    <div className="flex justify-between items-start">
+                        <div>
+                            <h3 className="text-lg font-medium text-white/80">Dein Alter</h3>
+                            <p className="text-4xl mt-2 font-bold bg-clip-text text-transparent bg-gradient-to-r from-neon to-neon-blue">
+                                {result.years} Jahre
+                            </p>
+                        </div>
+                        <div className="flex gap-2">
+                            <button onClick={handleSave} className="bg-white/5 hover:bg-white/10 border border-white/10 p-2 rounded-xl transition-colors tooltip" title="Speichern">
+                                <BookmarkPlus className="w-5 h-5 text-neon-blue" />
+                            </button>
+                            <button onClick={shareUrl} className="bg-white/5 hover:bg-white/10 border border-white/10 p-2 rounded-xl transition-colors tooltip" title="Link kopieren">
+                                {copied ? <Check className="w-5 h-5 text-green-400" /> : <Share2 className="w-5 h-5 text-neon" />}
+                            </button>
+                        </div>
+                    </div>
+
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-4 border-t border-white/10">
                         <div>
                             <p className="text-sm text-white/50">Monate</p>
-                            <p className="font-medium">{result.months}</p>
+                            <p className="font-medium text-white">{result.months}</p>
                         </div>
                         <div>
                             <p className="text-sm text-white/50">Tage</p>
-                            <p className="font-medium">{result.days}</p>
+                            <p className="font-medium text-white">{result.days}</p>
                         </div>
                         <div className="col-span-2">
                             <p className="text-sm text-white/50">Gesamte Lebenstage</p>
-                            <p className="font-medium">{result.totalDays} Tage</p>
+                            <p className="font-medium text-white">{result.totalDays} Tage</p>
                         </div>
                     </div>
                 </div>

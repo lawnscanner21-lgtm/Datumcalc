@@ -16,6 +16,7 @@ const intentToModeMap: Record<string, string> = {
     'alter': 'age',
     'age': 'age'
 };
+export const revalidate = 86400; // 24 hours ISR revalidation
 
 export default async function ProgrammaticPage({
     params
@@ -71,5 +72,21 @@ export default async function ProgrammaticPage({
 }
 
 export function generateStaticParams() {
-    return []; // We will rely on ISR and fallback for long tail programmatics
+    const topNumbers = ['30', '60', '90', '100'];
+    const intents = ['differenz', 'addieren'];
+    const locales = ['de', 'en'];
+    const params = [];
+
+    for (const locale of locales) {
+        for (const intent of intents) {
+            for (const num of topNumbers) {
+                params.push({
+                    locale,
+                    intent,
+                    slug: [num, 'tage', 'ab', 'heute']
+                });
+            }
+        }
+    }
+    return params;
 }
