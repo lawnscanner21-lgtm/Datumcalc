@@ -1,19 +1,19 @@
-import Link from 'next/link';
+import { Link } from '@/i18n/routing';
 
 export function HomepageSEO() {
     const topQueries = [
-        { title: '30 Tage ab heute', url: '/de/addieren/30-tage-ab-heute' },
-        { title: '60 Tage ab heute', url: '/de/addieren/60-tage-ab-heute' },
-        { title: '90 Tage ab heute', url: '/de/addieren/90-tage-ab-heute' },
-        { title: '100 Tage ab heute', url: '/de/addieren/100-tage-ab-heute' },
-        { title: '6 Monate ab heute', url: '/de/addieren/6-monate-ab-heute' },
+        { title: '30 Tage ab heute', url: '/addieren/30-tage-ab-heute' },
+        { title: '60 Tage ab heute', url: '/addieren/60-tage-ab-heute' },
+        { title: '90 Tage ab heute', url: '/addieren/90-tage-ab-heute' },
+        { title: '100 Tage ab heute', url: '/addieren/100-tage-ab-heute' },
+        { title: '6 Monate ab heute', url: '/addieren/6-monate-ab-heute' },
     ];
 
     const eventQueries = [
-        { title: 'Tage bis Weihnachten', url: '/de/differenz/tage-bis-weihnachten' },
-        { title: 'Tage bis Silvester', url: '/de/differenz/tage-bis-silvester' },
-        { title: 'Tage bis Ostern', url: '/de/differenz/tage-bis-ostern' },
-        { title: 'Tage bis Sommeranfang', url: '/de/differenz/tage-bis-sommeranfang' },
+        { title: 'Tage bis Weihnachten', url: '/differenz/tage-bis-weihnachten' },
+        { title: 'Tage bis Silvester', url: '/differenz/tage-bis-silvester' },
+        { title: 'Tage bis Ostern', url: '/differenz/tage-bis-ostern' },
+        { title: 'Tage bis Sommeranfang', url: '/differenz/tage-bis-sommeranfang' },
     ];
 
     return (
@@ -42,9 +42,9 @@ export function HomepageSEO() {
                     <div>
                         <h3 className="text-white font-semibold text-lg mb-4">Ratgeber & Artikel</h3>
                         <ul className="space-y-3">
-                            <li><Link href="/de/ratgeber/schaltjahre-erklaert" className="text-white/60 hover:text-white transition-colors">Schaltjahre einfach erklärt</Link></li>
-                            <li><Link href="/de/ratgeber/arbeitstage-berechnen" className="text-white/60 hover:text-white transition-colors">Wie berechnet man Arbeitstage?</Link></li>
-                            <li><Link href="/de/ratgeber/wochen-im-jahr" className="text-white/60 hover:text-white transition-colors">Wie viele Wochen hat ein Jahr?</Link></li>
+                            <li><Link href="/ratgeber/schaltjahre-erklaert" className="text-white/60 hover:text-white transition-colors">Schaltjahre einfach erklärt</Link></li>
+                            <li><Link href="/ratgeber/arbeitstage-berechnen" className="text-white/60 hover:text-white transition-colors">Wie berechnet man Arbeitstage?</Link></li>
+                            <li><Link href="/ratgeber/wochen-im-jahr" className="text-white/60 hover:text-white transition-colors">Wie viele Wochen hat ein Jahr?</Link></li>
                         </ul>
                     </div>
                 </div>

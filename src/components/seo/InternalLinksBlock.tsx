@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import { Link } from '@/i18n/routing';
 import { CANONICAL_QUERIES } from '@/lib/seo/queryModel';
 
 export function InternalLinksBlock({ locale, intent, slug }: { locale: string; intent: string; slug: string }) {
@@ -32,7 +32,7 @@ export function InternalLinksBlock({ locale, intent, slug }: { locale: string; i
                 {links.map((link, i) => (
                     <li key={i}>
                         <Link
-                            href={`/${locale}/${link.urlSlug}`}
+                            href={`/${link.urlSlug}`}
                             className="block p-4 rounded-xl bg-black/40 border border-white/5 hover:border-neon-blue/50 hover:bg-neon-blue/5 transition-all group"
                         >
                             <span className="text-xs font-medium text-neon uppercase tracking-wider mb-2 block">{link.type}</span>

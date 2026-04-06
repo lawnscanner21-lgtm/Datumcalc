@@ -1,0 +1,36 @@
+
+> nextjs-app@0.1.0 build
+> next build
+
+▲ Next.js 16.2.1 (Turbopack)
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 27.5s
+  Running TypeScript ...
+  Finished TypeScript in 13.9s ...
+  Collecting page data using 3 workers ...
+  Generating static pages using 3 workers (0/32) ...
+  Generating static pages using 3 workers (8/32) 
+  Generating static pages using 3 workers (16/32) 
+  Generating static pages using 3 workers (24/32) 
+✓ Generating static pages using 3 workers (32/32) in 911ms
+  Finalizing page optimization ...
+
+Route (app)                       Revalidate  Expire
+┌ ○ /_not-found
+├ ƒ /[locale]
+├ ƒ /[locale]/[intent]
+├ ƒ /[locale]/[intent]/[...slug]
+├ ƒ /[locale]/ratgeber
+├ ● /[locale]/ratgeber/[slug]
+├ ○ /sitemap-core.xml                     1d      1y
+├ ○ /sitemap-events.xml                   1d      1y
+└ ○ /sitemap-seo.xml                      1d      1y
+
+
+ƒ Proxy (Middleware)
+
+○  (Static)   prerendered as static content
+●  (SSG)      prerendered as static HTML (uses generateStaticParams)
+ƒ  (Dynamic)  server-rendered on demand
+

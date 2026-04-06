@@ -100,8 +100,9 @@ function computeInstantResult(intent: string, slugStr: string, localeStr: string
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string; intent: string; slug: string[] }> }) {
-    const { intent, slug } = await params;
+    const { locale, intent, slug } = await params;
     const slugStr = slug.join('-');
+    const urlLocale = locale === 'de' ? '' : `/${locale}`;
     
     // SERP Domination formatting
     const isAdd = intent === 'addieren' || intent === 'add';
@@ -112,7 +113,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
             title: `${match[1]} ${match[2]} ab heute → Genaues Datum ✓`,
             description: `Kostenloser Rechner: Erfahren Sie sofort das exakte Datum in ${match[1]} ${match[2]} inklusive Berücksichtigung von Schaltjahren und Wochenenden.`,
             alternates: {
-                canonical: `https://datumsrechner.app/de/${intent}/${slugStr}`
+                canonical: `https://datumsrechner.app${urlLocale}/${intent}/${slugStr}`
             }
         };
     }

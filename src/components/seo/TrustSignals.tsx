@@ -1,5 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
+import { Link } from '@/i18n/routing';
 
 export function TrustSignals() {
     const [dateString, setDateString] = useState('');
@@ -19,9 +20,9 @@ export function TrustSignals() {
                 Zuletzt aktualisiert: {dateString}
             </div>
             <span className="hidden sm:inline">•</span>
-            <a href="/de/ueber-uns" className="hover:text-white transition-colors">Über uns</a>
+            <Link href="/ueber-uns" className="hover:text-white transition-colors">Über uns</Link>
             <span className="hidden sm:inline">•</span>
-            <a href="/de/datenschutz" className="hover:text-white transition-colors">Datenschutz</a>
+            <Link href="/datenschutz" className="hover:text-white transition-colors">Datenschutz</Link>
         </div>
     );
 }

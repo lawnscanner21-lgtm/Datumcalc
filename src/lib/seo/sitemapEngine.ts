@@ -10,9 +10,9 @@ export const BASE_URL = 'https://datumsrechner.app'; // Replace with actual doma
 
 export function getCoreSitemapUrls() {
     return [
-        { url: `${BASE_URL}/de`, lastModified: new Date(), changeFrequency: 'daily', priority: 1.0 },
+        { url: `${BASE_URL}`, lastModified: new Date(), changeFrequency: 'daily', priority: 1.0 },
         { url: `${BASE_URL}/en`, lastModified: new Date(), changeFrequency: 'daily', priority: 1.0 },
-        { url: `${BASE_URL}/de/ratgeber`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.8 },
+        { url: `${BASE_URL}/ratgeber`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.8 },
     ];
 }
 
@@ -21,7 +21,7 @@ export function getSEOSitemapUrls() {
     Object.entries(CANONICAL_QUERIES).forEach(([slug, def]) => {
         if (def.isIndexable && def.priority === 'High' && def.intentType !== 'Informational') {
             urls.push({
-                url: `${BASE_URL}/de/${def.calcMode === 'add_subtract' ? 'addieren' : 'differenz'}/${slug}`,
+                url: `${BASE_URL}/${def.calcMode === 'add_subtract' ? 'addieren' : 'differenz'}/${slug}`,
                 lastModified: new Date(),
                 changeFrequency: 'weekly',
                 priority: 0.8
@@ -35,7 +35,7 @@ export function getSEOSitemapUrls() {
         // Skip if already hardcoded in CANONICAL_QUERIES above
         if (!CANONICAL_QUERIES[`${num}-tage-ab-heute`]) {
             urls.push({
-                url: `${BASE_URL}/de/addieren/${num}-tage-ab-heute`,
+                url: `${BASE_URL}/addieren/${num}-tage-ab-heute`,
                 lastModified: new Date(),
                 changeFrequency: 'weekly',
                 priority: 0.7
@@ -51,7 +51,7 @@ export function getEventsSitemapUrls() {
     Object.entries(CANONICAL_QUERIES).forEach(([slug, def]) => {
         if (def.isIndexable && def.priority === 'High' && def.intentType === 'Informational') {
              urls.push({
-                url: `${BASE_URL}/de/differenz/${slug}`,
+                url: `${BASE_URL}/differenz/${slug}`,
                 lastModified: new Date(),
                 changeFrequency: 'monthly',
                 priority: 0.9
