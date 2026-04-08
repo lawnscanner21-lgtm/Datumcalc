@@ -42,5 +42,16 @@
         "addSubtract": "Datum addieren/subtrahieren",
         "businessDays": "Arbeitstage",
         "ageCalculator": "Alter berechnen"
+    },
+    "Article": {
+        "readTime": "Lesezeit",
+        "takeaways": "In Kürze: Das Wichtigste",
+        "takeawaysItem1": "Alle Berechnungen basieren auf standardisierten Algorithmen (ISO 8601).",
+        "takeawaysItem2": "Erkennen Sie Muster besser, um Fristen präziser zu setzen.",
+        "takeawaysItem3": "Die Mathematik hinter den Kalendern erleichtern den Arbeitsalltag spürbar.",
+        "theory": "Theorie in die Praxis umsetzen",
+        "practice": "Berechne dein Datum jetzt sofort",
+        "factCheck": "Faktencheck: Aktuell geprüft",
+        "authorTitle": "Mathematiker & Autor"
     }
 }

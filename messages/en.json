@@ -42,5 +42,16 @@
         "addSubtract": "Add/Subtract Date",
         "businessDays": "Business Days",
         "ageCalculator": "Age Calculator"
+    },
+    "Article": {
+        "readTime": "read",
+        "takeaways": "Key Takeaways",
+        "takeawaysItem1": "All calculations are based on standardized algorithms (ISO 8601).",
+        "takeawaysItem2": "Better recognize patterns to set deadlines more precisely.",
+        "takeawaysItem3": "The mathematics behind the calendars make daily work noticeably easier.",
+        "theory": "Put theory into practice",
+        "practice": "Calculate your date right now",
+        "factCheck": "Fact Check: Currently verified",
+        "authorTitle": "Mathematician & Author"
     }
 }

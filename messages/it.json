@@ -42,5 +42,16 @@
         "addSubtract": "Aggiungi/Sottrai Data",
         "businessDays": "Giorni Lavorativi",
         "ageCalculator": "Calcolatore Età"
+    },
+    "Article": {
+        "readTime": "lettura",
+        "takeaways": "Punti chiave",
+        "takeawaysItem1": "Tutti i calcoli si basano su algoritmi standardizzati (ISO 8601).",
+        "takeawaysItem2": "Riconoscere meglio i modelli per impostare le scadenze con maggiore precisione.",
+        "takeawaysItem3": "La matematica dietro i calendari facilita notevolmente il lavoro quotidiano.",
+        "theory": "Mettere in pratica la teoria",
+        "practice": "Calcola la tua data ora",
+        "factCheck": "Verifica dei fatti: Attualmente verificato",
+        "authorTitle": "Matematico e Autore"
     }
 }

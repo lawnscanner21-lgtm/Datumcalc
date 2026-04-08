@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, Suspense } from 'react';
+import { useState, Suspense, useEffect } from 'react';
 import { DateDifference } from './modes/DateDifference';
 import { AddSubtractTime } from './modes/AddSubtractTime';
 import { BusinessDays } from './modes/BusinessDays';
@@ -61,11 +61,9 @@ function RecentCalculationsBlock() {
     const { history, clearHistory, removeCalculation } = useRecentCalculations();
     // avoid hydration mismatch by not rendering server side
     const [mounted, setMounted] = useState(false);
-
-    // trigger mount
-    import('react').then(({ useEffect }) => {
-        useEffect(() => setMounted(true), []);
-    });
+    useEffect(() => {
+        setMounted(true);
+    }, []);
 
     if (!mounted || history.length === 0) return null;
 

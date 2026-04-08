@@ -1,5 +1,6 @@
 import { getArticleBySlug, articles } from '@/lib/articles';
 import { notFound } from 'next/navigation';
+import { getTranslations } from 'next-intl/server';
 import { CalculatorCore } from '@/components/calculator/CalculatorCore';
 
 export const revalidate = 86400; // 24 hours ISR
@@ -8,9 +9,10 @@ export function generateStaticParams() {
     return articles.map(a => ({ slug: a.slug }));
 }
 
-export default async function ArticlePage({ params }: { params: Promise<{ slug: string }> }) {
-    const { slug } = await params;
+export default async function ArticlePage({ params }: { params: Promise<{ slug: string; locale: string }> }) {
+    const { locale, slug } = await params;
     const article = getArticleBySlug(slug);
+    const t = await getTranslations({ locale, namespace: 'Article' });
 
     if (!article) notFound();
 
@@ -19,7 +21,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
             
             <header className="mb-12 space-y-8 text-center animate-slide-up-fade">
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-neon/10 border border-neon/20 text-xs font-bold tracking-widest uppercase text-neon">
-                    {article.publishedAt} • {article.readTime} Lesezeit
+                    {article.publishedAt} • {article.readTime} {t('readTime')}
                 </div>
                 
                 <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-tight">
@@ -37,24 +39,24 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                         </div>
                         <div className="text-left">
                             <p className="text-sm font-bold text-white">Felix Schmidt</p>
-                            <p className="text-xs text-white/50">Mathematiker & Autor</p>
+                            <p className="text-xs text-white/50">{t('authorTitle')}</p>
                         </div>
                     </div>
                     <div className="hidden sm:block w-px h-8 bg-white/10"></div>
                     <div className="flex items-center gap-2 text-sm text-green-400">
                         <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                        Faktencheck: Aktuell geprüft
+                        {t('factCheck')}
                     </div>
                 </aside>
             </header>
 
             {/* Key Takeaways */}
             <section aria-label="Wichtigste Erkenntnisse" className="mb-16 bg-[#0a0a0a]/80 backdrop-blur-xl border-l-4 border-neon rounded-r-3xl p-8 shadow-2xl animate-slide-up-fade" style={{ animationDelay: '0.1s' }}>
-                <h3 className="text-2xl font-bold mb-4 text-white">In Kürze: Das Wichtigste</h3>
+                <h3 className="text-2xl font-bold mb-4 text-white">{t('takeaways')}</h3>
                 <ul className="list-disc pl-5 space-y-3 text-lg text-white/70">
-                    <li>Alle Berechnungen basieren auf standardisierten Algorithmen (ISO 8601).</li>
-                    <li>Erkennen Sie Muster besser, um Fristen präziser zu setzen.</li>
-                     <li>Die Mathematik hinter den Kalendern erleichtern den Arbeitsalltag spürbar.</li>
+                    <li>{t('takeawaysItem1')}</li>
+                    <li>{t('takeawaysItem2')}</li>
+                     <li>{t('takeawaysItem3')}</li>
                 </ul>
             </section>
 
@@ -67,8 +69,8 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
 
             {/* In-Article Calculator CTA */}
             <section aria-label="Ausprobieren" className="mt-24 bg-[#0a0a0a]/50 backdrop-blur-2xl rounded-[3rem] p-8 md:p-12 border border-white/10 shadow-[0_0_50px_rgba(0,0,0,0.5)]">
-                <h3 className="text-center text-neon-blue font-bold uppercase tracking-widest text-sm mb-4">Theorie in die Praxis umsetzen</h3>
-                <h4 className="text-3xl md:text-4xl font-extrabold text-center mb-10 tracking-tight">Berechne dein Datum jetzt sofort</h4>
+                <h3 className="text-center text-neon-blue font-bold uppercase tracking-widest text-sm mb-4">{t('theory')}</h3>
+                <h4 className="text-3xl md:text-4xl font-extrabold text-center mb-10 tracking-tight">{t('practice')}</h4>
                 <div className="max-w-4xl mx-auto">
                     <CalculatorCore />
                 </div>

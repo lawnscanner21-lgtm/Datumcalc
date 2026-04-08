@@ -23,13 +23,13 @@
         "Nav": {
             "ariaLabel": "Navegação principal",
             "differenz": "Diferença",
-            "differenzDesc": "Calcular dias entre duas datas",
+            "differenzDesc": "Calcular dias entre dos fechas",
             "addieren": "Somar/Subtrair",
             "addierenDesc": "Adicionar ou subtrair dias de uma data",
             "arbeitstage": "Dias Úteis",
             "arbeitstageDesc": "Calcular dias úteis entre datas",
             "ratgeber": "Guias",
-            "ratgeberDesc": "Artigos sobre datas e tempo",
+            "ratgeberDesc": "Artículos sobre datas e tempo",
             "cta": "Calcular agora",
             "languageLabel": "Selecionar idioma",
             "openMenu": "Abrir menu",
@@ -42,5 +42,16 @@
         "addSubtract": "Adicionar/Subtrair Data",
         "businessDays": "Dias Úteis",
         "ageCalculator": "Calculadora de Idade"
+    },
+    "Article": {
+        "readTime": "leitura",
+        "takeaways": "Pontos chave",
+        "takeawaysItem1": "Todos os cálculos baseiam-se em algoritmos padronizados (ISO 8601).",
+        "takeawaysItem2": "Reconheça melhor os padrões para estabelecer prazos com mais precisão.",
+        "takeawaysItem3": "A matemática por trás dos calendários facilita visivelmente o trabalho diário.",
+        "theory": "Colocar a teoria em prática",
+        "practice": "Calcule sua data agora mesmo",
+        "factCheck": "Verificação de fatos: Atualmente verificado",
+        "authorTitle": "Matemático e Autor"
     }
 }

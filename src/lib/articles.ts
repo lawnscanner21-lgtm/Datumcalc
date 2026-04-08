@@ -73,6 +73,40 @@ export const articles: Article[] = [
       <h2>Fazit zur Planung</h2>
       <p>Für die Gehaltsabrechnung, Urlaubsplanung oder Projektsteuerung ist die Kalenderwoche ein essenzielles Maß. Mit unserem Datumsrechner kannst du dir jegliche Kalender-Metriken jederzeit genau anzeigen lassen.</p>
     `
+    },
+    {
+        slug: 'was-ist-ein-arbeitstag',
+        title: 'Was ist ein Arbeitstag? Definition und gesetzliche Regelungen',
+        description: 'Erfahre alles über den Begriff des Arbeitstags, wie er sich vom Werktag unterscheidet und was bei der Fristenberechnung zu beachten ist.',
+        publishedAt: '25. März 2024',
+        readTime: '3 min',
+        content: `
+      <h2>Definition: Arbeitstag</h2>
+      <p>Ein Arbeitstag ist ein Tag, an dem üblicherweise gearbeitet wird. Im Gegensatz zum Kalendertag oder Werktag werden hierbei Wochenenden und gesetzliche Feiertage grundsätzlich ausgeschlossen.</p>
+      
+      <h2>Unterscheidung zum Werktag</h2>
+      <p>Oft werden diese Begriffe verwechselt. Nach dem Bundesurlaubsgesetz gelten alle Kalendertage, die nicht Sonn- oder gesetzliche Feiertage sind, als Werktage (also auch der Samstag). Ein Arbeitstag hingegen bezieht sich meist auf die individuelle 5-Tage-Woche (Montag bis Freitag).</p>
+      
+      <h2>Relevanz für Fristen</h2>
+      <p>Wenn im Arbeitsvertrag von "Arbeitstagen" die Rede ist, zählen Samstage nicht mit. Steht dort jedoch "Werktage", muss der Samstag bei der Fristberechnung berücksichtigt werden. Mit unserem Rechner kannst du beide Varianten präzise unterscheiden.</p>
+    `
+    },
+    {
+        slug: 'iso-8601-erklaert',
+        title: 'ISO 8601 erklärt: Der internationale Standard für Datum und Zeit',
+        description: 'Warum ISO 8601 der wichtigste Standard für die digitale Zeitmessung ist und wie man ihn richtig anwendet.',
+        publishedAt: '26. März 2024',
+        readTime: '4 min',
+        content: `
+      <h2>Was ist ISO 8601?</h2>
+      <p>ISO 8601 ist der internationale Standard der ISO für die Darstellung von Datum und Uhrzeit. Er sorgt dafür, dass Zeitangaben weltweit eindeutig und maschinenlesbar sind.</p>
+      
+      <h2>Formatierung (YYYY-MM-DD)</h2>
+      <p>Das bekannteste Merkmal ist die absteigende Sortierung: Jahr, Monat, Tag. Das Format <code>2024-03-24</code> ist absolut eindeutig und vermeidet Verwechslungen zwischen dem US-Format (MM/DD/YYYY) und dem europäischen Format (DD.MM.YYYY).</p>
+      
+      <h2>Warum wir ISO 8601 nutzen</h2>
+      <p>Für Informatiker und Mathematiker ist dieser Standard essenziell, da Datumsangaben so lexikographisch korrekt sortiert werden können. Unser Datumsrechner basiert intern vollständig auf diesen standardisierten Zeitstempeln, um höchste mathematische Präzision zu garantieren.</p>
+    `
     }
 ];
 
