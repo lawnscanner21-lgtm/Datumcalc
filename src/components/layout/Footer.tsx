@@ -4,6 +4,8 @@ import { ShieldCheck, Calculator, CalendarClock } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
 export function Footer() {
+    const t = useTranslations('Header');
+    const tCommon = useTranslations('Common');
     return (
         <footer className="w-full border-t border-white/5 bg-[#020202] py-16 mt-auto relative z-10 overflow-hidden">
             {/* Background glow */}
@@ -64,10 +66,11 @@ export function Footer() {
                     <p className="order-2 md:order-1">© {new Date().getFullYear()} Datumsrechner. Alle Rechte vorbehalten.</p>
                     
                     <nav aria-label="Footer Legal" className="flex flex-wrap justify-center gap-x-6 gap-y-4 order-1 md:order-2 font-medium">
-                        <Link href="/ueber-uns" className="hover:text-white transition-colors">Über uns</Link>
-                        <Link href="/datenschutz" className="hover:text-white transition-colors">Datenschutz</Link>
-                        <Link href="/agb" className="hover:text-white transition-colors">AGB</Link>
-                        <Link href="/impressum" className="hover:text-white transition-colors">Impressum</Link>
+                        <Link href="/ueber-uns" className="hover:text-white transition-colors">{tCommon('titles.about')}</Link>
+                        <Link href="/sitemap" className="hover:text-white transition-colors">{tCommon('titles.sitemap')}</Link>
+                        <Link href="/datenschutz" className="hover:text-white transition-colors">{tCommon('titles.privacy')}</Link>
+                        <Link href="/agb" className="hover:text-white transition-colors">{tCommon('titles.terms')}</Link>
+                        <Link href="/impressum" className="hover:text-white transition-colors">{tCommon('titles.imprint')}</Link>
                     </nav>
                 </div>
             </div>

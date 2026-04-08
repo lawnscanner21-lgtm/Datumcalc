@@ -8,9 +8,7 @@ export default function robots(): MetadataRoute.Robots {
       disallow: ['/api/', '/admin/'],
     },
     sitemap: [
-      'https://datums-rechner.com/sitemap-core.xml',
-      'https://datums-rechner.com/sitemap-events.xml',
-      'https://datums-rechner.com/sitemap-seo.xml',
+      'https://datums-rechner.com/sitemap.xml',
     ],
   };
 }
