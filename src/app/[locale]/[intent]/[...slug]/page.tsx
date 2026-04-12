@@ -233,11 +233,13 @@ export default async function ProgrammaticPage({
     );
 }
 
+import { locales } from '@/i18n/routing';
+
 export function generateStaticParams() {
-    const locales = ['de', 'en'];
     const params: { locale: string; intent: string; slug: string[] }[] = [];
 
     for (const locale of locales) {
+        // 1. Canonical Queries
         Object.values(CANONICAL_QUERIES).forEach(def => {
             if (def.isIndexable) {
                 const intent = def.calcMode === 'add_subtract' ? 'addieren' : 'differenz';
@@ -248,6 +250,18 @@ export function generateStaticParams() {
                 });
             }
         });
+
+        // 2. Numeric dynamic queries (consistent with sitemap)
+        const strictlyIndexedNumbers = [30, 45, 60, 90, 100, 120, 180, 365, 500, 1000];
+        for (const num of strictlyIndexedNumbers) {
+            if (!CANONICAL_QUERIES[`${num}-tage-ab-heute`]) {
+                params.push({
+                    locale,
+                    intent: 'addieren',
+                    slug: [`${num}`, 'tage', 'ab', 'heute']
+                });
+            }
+        }
     }
 
     return params;

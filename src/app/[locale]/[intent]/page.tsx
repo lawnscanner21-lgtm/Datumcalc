@@ -83,11 +83,11 @@ export default async function IntentHubPage({ params }: { params: Promise<{ loca
     );
 }
 
+import { locales } from '@/i18n/routing';
+
 export function generateStaticParams() {
-    return [
-        { locale: 'de', intent: 'addieren' },
-        { locale: 'de', intent: 'differenz' },
-        { locale: 'en', intent: 'addieren' },
-        { locale: 'en', intent: 'differenz' }
-    ];
+    return locales.flatMap(locale => [
+        { locale, intent: 'addieren' },
+        { locale, intent: 'differenz' }
+    ]);
 }
