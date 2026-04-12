@@ -23,7 +23,7 @@ const EXPLANATION_TEMPLATES: Record<string, ((num: number, unit: string) => stri
     EXPLANATION_TEMPLATES[loc] = EXPLANATION_TEMPLATES['en'];
 });
 
-const USE_CASES = {
+const USE_CASES: Record<string, string[]> = {
     de: [
         'Projektmanagement und Meilenstein-Planung',
         'Vertragsfristen und Kündigungsfristen',

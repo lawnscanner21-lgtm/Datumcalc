@@ -1,17 +1,28 @@
 import { getTranslations } from 'next-intl/server';
+import { locales } from '@/i18n/routing';
+import { INTENT_TRANSLATIONS } from '@/lib/seo/translations';
 import { CalculatorCore } from '@/components/calculator/CalculatorCore';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
     const { locale } = await params;
     const t = await getTranslations({ locale, namespace: 'Common.titles' });
     const siteUrl = "https://datums-rechner.com";
-    const fullUrl = `${siteUrl}/${locale}/ueber-uns`;
+    const locSlug = INTENT_TRANSLATIONS[locale]['ueber-uns'];
+    const fullUrl = `${siteUrl}/${locale}/${locSlug}`;
+
+    // Build hreflang alternates
+    const languages: Record<string, string> = {};
+    locales.forEach(loc => {
+        languages[loc] = `${siteUrl}/${loc}/${INTENT_TRANSLATIONS[loc]['ueber-uns']}`;
+    });
+    languages['x-default'] = `${siteUrl}/de/ueber-uns`;
 
     return {
         title: `${t('about')} - Datumsrechner`,
         description: `Erfahren Sie mehr über die Mission und die Vision von datums-rechner.com – präzise Zeitberechnungen für alle.`,
         alternates: {
-            canonical: fullUrl
+            canonical: fullUrl,
+            languages
         },
         openGraph: {
             title: `${t('about')} - Datumsrechner`,

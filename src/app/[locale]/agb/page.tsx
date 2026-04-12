@@ -1,16 +1,27 @@
 import { getTranslations } from 'next-intl/server';
+import { locales } from '@/i18n/routing';
+import { INTENT_TRANSLATIONS } from '@/lib/seo/translations';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
     const { locale } = await params;
     const t = await getTranslations({ locale, namespace: 'Common.titles' });
     const siteUrl = "https://datums-rechner.com";
-    const fullUrl = `${siteUrl}/${locale}/agb`;
+    const locSlug = INTENT_TRANSLATIONS[locale]['agb'];
+    const fullUrl = `${siteUrl}/${locale}/${locSlug}`;
+
+    // Build hreflang alternates
+    const languages: Record<string, string> = {};
+    locales.forEach(loc => {
+        languages[loc] = `${siteUrl}/${loc}/${INTENT_TRANSLATIONS[loc]['agb']}`;
+    });
+    languages['x-default'] = `${siteUrl}/de/agb`;
 
     return {
         title: `${t('terms')} - Datumsrechner`,
         description: `Allgemeine Geschäftsbedingungen und Nutzungsbestimmungen für datums-rechner.com.`,
         alternates: {
-            canonical: fullUrl
+            canonical: fullUrl,
+            languages
         },
         openGraph: {
             title: `${t('terms')} - Datumsrechner`,

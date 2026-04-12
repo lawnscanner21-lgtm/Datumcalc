@@ -1,5 +1,6 @@
 import { CANONICAL_QUERIES } from './queryModel';
 import { locales } from '@/i18n/routing';
+import { INTENT_TRANSLATIONS, translateSlug } from './translations';
 
 /**
  * Sitemap Engine Configuration
@@ -39,9 +40,12 @@ export function getSEOSitemapUrls() {
     locales.forEach(locale => {
         Object.entries(CANONICAL_QUERIES).forEach(([slug, def]) => {
             if (def.isIndexable && def.priority !== 'Low' && def.intentType !== 'Informational') {
-                const intent = def.calcMode === 'add_subtract' ? 'addieren' : 'differenz';
+                const internalIntent = def.calcMode === 'add_subtract' ? 'addieren' : 'differenz';
+                const locIntent = INTENT_TRANSLATIONS[locale][internalIntent] || internalIntent;
+                const locSlug = translateSlug(slug, locale);
+                
                 urls.push({
-                    url: getLocalizedUrl(`/${intent}/${slug}`, locale),
+                    url: getLocalizedUrl(`/${locIntent}/${locSlug}`, locale),
                     lastModified: new Date(),
                     changeFrequency: 'weekly',
                     priority: 0.8
@@ -52,10 +56,14 @@ export function getSEOSitemapUrls() {
         // Generate numeric loop for strictly indexed numbers to expand dynamically
         const strictlyIndexedNumbers = [30, 45, 60, 90, 100, 120, 180, 365, 500, 1000];
         for (const num of strictlyIndexedNumbers) {
+            const canonicalSlug = `${num}-tage-ab-heute`;
             // Skip if already hardcoded in CANONICAL_QUERIES above
-            if (!CANONICAL_QUERIES[`${num}-tage-ab-heute`]) {
+            if (!CANONICAL_QUERIES[canonicalSlug]) {
+                const locIntent = INTENT_TRANSLATIONS[locale]['addieren'] || 'addieren';
+                const locSlug = translateSlug(canonicalSlug, locale);
+                
                 urls.push({
-                    url: getLocalizedUrl(`/addieren/${num}-tage-ab-heute`, locale),
+                    url: getLocalizedUrl(`/${locIntent}/${locSlug}`, locale),
                     lastModified: new Date(),
                     changeFrequency: 'weekly',
                     priority: 0.7
@@ -73,8 +81,12 @@ export function getEventsSitemapUrls() {
     locales.forEach(locale => {
         Object.entries(CANONICAL_QUERIES).forEach(([slug, def]) => {
             if (def.isIndexable && (def.priority === 'High' || def.priority === 'Medium') && def.intentType === 'Informational') {
+                 const internalIntent = def.calcMode === 'add_subtract' ? 'addieren' : 'differenz';
+                 const locIntent = INTENT_TRANSLATIONS[locale][internalIntent] || internalIntent;
+                 const locSlug = translateSlug(slug, locale);
+                 
                  urls.push({
-                    url: getLocalizedUrl(`/differenz/${slug}`, locale),
+                    url: getLocalizedUrl(`/${locIntent}/${locSlug}`, locale),
                     lastModified: new Date(),
                     changeFrequency: 'monthly',
                     priority: 0.9

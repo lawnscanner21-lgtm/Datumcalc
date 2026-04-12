@@ -1,12 +1,26 @@
 import { CANONICAL_QUERIES } from '@/lib/seo/queryModel';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import { locales } from '@/i18n/routing';
+import { INTENT_TRANSLATIONS, translateSlug } from '@/lib/seo/translations';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string; intent: string }> }) {
     const { locale, intent } = await params;
     const siteUrl = "https://datums-rechner.com";
+    
+    // Resolve internal intent
+    const internalIntent = Object.keys(INTENT_TRANSLATIONS[locale]).find(k => INTENT_TRANSLATIONS[locale][k] === intent) || intent;
+    
     const fullUrl = `${siteUrl}/${locale}/${intent}`;
     
+    // Build hreflang alternates
+    const languages: Record<string, string> = {};
+    locales.forEach(loc => {
+        const locIntent = INTENT_TRANSLATIONS[loc][internalIntent] || internalIntent;
+        languages[loc] = `${siteUrl}/${loc}/${locIntent}`;
+    });
+    languages['x-default'] = `${siteUrl}/de/${INTENT_TRANSLATIONS['de'][internalIntent] || internalIntent}`;
+
     const title = locale === 'de' 
         ? `${intent.charAt(0).toUpperCase() + intent.slice(1)} - Datumsrechner Hub ✓`
         : `${intent.charAt(0).toUpperCase() + intent.slice(1)} - Date Calculator Hub ✓`;
@@ -17,7 +31,8 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
             ? `Nutzen Sie unsere Sammlung an präzisen Rechnern für ${intent}. Schnelle Antworten für alle Datums-Szenarien.`
             : `Use our collection of precise calculators for ${intent}. Fast answers for all date scenarios.`,
         alternates: {
-            canonical: fullUrl
+            canonical: fullUrl,
+            languages
         },
         openGraph: {
             title,
@@ -30,20 +45,21 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 
 export default async function IntentHubPage({ params }: { params: Promise<{ locale: string; intent: string }> }) {
     const { locale, intent } = await params;
+    const internalIntent = Object.keys(INTENT_TRANSLATIONS[locale]).find(k => INTENT_TRANSLATIONS[locale][k] === intent) || intent;
     
-    // Allow all configured intents
+    // Internal mapping for calcMode
     const intentMap: Record<string, string> = { 
-        'addieren': 'add_subtract', 'add': 'add_subtract',
-        'differenz': 'difference', 'difference': 'difference',
-        'arbeitstage': 'business_days', 'business': 'business_days',
-        'alter': 'age', 'age': 'age'
+        'addieren': 'add_subtract',
+        'differenz': 'difference',
+        'arbeitstage': 'business_days',
+        'alter': 'age'
     };
 
-    if (!intentMap[intent.toLowerCase()]) {
+    if (!intentMap[internalIntent.toLowerCase()]) {
         notFound();
     }
 
-    const calcMode = intentMap[intent.toLowerCase()];
+    const calcMode = intentMap[internalIntent.toLowerCase()];
     
     // Group known queries for this hub
     const activeQueries = Object.entries(CANONICAL_QUERIES).filter(([slug, def]) => def.calcMode === calcMode && def.isIndexable);
@@ -75,8 +91,8 @@ export default async function IntentHubPage({ params }: { params: Promise<{ loca
                         <ul className="space-y-3">
                             {transactional.map(([slug]) => (
                                 <li key={slug}>
-                                    <Link href={`/${locale}/${intent}/${slug}`} className="text-white hover:text-neon flex items-center justify-between group p-3 rounded-lg hover:bg-white/5 transition-colors border border-transparent hover:border-white/5">
-                                        <span>{slug.replace(/-/g, ' ')}</span>
+                                    <Link href={`/${locale}/${intent}/${translateSlug(slug, locale)}`} className="text-white hover:text-neon flex items-center justify-between group p-3 rounded-lg hover:bg-white/5 transition-colors border border-transparent hover:border-white/5">
+                                        <span>{translateSlug(slug, locale).replace(/-/g, ' ')}</span>
                                         <svg className="w-5 h-5 opacity-0 group-hover:opacity-100 transition-opacity text-neon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
                                         </svg>
@@ -96,8 +112,8 @@ export default async function IntentHubPage({ params }: { params: Promise<{ loca
                         <ul className="space-y-3">
                             {informational.map(([slug]) => (
                                 <li key={slug}>
-                                    <Link href={`/${locale}/${intent}/${slug}`} className="text-white hover:text-neon flex items-center justify-between group p-3 rounded-lg hover:bg-white/5 transition-colors border border-transparent hover:border-white/5">
-                                        <span className="capitalize">{slug.replace(/-/g, ' ')}</span>
+                                    <Link href={`/${locale}/${intent}/${translateSlug(slug, locale)}`} className="text-white hover:text-neon flex items-center justify-between group p-3 rounded-lg hover:bg-white/5 transition-colors border border-transparent hover:border-white/5">
+                                        <span className="capitalize">{translateSlug(slug, locale).replace(/-/g, ' ')}</span>
                                         <svg className="w-5 h-5 opacity-0 group-hover:opacity-100 transition-opacity text-neon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
                                         </svg>
@@ -115,8 +131,8 @@ export default async function IntentHubPage({ params }: { params: Promise<{ loca
 import { locales } from '@/i18n/routing';
 
 export function generateStaticParams() {
-    const intents = ['addieren', 'add', 'differenz', 'difference', 'arbeitstage', 'business', 'alter', 'age'];
-    return locales.flatMap(locale => 
-        intents.map(intent => ({ locale, intent }))
-    );
+    return locales.flatMap(locale => {
+        const intents = Object.values(INTENT_TRANSLATIONS[locale]);
+        return intents.map(intent => ({ locale, intent }));
+    });
 }

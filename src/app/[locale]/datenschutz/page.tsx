@@ -1,16 +1,27 @@
 import { getTranslations } from 'next-intl/server';
+import { locales } from '@/i18n/routing';
+import { INTENT_TRANSLATIONS } from '@/lib/seo/translations';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
     const { locale } = await params;
     const t = await getTranslations({ locale, namespace: 'Common.titles' });
     const siteUrl = "https://datums-rechner.com";
-    const fullUrl = `${siteUrl}/${locale}/datenschutz`;
+    const locSlug = INTENT_TRANSLATIONS[locale]['datenschutz'];
+    const fullUrl = `${siteUrl}/${locale}/${locSlug}`;
+
+    // Build hreflang alternates
+    const languages: Record<string, string> = {};
+    locales.forEach(loc => {
+        languages[loc] = `${siteUrl}/${loc}/${INTENT_TRANSLATIONS[loc]['datenschutz']}`;
+    });
+    languages['x-default'] = `${siteUrl}/de/datenschutz`;
 
     return {
         title: `${t('privacy')} - Datumsrechner`,
         description: `Datenschutzerklärung von datums-rechner.com. Erfahren Sie, wie wir mit Ihren Daten gemäß DSGVO umgehen.`,
         alternates: {
-            canonical: fullUrl
+            canonical: fullUrl,
+            languages
         },
         openGraph: {
             title: `${t('privacy')} - Datumsrechner`,
@@ -34,45 +45,31 @@ export default async function PrivacyPage({ params }: { params: Promise<{ locale
             <div className="prose prose-invert prose-lg max-w-none space-y-12">
                 <section>
                     <h2 className="text-2xl font-bold text-white mb-4">1. Datenschutz auf einen Blick</h2>
-                    <p className="text-white/70 leading-relaxed font-bold">Allgemeine Hinweise</p>
+                    <h3 className="text-xl font-semibold text-white/90 mb-2">Allgemeine Hinweise</h3>
                     <p className="text-white/70 leading-relaxed">
-                        Die folgenden Hinweise geben einen einfachen Überblick darüber, was mit Ihren personenbezogenen Daten passiert, wenn Sie diese Website besuchen. Personenbezogene Daten sind alle Daten, mit denen Sie persönlich identifiziert werden können. Ausführliche Informationen zum Thema Datenschutz entnehmen Sie unserer unter diesem Text aufgeführten Datenschutzerklärung.
+                        Die folgenden Hinweise geben einen einfachen Überblick darüber, was mit Ihren personenbezogenen Daten passiert, wenn Sie diese Website besuchen. Personenbezogene Daten sind alle Daten, mit denen Sie persönlich identifiziert werden können.
                     </p>
                 </section>
 
                 <section>
-                    <h2 className="text-2xl font-bold text-white mb-4">2. Cookies und Tracking</h2>
+                    <h2 className="text-2xl font-bold text-white mb-4">2. Datenerfassung auf dieser Website</h2>
+                    <h3 className="text-xl font-semibold text-white/90 mb-2">Cookies und Tracking</h3>
                     <p className="text-white/70 leading-relaxed">
-                        Wir verwenden Cookies, um die Benutzerfreundlichkeit zu verbessern und den Website-Traffic zu analysieren. Cookies sind kleine Textdateien, die auf Ihrem Rechner abgelegt werden und die Ihr Browser speichert.
-                    </p>
-                    <h3 className="text-xl font-bold text-white mb-2 underline decoration-neon/30">Google AdSense</h3>
-                    <p className="text-white/70 leading-relaxed">
-                        Diese Website nutzt Google AdSense, einen Dienst zum Einbinden von Werbeanzeigen der Google Inc. ("Google"). Google AdSense verwendet sog. "Cookies", Textdateien, die auf Ihrem Computer gespeichert werden und die eine Analyse der Benutzung der Website ermöglichen.
+                        Unsere Website nutzt Cookies, um die Benutzererfahrung zu verbessern. Diese werden lokal in Ihrem Browser gespeichert. Wir nutzen keine Tracking-Tools, die Ihr Verhalten ohne Ihre ausdrückliche Zustimmung analysieren.
                     </p>
                 </section>
 
                 <section>
-                    <h2 className="text-2xl font-bold text-white mb-4">3. Hosting und Protokollierung</h2>
-                    <p className="text-white/70 leading-relaxed">
-                        Die Website wird bei einem externen Dienstleister gehostet (Vercel). Personenbezogene Daten, die auf dieser Website erfasst werden, werden auf den Servern des Hosters gespeichert. Dies können IP-Adressen, Kontaktanfragen oder Metadaten sein.
-                    </p>
-                </section>
-
-                <section>
-                    <h2 className="text-2xl font-bold text-white mb-4">4. Ihre Rechte</h2>
+                    <h2 className="text-2xl font-bold text-white mb-4">3. Ihre Rechte</h2>
                     <p className="text-white/70 leading-relaxed">
                         Sie haben jederzeit das Recht, unentgeltlich Auskunft über Herkunft, Empfänger und Zweck Ihrer gespeicherten personenbezogenen Daten zu erhalten. Sie haben außerdem ein Recht, die Berichtigung oder Löschung dieser Daten zu verlangen.
                     </p>
                 </section>
 
                 <section>
-                    <h2 className="text-2xl font-bold text-white mb-4">5. Verantwortliche Stelle</h2>
+                    <h2 className="text-2xl font-bold text-white mb-4">4. Hosting</h2>
                     <p className="text-white/70 leading-relaxed">
-                        Verantwortlich für die Datenverarbeitung auf dieser Website ist:<br /><br />
-                        Max Mustermann<br />
-                        Musterstraße 123<br />
-                        12345 Musterstadt<br />
-                        hello@datums-rechner.com
+                        Wir hosten die Inhalte unserer Website bei einem Cloud-Anbieter. Personenbezogene Daten, die auf dieser Website erfasst werden, werden auf den Servern des Hosters gespeichert. Dabei handelt es sich v. a. um IP-Adressen, Kontaktanfragen und Meta- und Kommunikationsdaten.
                     </p>
                 </section>
             </div>

@@ -9,6 +9,8 @@ import { TrustSignals } from '@/components/seo/TrustSignals';
 import { addDays, addMonths, addYears, differenceInDays, format } from 'date-fns';
 import { de, enUS } from 'date-fns/locale';
 import { resolveCanonicalQuery, CANONICAL_QUERIES } from '@/lib/seo/queryModel';
+import { locales } from '@/i18n/routing';
+import { INTENT_TRANSLATIONS, translateSlug, reverseTranslateSlug } from '@/lib/seo/translations';
 
 const intentToModeMap: Record<string, string> = {
     'differenz': 'difference',
@@ -103,17 +105,31 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     const { locale, intent, slug } = await params;
     const slugStr = slug.join('-');
     const siteUrl = "https://datums-rechner.com";
+    
+    // Resolve internal intent and slug
+    const internalIntent = Object.keys(INTENT_TRANSLATIONS[locale]).find(k => INTENT_TRANSLATIONS[locale][k] === intent) || intent;
+    const canonicalSlug = reverseTranslateSlug(slugStr, locale);
+    
     const fullUrl = `${siteUrl}/${locale}/${intent}/${slugStr}`;
     
+    // Build hreflang alternates
+    const languages: Record<string, string> = {};
+    locales.forEach(loc => {
+        const locIntent = INTENT_TRANSLATIONS[loc][internalIntent] || internalIntent;
+        const locSlug = translateSlug(canonicalSlug, loc);
+        languages[loc] = `${siteUrl}/${loc}/${locIntent}/${locSlug}`;
+    });
+    languages['x-default'] = `${siteUrl}/de/${INTENT_TRANSLATIONS['de'][internalIntent]}/${translateSlug(canonicalSlug, 'de')}`;
+
     // SERP Domination formatting
-    const isAdd = intent === 'addieren' || intent === 'add';
-    const isDiff = intent === 'differenz' || intent === 'difference';
+    const isAdd = internalIntent === 'addieren' || internalIntent === 'add';
+    const isDiff = internalIntent === 'differenz' || internalIntent === 'difference';
     
     let title = `${slugStr.replace(/-/g, ' ')} → Exakte Berechnung ✓`;
     let description = `Nutzen Sie unseren kostenlosen Datumsrechner für blitzschnelle und exakte Ergebnisse für ${slugStr.replace(/-/g, ' ')}. ISO 8601 konform.`;
 
     if (isAdd) {
-        const match = slugStr.match(/^(\d+)-(tage|monate|jahre)-ab-heute$/);
+        const match = canonicalSlug.match(/^(\d+)-(tage|monate|jahre)-ab-heute$/);
         if (match) {
             title = locale === 'de' 
                 ? `${match[1]} ${match[2]} ab heute → Genaues Datum ✓`
@@ -124,15 +140,16 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
         }
     } else if (isDiff) {
         title = locale === 'de'
-            ? `Tage bis ${slugStr.replace('tage-bis-', '').replace(/-/g, ' ')} → Jetzt berechnen`
-            : `Days until ${slugStr.replace('days-until-', '').replace(/-/g, ' ')} → Calculate now`;
+            ? `Tage bis ${slugStr.replace(/-/g, ' ')} → Jetzt berechnen`
+            : `Days until ${slugStr.replace(/-/g, ' ')} → Calculate now`;
     }
 
     return {
         title,
         description,
         alternates: {
-            canonical: fullUrl
+            canonical: fullUrl,
+            languages
         },
         openGraph: {
             title,
@@ -150,25 +167,26 @@ export default async function ProgrammaticPage({
     params: Promise<{ locale: string; intent: string; slug: string[] }>
 }) {
     const { locale, intent, slug } = await params;
-    const mode = intentToModeMap[intent.toLowerCase()];
+    const internalIntent = Object.keys(INTENT_TRANSLATIONS[locale]).find(k => INTENT_TRANSLATIONS[locale][k] === intent) || intent;
+    const mode = intentToModeMap[internalIntent.toLowerCase()];
     const slugStr = slug.join('-');
+    const canonicalSlugStr = reverseTranslateSlug(slugStr, locale);
 
     if (!mode) {
         notFound();
     }
 
     // Anti-Cannibalization / Smart Fallback
-    const { canonicalSlug, isExact } = resolveCanonicalQuery(slugStr);
+    const { canonicalSlug, isExact } = resolveCanonicalQuery(canonicalSlugStr);
     
     if (!isExact && canonicalSlug) {
         // Fallback redirects to closest match canonical
-        redirect(`/${locale}/${intent}/${canonicalSlug}`);
-    } else if (!isExact && !canonicalSlug) {
-        // We will still render dynamically, maybe it's "49-tage-ab-heute" which is valid structurally.
-        // The generateMetadata sets NOINDEX implicitly if not explicitly listed in sitemaps (handled outside).
-    }
+        const locIntent = INTENT_TRANSLATIONS[locale][internalIntent] || internalIntent;
+        const locSlug = translateSlug(canonicalSlug, locale);
+        redirect(`/${locale}/${locIntent}/${locSlug}`);
+    } 
 
-    const instantResult = computeInstantResult(intent.toLowerCase(), slugStr, locale);
+    const instantResult = computeInstantResult(internalIntent.toLowerCase(), canonicalSlugStr, locale);
 
     // Schema implementations
     const breadcrumbSchema = {
@@ -262,11 +280,14 @@ export function generateStaticParams() {
         // 1. Canonical Queries
         Object.values(CANONICAL_QUERIES).forEach(def => {
             if (def.isIndexable) {
-                const intent = def.calcMode === 'add_subtract' ? 'addieren' : 'differenz';
+                const internalIntent = def.calcMode === 'add_subtract' ? 'addieren' : 'differenz';
+                const locIntent = INTENT_TRANSLATIONS[locale][internalIntent] || internalIntent;
+                const locSlug = translateSlug(def.canonicalSlug, locale);
+                
                 params.push({
                     locale,
-                    intent,
-                    slug: def.canonicalSlug.split('-')
+                    intent: locIntent,
+                    slug: locSlug.split('-')
                 });
             }
         });
@@ -274,11 +295,15 @@ export function generateStaticParams() {
         // 2. Numeric dynamic queries (consistent with sitemap)
         const strictlyIndexedNumbers = [30, 45, 60, 90, 100, 120, 180, 365, 500, 1000];
         for (const num of strictlyIndexedNumbers) {
-            if (!CANONICAL_QUERIES[`${num}-tage-ab-heute`]) {
+            const canonicalSlug = `${num}-tage-ab-heute`;
+            if (!CANONICAL_QUERIES[canonicalSlug]) {
+                const locIntent = INTENT_TRANSLATIONS[locale]['addieren'] || 'addieren';
+                const locSlug = translateSlug(canonicalSlug, locale);
+                
                 params.push({
                     locale,
-                    intent: 'addieren',
-                    slug: [`${num}`, 'tage', 'ab', 'heute']
+                    intent: locIntent,
+                    slug: locSlug.split('-')
                 });
             }
         }

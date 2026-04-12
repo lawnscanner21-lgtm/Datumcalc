@@ -1,16 +1,27 @@
 import { getTranslations } from 'next-intl/server';
+import { locales } from '@/i18n/routing';
+import { INTENT_TRANSLATIONS } from '@/lib/seo/translations';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
     const { locale } = await params;
     const t = await getTranslations({ locale, namespace: 'Common.titles' });
     const siteUrl = "https://datums-rechner.com";
-    const fullUrl = `${siteUrl}/${locale}/impressum`;
+    const locSlug = INTENT_TRANSLATIONS[locale]['impressum'];
+    const fullUrl = `${siteUrl}/${locale}/${locSlug}`;
+
+    // Build hreflang alternates
+    const languages: Record<string, string> = {};
+    locales.forEach(loc => {
+        languages[loc] = `${siteUrl}/${loc}/${INTENT_TRANSLATIONS[loc]['impressum']}`;
+    });
+    languages['x-default'] = `${siteUrl}/de/impressum`;
 
     return {
         title: `${t('imprint')} - Datumsrechner`,
         description: `Impressum und rechtliche Anbieterkennzeichnung für datums-rechner.com.`,
         alternates: {
-            canonical: fullUrl
+            canonical: fullUrl,
+            languages
         },
         openGraph: {
             title: `${t('imprint')} - Datumsrechner`,
@@ -34,53 +45,33 @@ export default async function ImprintPage({ params }: { params: Promise<{ locale
             <div className="prose prose-invert prose-lg max-w-none space-y-12">
                 <section>
                     <h2 className="text-2xl font-bold text-white mb-4">Angaben gemäß § 5 TMG</h2>
-                    <p className="text-white/70 leading-relaxed">
-                        Max Mustermann<br />
-                        Digital Solutions<br />
-                        Musterstraße 123<br />
-                        12345 Musterstadt<br />
-                        Deutschland
+                    <p className="text-white/70 leading-relaxed font-bold">
+                        Betreiber der Website:<br />
+                        Sheikh Farooq <br />
+                        [Deine Straße / Hausnummer] <br />
+                        [Deine PLZ / Stadt]
                     </p>
                 </section>
 
                 <section>
                     <h2 className="text-2xl font-bold text-white mb-4">Kontakt</h2>
                     <p className="text-white/70 leading-relaxed">
-                        E-Mail: hello@datums-rechner.com<br />
-                        Telefon: +49 (0) 123 456789 (optional)
+                        E-Mail: info@datums-rechner.com <br />
                     </p>
                 </section>
 
                 <section>
-                    <h2 className="text-2xl font-bold text-white mb-4">Umsatzsteuer-ID</h2>
+                    <h2 className="text-2xl font-bold text-white mb-4">Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV</h2>
                     <p className="text-white/70 leading-relaxed">
-                        Umsatzsteuer-Identifikationsnummer gemäß § 27 a Umsatzsteuergesetz:<br />
-                        DE 123 456 789
+                        Sheikh Farooq <br />
+                        [Adresse siehe oben]
                     </p>
                 </section>
 
                 <section>
-                    <h2 className="text-2xl font-bold text-white mb-4">Redaktionell verantwortlich</h2>
-                    <p className="text-white/70 leading-relaxed">
-                        Max Mustermann<br />
-                        Musterstraße 123<br />
-                        12345 Musterstadt
-                    </p>
-                </section>
-
-                <section>
-                    <h2 className="text-2xl font-bold text-white mb-4">EU-Streitschlichtung</h2>
-                    <p className="text-white/70 leading-relaxed">
-                        Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit: 
-                        <a href="https://ec.europa.eu/consumers/odr/" className="text-neon hover:underline ml-1">https://ec.europa.eu/consumers/odr/</a>.<br />
-                        Unsere E-Mail-Adresse finden Sie oben im Impressum.
-                    </p>
-                </section>
-
-                <section>
-                    <h2 className="text-2xl font-bold text-white mb-4">Verbraucherstreitbeilegung / Universalschlichtungsstelle</h2>
-                    <p className="text-white/70 leading-relaxed">
-                        Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.
+                    <h2 className="text-2xl font-bold text-white mb-4">Haftung für Inhalte</h2>
+                    <p className="text-white/70 leading-relaxed italic">
+                        Als Diensteanbieter sind wir gemäß § 7 Abs. 1 TMG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich. Wir sind jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu überwachen.
                     </p>
                 </section>
             </div>

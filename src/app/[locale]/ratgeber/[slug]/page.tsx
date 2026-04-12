@@ -2,26 +2,43 @@ import { getArticleBySlug, articles } from '@/lib/articles';
 import { notFound } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
 import { CalculatorCore } from '@/components/calculator/CalculatorCore';
+import { locales } from '@/i18n/routing';
+import { INTENT_TRANSLATIONS } from '@/lib/seo/translations';
 
 export const revalidate = 86400; // 24 hours ISR
 
 export function generateStaticParams() {
-    return articles.map(a => ({ slug: a.slug }));
+    return locales.flatMap(locale => 
+        articles.map(a => ({ 
+            locale,
+            intent: INTENT_TRANSLATIONS[locale]['ratgeber'],
+            slug: a.slug 
+        }))
+    );
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string; locale: string }> }) {
     const { locale, slug } = await params;
     const article = getArticleBySlug(slug);
     const siteUrl = "https://datums-rechner.com";
-    const fullUrl = `${siteUrl}/${locale}/ratgeber/${slug}`;
-
+    
     if (!article) return {};
 
+    const fullUrl = `${siteUrl}/${locale}/${INTENT_TRANSLATIONS[locale]['ratgeber']}/${slug}`;
+    
+    // Build hreflang alternates
+    const languages: Record<string, string> = {};
+    locales.forEach(loc => {
+        languages[loc] = `${siteUrl}/${loc}/${INTENT_TRANSLATIONS[loc]['ratgeber']}/${slug}`;
+    });
+    languages['x-default'] = `${siteUrl}/de/ratgeber/${slug}`;
+
     return {
-        title: `${article.title} | Ratgeber`,
+        title: `${article.title} | ${locale === 'de' ? 'Ratgeber' : 'Guide'}`,
         description: article.description,
         alternates: {
-            canonical: fullUrl
+            canonical: fullUrl,
+            languages
         },
         openGraph: {
             title: article.title,
