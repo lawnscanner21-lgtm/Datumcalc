@@ -128,8 +128,6 @@ export default async function IntentHubPage({ params }: { params: Promise<{ loca
     );
 }
 
-
-
 export function generateStaticParams() {
     return locales.flatMap(locale => {
         const intents = Object.values(INTENT_TRANSLATIONS[locale]);

@@ -271,8 +271,6 @@ export default async function ProgrammaticPage({
     );
 }
 
-
-
 export function generateStaticParams() {
     const params: { locale: string; intent: string; slug: string[] }[] = [];
 
