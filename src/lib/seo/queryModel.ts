@@ -27,7 +27,7 @@ export const CANONICAL_QUERIES: Record<string, QueryDefinition> = {
 
     // Business queries
     'arbeitstage-jahr': { canonicalSlug: 'arbeitstage-jahr', intentType: 'Informational', priority: 'High', calcMode: 'business_days', isIndexable: true },
-};
+} as const;
 
 // Aliases -> Canonical (Cannibalization control)
 export const QUERY_ALIASES: Record<string, string> = {

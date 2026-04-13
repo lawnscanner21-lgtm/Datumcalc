@@ -1,6 +1,14 @@
 import { CANONICAL_QUERIES } from './queryModel';
 import { locales } from '@/i18n/routing';
 import { INTENT_TRANSLATIONS, translateSlug } from './translations';
+import { typedEntries } from './utils';
+
+const CALC_MODE_TO_INTENT: Record<string, string> = {
+    add_subtract: 'addieren',
+    difference: 'differenz',
+    business_days: 'arbeitstage',
+    age: 'alter',
+};
 
 /**
  * Sitemap Engine Configuration
@@ -38,9 +46,9 @@ export function getSEOSitemapUrls() {
     const urls: any[] = [];
     
     locales.forEach(locale => {
-        Object.entries(CANONICAL_QUERIES).forEach(([slug, def]) => {
+        typedEntries(CANONICAL_QUERIES).forEach(([slug, def]) => {
             if (def.isIndexable && def.priority !== 'Low' && def.intentType !== 'Informational') {
-                const internalIntent = def.calcMode === 'add_subtract' ? 'addieren' : 'differenz';
+                const internalIntent = CALC_MODE_TO_INTENT[def.calcMode] || 'differenz';
                 const locIntent = INTENT_TRANSLATIONS[locale][internalIntent] || internalIntent;
                 const locSlug = translateSlug(slug, locale);
                 
@@ -79,9 +87,9 @@ export function getEventsSitemapUrls() {
     const urls: any[] = [];
     
     locales.forEach(locale => {
-        Object.entries(CANONICAL_QUERIES).forEach(([slug, def]) => {
+        typedEntries(CANONICAL_QUERIES).forEach(([slug, def]) => {
             if (def.isIndexable && (def.priority === 'High' || def.priority === 'Medium') && def.intentType === 'Informational') {
-                 const internalIntent = def.calcMode === 'add_subtract' ? 'addieren' : 'differenz';
+                 const internalIntent = CALC_MODE_TO_INTENT[def.calcMode] || 'differenz';
                  const locIntent = INTENT_TRANSLATIONS[locale][internalIntent] || internalIntent;
                  const locSlug = translateSlug(slug, locale);
                  
