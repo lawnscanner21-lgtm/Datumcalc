@@ -1,7 +1,8 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { Link, usePathname } from '@/i18n/routing';
+import { Link, usePathname, useRouter } from '@/i18n/routing';
+import { useParams } from 'next/navigation';
 import { ROUTES } from '@/lib/routes';
 import {
     CalendarDays,
@@ -16,7 +17,7 @@ import {
     ChevronDown,
 } from 'lucide-react';
 import { useTranslations, useLocale } from 'next-intl';
-import { locales, useRouter } from '@/i18n/routing';
+import { locales } from '@/i18n/routing';
 
 export function Header() {
     const t = useTranslations('Header');
@@ -24,6 +25,7 @@ export function Header() {
     const locale = useLocale();
     const router = useRouter();
     const pathname = usePathname();
+    const params = useParams();
     const [isScrolled, setIsScrolled] = useState(false);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [langOpen, setLangOpen] = useState(false);
@@ -60,7 +62,8 @@ export function Header() {
     ];
 
     const handleLocaleChange = (newLocale: string) => {
-        router.replace(pathname, { locale: newLocale as 'de' | 'en' | 'es' | 'fr' | 'it' | 'pt' });
+        // @ts-expect-error - next-intl's router.replace typing has issues with template pathnames in global components, but this is the recommended "safe" approach
+        router.replace({ pathname, params }, { locale: newLocale as 'de' | 'en' | 'es' | 'fr' | 'it' | 'pt' });
         setLangOpen(false);
         setMobileMenuOpen(false);
     };

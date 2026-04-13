@@ -2,15 +2,18 @@
 
 import { useLocale, useTranslations } from 'next-intl';
 import { locales, usePathname, useRouter } from '@/i18n/routing';
+import { useParams } from 'next/navigation';
 
 export function LanguageSwitcher() {
     const t = useTranslations('Common.languages');
     const locale = useLocale();
     const pathname = usePathname();
     const router = useRouter();
+    const params = useParams();
 
     const handleLocaleChange = (newLocale: string) => {
-        router.replace(pathname, { locale: newLocale as any });
+        // @ts-expect-error - next-intl's router.replace typing has issues with template pathnames in global components, but this is the recommended "safe" approach
+        router.replace({ pathname, params }, { locale: newLocale as 'de' | 'en' | 'es' | 'fr' | 'it' | 'pt' });
     };
 
     return (

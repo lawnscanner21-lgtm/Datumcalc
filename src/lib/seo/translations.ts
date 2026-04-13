@@ -73,7 +73,7 @@ export const SLUG_TOKEN_TRANSLATIONS: Record<string, Record<string, string>> = {
  * Translates a German slug into a localized one.
  */
 export function translateSlug(slug: string, locale: string): string {
-    const tokens = locale === 'de' ? [] : SLUG_TOKEN_TRANSLATIONS[locale];
+    const tokens = locale === 'de' ? {} : SLUG_TOKEN_TRANSLATIONS[locale];
     if (!tokens) return slug;
 
     let localized = slug;

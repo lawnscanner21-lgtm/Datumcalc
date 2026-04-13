@@ -42,7 +42,7 @@ const USE_CASES: Record<string, string[]> = {
     ]
 };
 ['es', 'fr', 'it', 'pt'].forEach(loc => {
-    (USE_CASES as any)[loc] = USE_CASES['en'];
+    USE_CASES[loc] = USE_CASES['en'];
 });
 
 function pickVariation<T>(arr: T[], seed: number): T {
@@ -101,7 +101,7 @@ export function generateSEOContent(intent: string, slug: string, locale: string,
         : `In addition to the pure calendar logic, our system offers an intuitive user interface that allows calculations to be carried out without any prior knowledge. The topic "time" is one of the most precious resources, and we want to help you manage this resource more efficiently. Whether it is about planning vacations, calculating interest or meeting legal deadlines – our tool is your reliable partner in all calendar matters.`;
 
     // 4. Use cases picking
-    const cases = (USE_CASES as any)[loc] || USE_CASES['en'];
+    const cases = USE_CASES[loc] || USE_CASES['en'];
     const pickedCases = [
         pickVariation(cases, seed),
         pickVariation(cases, seed + 1),
