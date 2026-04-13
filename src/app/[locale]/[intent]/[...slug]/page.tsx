@@ -122,26 +122,38 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     languages['x-default'] = `${siteUrl}/de/${INTENT_TRANSLATIONS['de'][internalIntent]}/${translateSlug(canonicalSlug, 'de')}`;
 
     // SERP Domination formatting
+    const isDe = locale === 'de';
+    const displaySlug = slugStr.replace(/-/g, ' ');
     const isAdd = internalIntent === 'addieren' || internalIntent === 'add';
     const isDiff = internalIntent === 'differenz' || internalIntent === 'difference';
     
-    let title = `${slugStr.replace(/-/g, ' ')} → Exakte Berechnung ✓`;
-    let description = `Nutzen Sie unseren kostenlosen Datumsrechner für blitzschnelle und exakte Ergebnisse für ${slugStr.replace(/-/g, ' ')}. ISO 8601 konform.`;
+    let title = isDe 
+        ? `${displaySlug} → Exakte Berechnung online ✓`
+        : `${displaySlug} → Exact calculation online ✓`;
+    
+    let description = isDe
+        ? `Nutzen Sie den kostenlosen Datumsrechner für exakte Ergebnisse zu ${displaySlug}. ISO 8601 konform, präzise und sekundenschnell.`
+        : `Use the free date calculator for exact results on ${displaySlug}. ISO 8601 compliant, precise and lightning fast.`;
 
     if (isAdd) {
         const match = canonicalSlug.match(/^(\d+)-(tage|monate|jahre)-ab-heute$/);
         if (match) {
-            title = locale === 'de' 
-                ? `${match[1]} ${match[2]} ab heute → Genaues Datum ✓`
-                : `${match[1]} ${match[2]} from today → Exact Date ✓`;
-            description = locale === 'de'
-                ? `Kostenloser Rechner: Erfahren Sie sofort das exakte Datum in ${match[1]} ${match[2]} inklusive Berücksichtigung von Schaltjahren.`
-                : `Free calculator: Find out the exact date in ${match[1]} ${match[2]} including leap year considerations.`;
+            const num = match[1];
+            const unit = match[2];
+            title = isDe 
+                ? `${num} ${unit} ab heute → Welches Datum ist das? ✓`
+                : `${num} ${unit} from today → What date is that? ✓`;
+            description = isDe
+                ? `Berechnen Sie sofort das exakte Datum in ${num} ${unit} ab heute. Unser Rechner berücksichtigt Schaltjahre und unregelmäßige Monatslängen für 100% Genauigkeit.`
+                : `Instantly calculate the exact date in ${num} ${unit} from today. Our calculator accounts for leap years and irregular month lengths for 100% accuracy.`;
         }
     } else if (isDiff) {
-        title = locale === 'de'
-            ? `Tage bis ${slugStr.replace(/-/g, ' ')} → Jetzt berechnen`
-            : `Days until ${slugStr.replace(/-/g, ' ')} → Calculate now`;
+        title = isDe
+            ? `Tage bis ${displaySlug} → Jetzt exakt berechnen ✓`
+            : `Days until ${displaySlug} → Calculate exactly now ✓`;
+        description = isDe
+            ? `Wie viele Tage sind es noch bis ${displaySlug}? Erhalten Sie ein präzises Ergebnis inklusive Berücksichtigung von Schaltjahren und Zeitspannen.`
+            : `How many days until ${displaySlug}? Get a precise result including leap year considerations and time spans.`;
     }
 
     return {
@@ -155,8 +167,23 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
             title,
             description,
             url: fullUrl,
+            siteName: 'Datumsrechner',
             type: 'article',
             locale: locale,
+            images: [
+                {
+                    url: '/og-image.png',
+                    width: 1200,
+                    height: 630,
+                    alt: isDe ? `Datumsrechner: ${displaySlug}` : `Date Calculator: ${displaySlug}`,
+                }
+            ]
+        },
+        twitter: {
+            card: 'summary_large_image',
+            title,
+            description,
+            images: ['/og-image.png'],
         }
     };
 }

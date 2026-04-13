@@ -17,14 +17,17 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     languages['x-default'] = `${siteUrl}/de/impressum`;
 
     return {
-        title: `${t('imprint')} - Datumsrechner`,
-        description: `Impressum und rechtliche Anbieterkennzeichnung für datums-rechner.com.`,
+        title: locale === 'de' ? `Impressum & Rechtliche Hinweise | Datumsrechner ✓` : `Imprint & Legal Notice | Date Calculator ✓`,
+        description: locale === 'de' 
+            ? `Impressum und Anbieterkennzeichnung für datums-rechner.com. Erfahren Sie mehr über unsere Transparenz und rechtliche Sicherheit.`
+            : `Imprint and provider identification for datums-rechner.com. Learn more about our transparency and legal security.`,
         alternates: {
             canonical: fullUrl,
             languages
         },
         openGraph: {
-            title: `${t('imprint')} - Datumsrechner`,
+            title: locale === 'de' ? `Impressum | Datumsrechner` : `Imprint | Date Calculator`,
+            description: `Rechtliche Informationen von datums-rechner.com.`,
             url: fullUrl,
             type: 'website',
             locale: locale,
@@ -56,7 +59,30 @@ export default async function ImprintPage({ params }: { params: Promise<{ locale
                 <section>
                     <h2 className="text-2xl font-bold text-white mb-4">Kontakt</h2>
                     <p className="text-white/70 leading-relaxed">
+                        Wir legen großen Wert auf Transparenz und Erreichbarkeit. Sollten Sie Fragen zu unseren Berechnungen oder technische Anregungen haben, können Sie uns jederzeit kontaktieren.<br /><br />
                         E-Mail: info@datums-rechner.com <br />
+                    </p>
+                </section>
+
+                <section>
+                    <h2 className="text-2xl font-bold text-white mb-4">
+                        {locale === 'de' ? 'Unsere Mission: Kalendarische Präzision' : 'Our Mission: Calendar Precision'}
+                    </h2>
+                    <p className="text-white/70 leading-relaxed">
+                        {locale === 'de'
+                            ? 'Die Website datums-rechner.com wurde mit dem Ziel entwickelt, komplexe Zeitberechnungen für jedermann zugänglich zu machen. Zeit ist unsere kostbarste Ressource, und wir glauben, dass Werkzeuge zur Verwaltung dieser Ressource präzise, schnell und kostenlos sein sollten. \n\nUnsere Algorithmen werden regelmäßig nach ISO-8601 Standards geprüft. Dabei berücksichtigen wir nicht nur einfache Tagesadditionen, sondern auch tiefgehende kalendarische Verschiebungen, Schaltjahr-Logiken und unregelmäßige Monatszyklen. Jedes Ergebnis, das Sie auf dieser Seite sehen, ist das Resultat einer mathematisch verifizierten Kette von Berechnungen.'
+                            : 'The datums-rechner.com website was developed with the goal of making complex time calculations accessible to everyone. Time is our most precious resource, and we believe that tools for managing this resource should be precise, fast, and free. \n\nOur algorithms are regularly checked according to ISO-8601 standards. We take into account not only simple day additions, but also deep calendar shifts, leap year logic, and irregular month cycles. Every result you see on this page is the result of a mathematically verified chain of calculations.'}
+                    </p>
+                </section>
+
+                <section>
+                    <h2 className="text-2xl font-bold text-white mb-4">
+                        {locale === 'de' ? 'Transparenz & Vertrauen' : 'Transparency & Trust'}
+                    </h2>
+                    <p className="text-white/70 leading-relaxed italic">
+                        {locale === 'de'
+                            ? 'In einer digitalen Welt, die oft von ungenauen Informationen geprägt ist, setzen wir auf Fakten. Unser Team arbeitet kontinuierlich an der Erweiterung der Funktionalitäten, etwa der Integration länderspezifischer Feiertage für die Arbeitstage-Berechnung. Wir verstehen uns als Partner für Projektmanager, Juristen und Privatpersonen, die auf exakte Daten angewiesen sind.'
+                            : 'In a digital world often characterized by inaccurate information, we focus on facts. Our team is continuously working on expanding the functionalities, such as integrating country-specific holidays for business day calculations. We see ourselves as partners for project managers, lawyers, and private individuals who rely on exact data.'}
                     </p>
                 </section>
 
@@ -70,8 +96,8 @@ export default async function ImprintPage({ params }: { params: Promise<{ locale
 
                 <section>
                     <h2 className="text-2xl font-bold text-white mb-4">Haftung für Inhalte</h2>
-                    <p className="text-white/70 leading-relaxed italic">
-                        Als Diensteanbieter sind wir gemäß § 7 Abs. 1 TMG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich. Wir sind jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu überwachen.
+                    <p className="text-white/70 leading-relaxed">
+                        Als Diensteanbieter sind wir gemäß § 7 Abs. 1 TMG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich. Wir sind jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu überwachen. Dennoch prüfen wir unsere Rechenlogik regelmäßig auf Anomalien, um Ihnen die bestmögliche Erfahrung zu bieten. Haftungsansprüche, die sich auf Schäden materieller oder ideeller Art beziehen, welche durch die Nutzung der dargebotenen Informationen verursacht wurden, sind grundsätzlich ausgeschlossen, sofern kein nachweislich vorsätzliches oder grob fahrlässiges Verschulden vorliegt.
                     </p>
                 </section>
             </div>

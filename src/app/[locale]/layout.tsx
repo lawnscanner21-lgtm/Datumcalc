@@ -36,13 +36,15 @@ export async function generateMetadata(
     languages['x-default'] = `${siteUrl}/de`;
 
     return {
-        title: locale === 'de' ? "Datumsrechner | Exakte Zeitberechnung online" : "Date Calculator | Exact time calculation online",
+        title: {
+            default: locale === 'de' ? "Datumsrechner | Exakte Zeitberechnung online" : "Date Calculator | Exact time calculation online",
+            template: `%s | Datumsrechner`
+        },
         description: locale === 'de' 
             ? "Berechnen Sie exakte Datumsdifferenzen, addieren Sie Tage oder ermitteln Sie Arbeitstage. Kostenlos, präzise und ISO 8601 konform."
             : "Calculate exact date differences, add days or determine business days. Free, precise and ISO 8601 compliant.",
         metadataBase: new URL(siteUrl),
         alternates: {
-            canonical: `${siteUrl}/${locale}`,
             languages: languages,
         },
         icons: {
@@ -55,20 +57,25 @@ export async function generateMetadata(
             locale: locale,
             url: `${siteUrl}/${locale}`,
             siteName: 'Datumsrechner',
+            title: locale === 'de' ? "Datumsrechner | Exakte Zeitberechnung" : "Date Calculator | Exact time calculation",
+            description: locale === 'de' 
+                ? "Der fortschrittliche Rechner für Zeitpannen, Fristen und Arbeitstage."
+                : "The advanced calculator for time spans, deadlines and business days.",
             images: [
                 {
                     url: '/og-image.png',
                     width: 1200,
                     height: 630,
-                    alt: 'Datumsrechner Preview',
+                    alt: locale === 'de' ? 'Datumsrechner Vorschau' : 'Date Calculator Preview',
                 },
             ],
         },
         twitter: {
             card: 'summary_large_image',
             title: 'Datumsrechner',
-            description: 'Advanced Date and Time Calculator',
+            description: 'Advanced Date and Time Calculator (ISO-8601)',
             images: ['/og-image.png'],
+            creator: '@datumsrechner',
         },
         verification: {
             google: '7KUnH1MRuX53v_0Kzyg8GT_rlLgg-VJLs6w-5n6Byy8',
