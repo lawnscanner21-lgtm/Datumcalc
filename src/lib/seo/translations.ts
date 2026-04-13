@@ -51,7 +51,7 @@ export const SLUG_TOKEN_TRANSLATIONS: Record<string, Record<string, string>> = {
     },
     fr: { 
         'tage': 'jours', 'monate': 'mois', 'jahre': 'annees', 
-        'ab-heute': 'a-partir-de-demain', 'tage-bis': 'jours-jusqu-a',
+        'ab-heute': 'a-partir-d-aujourd-hui', 'tage-bis': 'jours-jusqu-a',
         'weihnachten': 'noel', 'silvester': 'nouvel-an', 
         'ostern': 'paques', 'sommeranfang': 'solstice-d-ete'
     },
@@ -63,7 +63,7 @@ export const SLUG_TOKEN_TRANSLATIONS: Record<string, Record<string, string>> = {
     },
     pt: { 
         'tage': 'dias', 'monate': 'meses', 'jahre': 'anos', 
-        'ab-heute': 'visto-hoje', 'tage-bis': 'dias-ate',
+        'ab-heute': 'a-partir-de-hoje', 'tage-bis': 'dias-ate',
         'weihnachten': 'natal', 'silvester': 'ano-novo', 
         'ostern': 'pascoa', 'sommeranfang': 'solsticio-de-verao'
     }

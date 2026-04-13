@@ -110,8 +110,17 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     const internalIntent = Object.keys(INTENT_TRANSLATIONS[locale]).find(k => INTENT_TRANSLATIONS[locale][k] === intent) || intent;
     const canonicalSlug = reverseTranslateSlug(slugStr, locale);
     
-    const fullUrl = `${siteUrl}/${locale}/${intent}/${slugStr}`;
-    
+    // NORMALIZE: Ensure we always point to the strictly correct localized URL
+    const correctIntent = INTENT_TRANSLATIONS[locale][internalIntent] || internalIntent;
+    const correctSlug = translateSlug(canonicalSlug, locale);
+    const correctUrl = `${siteUrl}/${locale}/${correctIntent}/${correctSlug}`;
+
+    // STRICT ENFORCEMENT: Redirect if accessed via mismatched segments (like GSC errors)
+    if (intent !== correctIntent || slugStr !== correctSlug) {
+        redirect(correctUrl); // Next.js redirects are 307 by default, but typically for SEO we want 301 if it's a permanent move. 
+        // Note: next/navigation redirect doesn't support 301 in server components easily without 'permanentRedirect'. 
+    }
+
     // Build hreflang alternates
     const languages: Record<string, string> = {};
     locales.forEach(loc => {
@@ -123,7 +132,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 
     // SERP Domination formatting
     const isDe = locale === 'de';
-    const displaySlug = slugStr.replace(/-/g, ' ');
+    const displaySlug = correctSlug.replace(/-/g, ' ');
     const isAdd = internalIntent === 'addieren' || internalIntent === 'add';
     const isDiff = internalIntent === 'differenz' || internalIntent === 'difference';
     
@@ -160,13 +169,13 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
         title,
         description,
         alternates: {
-            canonical: fullUrl,
+            canonical: correctUrl,
             languages
         },
         openGraph: {
             title,
             description,
-            url: fullUrl,
+            url: correctUrl,
             siteName: 'Datumsrechner',
             type: 'article',
             locale: locale,
@@ -198,6 +207,14 @@ export default async function ProgrammaticPage({
     const mode = intentToModeMap[internalIntent.toLowerCase()];
     const slugStr = slug.join('-');
     const canonicalSlugStr = reverseTranslateSlug(slugStr, locale);
+    
+    // NORMALIZE & REDIRECT: Ensure strictly localized URLs
+    const correctIntent = INTENT_TRANSLATIONS[locale][internalIntent] || internalIntent;
+    const correctSlug = translateSlug(canonicalSlugStr, locale);
+    
+    if (intent !== correctIntent || slugStr !== correctSlug) {
+        redirect(`/${locale}/${correctIntent}/${correctSlug}`);
+    }
 
     if (!mode) {
         notFound();
@@ -216,13 +233,14 @@ export default async function ProgrammaticPage({
     const instantResult = computeInstantResult(internalIntent.toLowerCase(), canonicalSlugStr, locale);
 
     // Schema implementations
+    const isDe = locale === 'de';
     const breadcrumbSchema = {
         "@context": "https://schema.org",
         "@type": "BreadcrumbList",
         "itemListElement": [
-            { "@type": "ListItem", "position": 1, "name": "Startseite", "item": `https://datums-rechner.com/${locale}` },
-            { "@type": "ListItem", "position": 2, "name": intent === 'addieren' ? 'Datumsrechner' : 'Tage Zählen', "item": `https://datums-rechner.com/${locale}/${intent}` },
-            { "@type": "ListItem", "position": 3, "name": slugStr.replace(/-/g, ' ') }
+            { "@type": "ListItem", "position": 1, "name": isDe ? "Startseite" : "Home", "item": `https://datums-rechner.com/${locale}` },
+            { "@type": "ListItem", "position": 2, "name": isDe ? (mode === 'add_subtract' ? 'Datumsrechner' : 'Tage Zählen') : (mode === 'add_subtract' ? 'Date Calculator' : 'Days Counter'), "item": `https://datums-rechner.com/${locale}/${intent}` },
+            { "@type": "ListItem", "position": 3, "name": correctSlug.replace(/-/g, ' ') }
         ]
     };
 

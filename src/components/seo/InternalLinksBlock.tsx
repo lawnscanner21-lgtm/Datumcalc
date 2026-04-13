@@ -1,5 +1,6 @@
 import { Link } from '@/i18n/routing';
 import { ROUTES } from '@/lib/routes';
+import { translateSlug } from '@/lib/seo/translations';
 
 export function InternalLinksBlock({ locale, intent, slug }: { locale: string; intent: string; slug: string }) {
     // Dynamically build related links (±10% numeric variations, 1 event, 1 use case)
@@ -8,28 +9,61 @@ export function InternalLinksBlock({ locale, intent, slug }: { locale: string; i
     const match = slug.match(/^(\d+)-/);
     const numValue = match ? parseInt(match[1]) : 0;
 
+    const isDe = locale === 'de';
+    
     if (numValue > 0) {
         // +-10%, +-20% logic approx
-        const v1 = Math.round(numValue * 0.8);
-        const v2 = Math.round(numValue * 0.9);
-        const v3 = Math.round(numValue * 1.1);
-        const v4 = Math.round(numValue * 1.2);
-        links.push({ label: `${v1} Tage ab heute`, href: ROUTES.getAddieren(`${v1}-tage-ab-heute`), type: 'Variation' });
-        links.push({ label: `${v2} Tage ab heute`, href: ROUTES.getAddieren(`${v2}-tage-ab-heute`), type: 'Variation' });
-        links.push({ label: `${v3} Tage ab heute`, href: ROUTES.getAddieren(`${v3}-tage-ab-heute`), type: 'Variation' });
-        links.push({ label: `${v4} Tage ab heute`, href: ROUTES.getAddieren(`${v4}-tage-ab-heute`), type: 'Variation' });
+        const values = [
+            Math.round(numValue * 0.8),
+            Math.round(numValue * 0.9),
+            Math.round(numValue * 1.1),
+            Math.round(numValue * 1.2)
+        ];
+        
+        values.forEach(v => {
+            const label = isDe ? `${v} Tage ab heute` : `${v} ${translateSlug('tage ab-heute', locale)}`;
+            links.push({ 
+                label, 
+                href: ROUTES.getAddieren(translateSlug(`${v}-tage-ab-heute`, locale)), 
+                type: isDe ? 'Variation' : 'Variation' 
+            });
+        });
     } else {
-        links.push({ label: '30 Tage ab heute', href: ROUTES.getAddieren('30-tage-ab-heute'), type: 'Beliebt' });
-        links.push({ label: '90 Tage ab heute', href: ROUTES.getAddieren('90-tage-ab-heute'), type: 'Beliebt' });
-        links.push({ label: '100 Tage ab heute', href: ROUTES.getAddieren('100-tage-ab-heute'), type: 'Beliebt' });
-        links.push({ label: '365 Tage ab heute', href: ROUTES.getAddieren('365-tage-ab-heute'), type: 'Beliebt' });
+        const standard = [30, 90, 100, 365];
+        standard.forEach(v => {
+            const label = isDe ? `${v} Tage ab heute` : `${v} ${translateSlug('tage ab-heute', locale)}`;
+            links.push({ 
+                label, 
+                href: ROUTES.getAddieren(translateSlug(`${v}-tage-ab-heute`, locale)), 
+                type: isDe ? 'Beliebt' : 'Popular' 
+            });
+        });
     }
 
     // Add more event & guide links
-    links.push({ label: 'Tage bis Weihnachten', href: ROUTES.getDifferenz('tage-bis-weihnachten'), type: 'Event' });
-    links.push({ label: 'Tage bis Silvester', href: ROUTES.getDifferenz('tage-bis-silvester'), type: 'Event' });
-    links.push({ label: 'Was ist ein Arbeitstag?', href: ROUTES.getRatgeber('was-ist-ein-arbeitstag'), type: 'Ratgeber' });
-    links.push({ label: 'Schaltjahre erklärt', href: ROUTES.getRatgeber('schaltjahre-erklaert'), type: 'Ratgeber' });
+    const events = [
+        { de: 'Tage bis Weihnachten', slug: 'tage-bis-weihnachten' },
+        { de: 'Tage bis Silvester', slug: 'tage-bis-silvester' }
+    ];
+
+    events.forEach(e => {
+        links.push({ 
+            label: isDe ? e.de : translateSlug(e.slug, locale).replace(/-/g, ' '), 
+            href: ROUTES.getDifferenz(translateSlug(e.slug, locale)), 
+            type: isDe ? 'Event' : 'Event' 
+        });
+    });
+
+    links.push({ 
+        label: isDe ? 'Was ist ein Arbeitstag?' : 'What is a business day?', 
+        href: ROUTES.getRatgeber(isDe ? 'was-ist-ein-arbeitstag' : 'what-is-a-business-day'), 
+        type: isDe ? 'Ratgeber' : 'Guide' 
+    });
+    links.push({ 
+        label: isDe ? 'Schaltjahre erklärt' : 'Leap years explained', 
+        href: ROUTES.getRatgeber(isDe ? 'schaltjahre-erklaert' : 'leap-years-explained'), 
+        type: isDe ? 'Ratgeber' : 'Guide' 
+    });
 
     return (
         <section className="bg-white/5 border border-white/10 rounded-2xl p-6 md:p-8 mb-12">
