@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { Link } from '@/i18n/routing';
+import { Link } from '@/i18n/navigation';
+
 
 export function TrustSignals() {
     const [dateString, setDateString] = useState('');

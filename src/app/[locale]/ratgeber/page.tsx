@@ -1,7 +1,8 @@
-import { Link } from '@/i18n/routing';
+import { locales } from '@/i18n/routing';
+import { Link } from '@/i18n/navigation';
 import { getArticles } from '@/lib/articles';
 import { getTranslations } from 'next-intl/server';
-import { Link, locales } from '@/i18n/routing';
+
 import { SITE_URL } from '@/lib/constants';
 
 export const dynamic = 'force-static';

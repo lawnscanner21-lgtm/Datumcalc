@@ -1,4 +1,5 @@
-import { Link } from '@/i18n/routing';
+import { Link } from '@/i18n/navigation';
+
 import { ROUTES } from '@/lib/routes';
 import { LanguageSwitcher } from './LanguageSwitcher';
 import { ShieldCheck, Calculator, CalendarClock } from 'lucide-react';

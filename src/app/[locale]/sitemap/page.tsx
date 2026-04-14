@@ -4,7 +4,8 @@ import { SITE_URL, DOMAIN } from '@/lib/constants';
 import { INTENT_TRANSLATIONS, translateSlug } from '@/lib/seo/translations';
 import { CANONICAL_QUERIES } from '@/lib/seo/queryModel';
 import { getArticles } from '@/lib/articles';
-import { Link } from '@/i18n/routing';
+import { Link } from '@/i18n/navigation';
+
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
     const { locale } = await params;

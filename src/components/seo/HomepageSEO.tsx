@@ -1,4 +1,5 @@
-import { Link } from '@/i18n/routing';
+import { Link } from '@/i18n/navigation';
+
 import { ROUTES } from '@/lib/routes';
 import { CheckCircle2, CalendarCheck2, Clock4, Users, ShieldCheck } from 'lucide-react';
 import { SITE_URL } from '@/lib/constants';
