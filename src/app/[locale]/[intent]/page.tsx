@@ -5,10 +5,11 @@ import { locales } from '@/i18n/routing';
 
 export const dynamic = 'force-static';
 import { INTENT_TRANSLATIONS, translateSlug } from '@/lib/seo/translations';
+import { SITE_URL } from '@/lib/constants';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string; intent: string }> }) {
     const { locale, intent } = await params;
-    const siteUrl = "https://datums-rechner.com";
+    const siteUrl = SITE_URL;
     
     // Resolve internal intent
     const internalIntent = Object.keys(INTENT_TRANSLATIONS[locale]).find(k => INTENT_TRANSLATIONS[locale][k] === intent) || intent;

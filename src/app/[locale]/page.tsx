@@ -3,13 +3,14 @@ import { getTranslations } from 'next-intl/server';
 import { SmartInputBar } from '@/components/SmartInputBar';
 import { HomepageSEO } from '@/components/seo/HomepageSEO';
 import { locales } from '@/i18n/routing';
+import { SITE_URL } from "@/lib/constants";
 
 export const dynamic = 'force-static';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
     const { locale } = await params;
     const t = await getTranslations({ locale, namespace: 'Header' });
-    const siteUrl = "https://datums-rechner.com";
+    const siteUrl = SITE_URL;
     
     // Build hreflang alternates
     const languages: Record<string, string> = {};

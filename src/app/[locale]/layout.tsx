@@ -5,6 +5,7 @@ import { Footer } from "@/components/layout/Footer";
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 import { locales } from '@/i18n/routing';
+import { SITE_URL } from "@/lib/constants";
 import "../globals.css";
 
 const inter = Inter({
@@ -13,7 +14,7 @@ const inter = Inter({
     display: "swap",
 });
 
-const siteUrl = "https://datums-rechner.com";
+const siteUrl = SITE_URL;
 
 type Props = {
     params: Promise<{ locale: string }>;

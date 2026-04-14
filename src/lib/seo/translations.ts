@@ -101,11 +101,13 @@ export function reverseTranslateSlug(slug: string, locale: string): string {
     return canonical;
 }
 
+import { SITE_URL } from '@/lib/constants';
+
 /**
  * Gets a fully localized URL for a calculator page.
  */
 export function getLocalizedCalculatorUrl(locale: string, intent: string, slug: string): string {
-    const siteUrl = "https://datums-rechner.com";
+    const siteUrl = SITE_URL;
     const locIntent = INTENT_TRANSLATIONS[locale][intent] || intent;
     const locSlug = translateSlug(slug, locale);
     return `${siteUrl}/${locale}/${locIntent}/${locSlug}`;

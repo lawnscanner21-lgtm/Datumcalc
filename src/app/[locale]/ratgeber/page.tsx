@@ -1,7 +1,8 @@
 import { Link } from '@/i18n/routing';
 import { getArticles } from '@/lib/articles';
 import { getTranslations } from 'next-intl/server';
-import { locales } from '@/i18n/routing';
+import { Link, locales } from '@/i18n/routing';
+import { SITE_URL } from '@/lib/constants';
 
 export const dynamic = 'force-static';
 import { INTENT_TRANSLATIONS } from '@/lib/seo/translations';
@@ -9,7 +10,7 @@ import { INTENT_TRANSLATIONS } from '@/lib/seo/translations';
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
     const { locale } = await params;
     const isDe = locale === 'de';
-    const siteUrl = "https://datums-rechner.com";
+    const siteUrl = SITE_URL;
     const locSlug = INTENT_TRANSLATIONS[locale]['ratgeber'];
     
     // SEO Optimized Titles (55-60 chars)

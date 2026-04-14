@@ -1,5 +1,6 @@
 import { getTranslations } from 'next-intl/server';
 import { locales } from '@/i18n/routing';
+import { SITE_URL, DOMAIN } from '@/lib/constants';
 
 export const dynamic = 'force-static';
 import { INTENT_TRANSLATIONS } from '@/lib/seo/translations';
@@ -7,7 +8,7 @@ import { INTENT_TRANSLATIONS } from '@/lib/seo/translations';
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
     const { locale } = await params;
     const t = await getTranslations({ locale, namespace: 'Common.titles' });
-    const siteUrl = "https://datums-rechner.com";
+    const siteUrl = SITE_URL;
     const locSlug = INTENT_TRANSLATIONS[locale]['datenschutz'];
     const fullUrl = `${siteUrl}/${locale}/${locSlug}`;
 
@@ -21,15 +22,15 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     return {
         title: locale === 'de' ? `Datenschutzerklärung | Sicherheit & Transparenz ✓` : `Privacy Policy | Security & Transparency ✓`,
         description: locale === 'de' 
-            ? `Informationen zum Datenschutz bei datums-rechner.com. Wie wir Ihre Daten gemäß DSGVO schützen und warum wir auf Tracking verzichten.`
-            : `Information on data protection at datums-rechner.com. How we protect your data according to GDPR and why we refrain from tracking.`,
+            ? `Informationen zum Datenschutz bei ${DOMAIN}. Wie wir Ihre Daten gemäß DSGVO schützen und warum wir auf Tracking verzichten.`
+            : `Information on data protection at ${DOMAIN}. How we protect your data according to GDPR and why we refrain from tracking.`,
         alternates: {
             canonical: fullUrl,
             languages
         },
         openGraph: {
             title: locale === 'de' ? `Datenschutz | Datumsrechner` : `Privacy | Date Calculator`,
-            description: `Datenschutz-Informationen von datums-rechner.com.`,
+            description: `Datenschutz-Informationen von ${DOMAIN}.`,
             url: fullUrl,
             type: 'website',
             locale: locale,

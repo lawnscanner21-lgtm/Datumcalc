@@ -1,5 +1,6 @@
 import { getTranslations } from 'next-intl/server';
 import { locales } from '@/i18n/routing';
+import { SITE_URL, DOMAIN } from '@/lib/constants';
 
 export const dynamic = 'force-static';
 import { INTENT_TRANSLATIONS } from '@/lib/seo/translations';
@@ -7,7 +8,7 @@ import { INTENT_TRANSLATIONS } from '@/lib/seo/translations';
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
     const { locale } = await params;
     const t = await getTranslations({ locale, namespace: 'Common.titles' });
-    const siteUrl = "https://datums-rechner.com";
+    const siteUrl = SITE_URL;
     const locSlug = INTENT_TRANSLATIONS[locale]['impressum'];
     const fullUrl = `${siteUrl}/${locale}/${locSlug}`;
 
@@ -21,15 +22,15 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     return {
         title: locale === 'de' ? `Impressum & Rechtliche Hinweise | Datumsrechner ✓` : `Imprint & Legal Notice | Date Calculator ✓`,
         description: locale === 'de' 
-            ? `Impressum und Anbieterkennzeichnung für datums-rechner.com. Erfahren Sie mehr über unsere Transparenz und rechtliche Sicherheit.`
-            : `Imprint and provider identification for datums-rechner.com. Learn more about our transparency and legal security.`,
+            ? `Impressum und Anbieterkennzeichnung für ${DOMAIN}. Erfahren Sie mehr über unsere Transparenz und rechtliche Sicherheit.`
+            : `Imprint and provider identification for ${DOMAIN}. Learn more about our transparency and legal security.`,
         alternates: {
             canonical: fullUrl,
             languages
         },
         openGraph: {
             title: locale === 'de' ? `Impressum | Datumsrechner` : `Imprint | Date Calculator`,
-            description: `Rechtliche Informationen von datums-rechner.com.`,
+            description: `Rechtliche Informationen von ${DOMAIN}.`,
             url: fullUrl,
             type: 'website',
             locale: locale,
@@ -62,7 +63,7 @@ export default async function ImprintPage({ params }: { params: Promise<{ locale
                     <h2 className="text-2xl font-bold text-white mb-4">Kontakt</h2>
                     <p className="text-white/70 leading-relaxed">
                         Wir legen großen Wert auf Transparenz und Erreichbarkeit. Sollten Sie Fragen zu unseren Berechnungen oder technische Anregungen haben, können Sie uns jederzeit kontaktieren.<br /><br />
-                        E-Mail: info@datums-rechner.com <br />
+                        E-Mail: info@{DOMAIN} <br />
                     </p>
                 </section>
 
@@ -72,8 +73,8 @@ export default async function ImprintPage({ params }: { params: Promise<{ locale
                     </h2>
                     <p className="text-white/70 leading-relaxed">
                         {locale === 'de'
-                            ? 'Die Website datums-rechner.com wurde mit dem Ziel entwickelt, komplexe Zeitberechnungen für jedermann zugänglich zu machen. Zeit ist unsere kostbarste Ressource, und wir glauben, dass Werkzeuge zur Verwaltung dieser Ressource präzise, schnell und kostenlos sein sollten. \n\nUnsere Algorithmen werden regelmäßig nach ISO-8601 Standards geprüft. Dabei berücksichtigen wir nicht nur einfache Tagesadditionen, sondern auch tiefgehende kalendarische Verschiebungen, Schaltjahr-Logiken und unregelmäßige Monatszyklen. Jedes Ergebnis, das Sie auf dieser Seite sehen, ist das Resultat einer mathematisch verifizierten Kette von Berechnungen.'
-                            : 'The datums-rechner.com website was developed with the goal of making complex time calculations accessible to everyone. Time is our most precious resource, and we believe that tools for managing this resource should be precise, fast, and free. \n\nOur algorithms are regularly checked according to ISO-8601 standards. We take into account not only simple day additions, but also deep calendar shifts, leap year logic, and irregular month cycles. Every result you see on this page is the result of a mathematically verified chain of calculations.'}
+                            ? `Die Website ${DOMAIN} wurde mit dem Ziel entwickelt, komplexe Zeitberechnungen für jedermann zugänglich zu machen. Zeit ist unsere kostbarste Ressource, und wir glauben, dass Werkzeuge zur Verwaltung dieser Ressource präzise, schnell und kostenlos sein sollten. \n\nUnsere Algorithmen werden regelmäßig nach ISO-8601 Standards geprüft. Dabei berücksichtigen wir nicht nur einfache Tagesadditionen, sondern auch tiefgehende kalendarische Verschiebungen, Schaltjahr-Logiken und unregelmäßige Monatszyklen. Jedes Ergebnis, das Sie auf dieser Seite sehen, ist das Resultat einer mathematisch verifizierten Kette von Berechnungen.`
+                            : `The ${DOMAIN} website was developed with the goal of making complex time calculations accessible to everyone. Time is our most precious resource, and we believe that tools for managing this resource should be precise, fast, and free. \n\nOur algorithms are regularly checked according to ISO-8601 standards. We take into account not only simple day additions, but also deep calendar shifts, leap year logic, and irregular month cycles. Every result you see on this page is the result of a mathematically verified chain of calculations.`}
                     </p>
                 </section>
 

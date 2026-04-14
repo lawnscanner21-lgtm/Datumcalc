@@ -1,6 +1,7 @@
 import { CANONICAL_QUERIES } from './queryModel';
 import { locales } from '@/i18n/routing';
 import { INTENT_TRANSLATIONS, translateSlug } from './translations';
+import { SITE_URL } from '@/lib/constants';
 
 const CALC_MODE_TO_INTENT: Record<string, string> = {
     add_subtract: 'addieren',
@@ -15,7 +16,7 @@ const CALC_MODE_TO_INTENT: Record<string, string> = {
  */
 
 // Define standard buckets to generate dynamic sitemaps
-export const BASE_URL = 'https://datums-rechner.com'; 
+export const BASE_URL = SITE_URL; 
 const STATIC_LASTMOD = new Date('2024-01-01T00:00:00Z');
 
 function getLocalizedUrl(path: string, locale: string) {

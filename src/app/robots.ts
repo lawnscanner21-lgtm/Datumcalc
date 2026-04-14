@@ -1,4 +1,5 @@
 import { MetadataRoute } from 'next';
+import { SITE_URL } from '@/lib/constants';
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -8,7 +9,7 @@ export default function robots(): MetadataRoute.Robots {
       disallow: ['/api/', '/admin/'],
     },
     sitemap: [
-      'https://datums-rechner.com/sitemap.xml',
+      `${SITE_URL}/sitemap.xml`,
     ],
   };
 }

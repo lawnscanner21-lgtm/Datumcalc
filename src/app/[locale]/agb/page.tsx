@@ -1,5 +1,6 @@
 import { getTranslations } from 'next-intl/server';
 import { locales } from '@/i18n/routing';
+import { SITE_URL, DOMAIN } from '@/lib/constants';
 
 export const dynamic = 'force-static';
 import { INTENT_TRANSLATIONS } from '@/lib/seo/translations';
@@ -7,7 +8,7 @@ import { INTENT_TRANSLATIONS } from '@/lib/seo/translations';
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
     const { locale } = await params;
     const t = await getTranslations({ locale, namespace: 'Common.titles' });
-    const siteUrl = "https://datums-rechner.com";
+    const siteUrl = SITE_URL;
     const locSlug = INTENT_TRANSLATIONS[locale]['agb'];
     const fullUrl = `${siteUrl}/${locale}/${locSlug}`;
 
@@ -21,15 +22,15 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     return {
         title: locale === 'de' ? `AGB & Nutzungsbedingungen | Datumsrechner ✓` : `Terms of Service & Usage | Date Calculator ✓`,
         description: locale === 'de' 
-            ? `Allgemeine Geschäftsbedingungen für datums-rechner.com. Informationen zur Nutzung unserer Tools, Haftung und mathematischen Genauigkeit.`
-            : `General terms and conditions for datums-rechner.com. Information on using our tools, liability and mathematical accuracy.`,
+            ? `Allgemeine Geschäftsbedingungen für ${DOMAIN}. Informationen zur Nutzung unserer Tools, Haftung und mathematischen Genauigkeit.`
+            : `General terms and conditions for ${DOMAIN}. Information on using our tools, liability and mathematical accuracy.`,
         alternates: {
             canonical: fullUrl,
             languages
         },
         openGraph: {
             title: locale === 'de' ? `AGB | Datumsrechner` : `Terms | Date Calculator`,
-            description: `Nutzungsbestimmungen von datums-rechner.com.`,
+            description: `Nutzungsbestimmungen von ${DOMAIN}.`,
             url: fullUrl,
             type: 'website',
             locale: locale,
@@ -54,8 +55,8 @@ export default async function TermsPage({ params }: { params: Promise<{ locale: 
                     </h2>
                     <p className="text-white/70 leading-relaxed">
                         {locale === 'de'
-                            ? 'Die folgenden Geschäftsbedingungen regeln die Nutzung der Online-Tools auf datums-rechner.com. Mit dem Zugriff auf unsere Website sowie der Nutzung unserer Rechenmechanismen erklären Sie sich mit diesen Bedingungen vollumfänglich einverstanden. Sollten Sie mit einzelnen Bestimmungen nicht einverstanden sein, ist die Nutzung des Dienstes zu unterlassen. \n\nDiese AGB gelten für alle Besucher, Nutzer und andere Personen, die auf den Dienst zugreifen oder diesen nutzen.'
-                            : 'The following terms and conditions govern the use of the online tools on datums-rechner.com. By accessing our website and using our calculation mechanisms, you agree to these terms in full. If you do not agree with individual provisions, you must refrain from using the service. \n\nThese terms apply to all visitors, users, and other persons who access or use the service.'}
+                            ? `Die folgenden Geschäftsbedingungen regeln die Nutzung der Online-Tools auf ${DOMAIN}. Mit dem Zugriff auf unsere Website sowie der Nutzung unserer Rechenmechanismen erklären Sie sich mit diesen Bedingungen vollumfänglich einverstanden. Sollten Sie mit einzelnen Bestimmungen nicht einverstanden sein, ist die Nutzung des Dienstes zu unterlassen. \n\nDiese AGB gelten für alle Besucher, Nutzer und andere Personen, die auf den Dienst zugreifen oder diesen nutzen.`
+                            : `The following terms and conditions govern the use of the online tools on ${DOMAIN}. By accessing our website and using our calculation mechanisms, you agree to these terms in full. If you do not agree with individual provisions, you must refrain from using the service. \n\nThese terms apply to all visitors, users, and other persons who access or use the service.`}
                     </p>
                 </section>
 
@@ -65,8 +66,8 @@ export default async function TermsPage({ params }: { params: Promise<{ locale: 
                     </h2>
                     <p className="text-white/70 leading-relaxed">
                         {locale === 'de'
-                            ? 'datums-rechner.com stellt kostenlose webbasierte Rechen-Tools zur Verfügung, um Datumsdifferenzen, Zeitspannen, Arbeitstage und das Lebensalter zu berechnen. Die Ergebnisse dienen ausschließlich Informationszwecken und stellen keine rechtlich bindende Auskunft dar. \n\nWir bemühen uns um eine konstante Verfügbarkeit des Dienstes. Dennoch können technische Wartungsarbeiten oder unvorhergesehene Ausfälle die Erreichbarkeit einschränken. Es besteht kein Anspruch auf eine unterbrechungsfreie Nutzung oder die Speicherung Ihrer Berechnungsdaten auf unseren Systemen.'
-                            : 'datums-rechner.com provides free web-based calculation tools to calculate date differences, time spans, business days, and age. The results are for informational purposes only and do not constitute legally binding information. \n\nWe strive for constant availability of the service. However, technical maintenance work or unforeseen failures can limit accessibility. There is no claim to uninterrupted use or the storage of your calculation data on our systems.'}
+                            ? `${DOMAIN} stellt kostenlose webbasierte Rechen-Tools zur Verfügung, um Datumsdifferenzen, Zeitspannen, Arbeitstage und das Lebensalter zu berechnen. Die Ergebnisse dienen ausschließlich Informationszwecken und stellen keine rechtlich bindende Auskunft dar. \n\nWir bemühen uns um eine konstante Verfügbarkeit des Dienstes. Dennoch können technische Wartungsarbeiten oder unvorhergesehene Ausfälle die Erreichbarkeit einschränken. Es besteht kein Anspruch auf eine unterbrechungsfreie Nutzung oder die Speicherung Ihrer Berechnungsdaten auf unseren Systemen.`
+                            : `${DOMAIN} provides free web-based calculation tools to calculate date differences, time spans, business days, and age. The results are for informational purposes only and do not constitute legally binding information. \n\nWe strive for constant availability of the service. However, technical maintenance work or unforeseen failures can limit accessibility. There is no claim to uninterrupted use or the storage of your calculation data on our systems.`}
                     </p>
                 </section>
 

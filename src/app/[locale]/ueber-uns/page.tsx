@@ -1,5 +1,6 @@
 import { getTranslations } from 'next-intl/server';
 import { locales } from '@/i18n/routing';
+import { SITE_URL, DOMAIN } from '@/lib/constants';
 
 export const dynamic = 'force-static';
 import { INTENT_TRANSLATIONS } from '@/lib/seo/translations';
@@ -8,7 +9,7 @@ import { CalculatorCore } from '@/components/calculator/CalculatorCore';
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
     const { locale } = await params;
     const t = await getTranslations({ locale, namespace: 'Common.titles' });
-    const siteUrl = "https://datums-rechner.com";
+    const siteUrl = SITE_URL;
     const locSlug = INTENT_TRANSLATIONS[locale]['ueber-uns'];
     const fullUrl = `${siteUrl}/${locale}/${locSlug}`;
 
@@ -22,15 +23,15 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     return {
         title: locale === 'de' ? `Über uns | Mission & Mathematische Präzision ✓` : `About us | Mission & Mathematical Precision ✓`,
         description: locale === 'de' 
-            ? `Erfahren Sie mehr über die Mission von datums-rechner.com. Wie wir Kalenderlogik vereinfachen und höchste Präzision nach ISO-8601 bieten.`
-            : `Learn more about the mission of datums-rechner.com. How we simplify calendar logic and offer maximum precision according to ISO-8601.`,
+            ? `Erfahren Sie mehr über die Mission von ${DOMAIN}. Wie wir Kalenderlogik vereinfachen und höchste Präzision nach ISO-8601 bieten.`
+            : `Learn more about the mission of ${DOMAIN}. How we simplify calendar logic and offer maximum precision according to ISO-8601.`,
         alternates: {
             canonical: fullUrl,
             languages
         },
         openGraph: {
             title: locale === 'de' ? `Über uns | Datumsrechner` : `About Us | Date Calculator`,
-            description: `Die Geschichte und Mission hinter datums-rechner.com.`,
+            description: `Die Geschichte und Mission hinter ${DOMAIN}.`,
             url: fullUrl,
             type: 'website',
             locale: locale,
@@ -93,8 +94,8 @@ export default async function AboutUsPage({ params }: { params: Promise<{ locale
                     </h2>
                     <p className="text-white/60">
                         {locale === 'de'
-                            ? 'Hinter datums-rechner.com steht ein agiles Team aus Software-Engineers und Kalender-Enthusiasten. Wir nutzen moderne Technologien wie Next.js und Turbopack, um eine blitzschnelle Performance zu garantieren – auch auf mobilen Endgeräten. \n\nIn der Zukunft planen wir die Integration weiterer Spezialrechner, wie zum Beispiel für islamische, jüdische oder chinesische Kalendersysteme, um die kulturelle Vielfalt der Zeitrechnung abzubilden.'
-                            : 'Behind datums-rechner.com stands an agile team of software engineers and calendar enthusiasts. We use modern technologies like Next.js and Turbopack to guarantee lightning-fast performance – even on mobile devices. \n\nIn the future, we plan to integrate further special calculators, for example for Islamic, Jewish or Chinese calendar systems, to reflect the cultural diversity of time calculation.'}
+                            ? `Hinter ${DOMAIN} steht ein agiles Team aus Software-Engineers und Kalender-Enthusiasten. Wir nutzen moderne Technologien wie Next.js und Turbopack, um eine blitzschnelle Performance zu garantieren – auch auf mobilen Endgeräten. \n\nIn der Zukunft planen wir die Integration weiterer Spezialrechner, wie zum Beispiel für islamische, jüdische oder chinesische Kalendersysteme, um die kulturelle Vielfalt der Zeitrechnung abzubilden.`
+                            : `Behind ${DOMAIN} stands an agile team of software engineers and calendar enthusiasts. We use modern technologies like Next.js and Turbopack to guarantee lightning-fast performance – even on mobile devices. \n\nIn the future, we plan to integrate further special calculators, for example for Islamic, Jewish or Chinese calendar systems, to reflect the cultural diversity of time calculation.`}
                     </p>
                 </section>
 

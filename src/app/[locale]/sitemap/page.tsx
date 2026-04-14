@@ -1,5 +1,6 @@
 import { getTranslations } from 'next-intl/server';
 import { locales } from '@/i18n/routing';
+import { SITE_URL, DOMAIN } from '@/lib/constants';
 import { INTENT_TRANSLATIONS, translateSlug } from '@/lib/seo/translations';
 import { CANONICAL_QUERIES } from '@/lib/seo/queryModel';
 import { getArticles } from '@/lib/articles';
@@ -8,7 +9,7 @@ import { Link } from '@/i18n/routing';
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
     const { locale } = await params;
     const t = await getTranslations({ locale, namespace: 'Common.titles' });
-    const siteUrl = "https://datums-rechner.com";
+    const siteUrl = SITE_URL;
     const locSlug = INTENT_TRANSLATIONS[locale]['sitemap'];
     const fullUrl = `${siteUrl}/${locale}/${locSlug}`;
 
@@ -21,7 +22,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 
     return {
         title: `${t('sitemap')} - Datumsrechner`,
-        description: `Übersicht aller Tools, Ratgeber und rechtlichen Informationen von datums-rechner.com.`,
+        description: `Übersicht aller Tools, Ratgeber und rechtlichen Informationen von ${DOMAIN}.`,
         alternates: {
             canonical: fullUrl,
             languages
@@ -56,7 +57,7 @@ export default async function SitemapPage({ params }: { params: Promise<{ locale
                     {t('sitemap')}
                 </h1>
                 <p className="text-xl text-white/60">
-                    Alle Inhalte und Werkzeuge von datums-rechner.com auf einen Blick.
+                    Alle Inhalte und Werkzeuge von ${DOMAIN} auf einen Blick.
                 </p>
             </header>
 

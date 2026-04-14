@@ -10,6 +10,7 @@ import { addDays, addMonths, addYears, differenceInDays, format } from 'date-fns
 import { de, enUS } from 'date-fns/locale';
 import { resolveCanonicalQuery, CANONICAL_QUERIES } from '@/lib/seo/queryModel';
 import { locales } from '@/i18n/routing';
+import { SITE_URL } from '@/lib/constants';
 import { INTENT_TRANSLATIONS, translateSlug, reverseTranslateSlug } from '@/lib/seo/translations';
 
 const intentToModeMap: Record<string, string> = {
@@ -105,7 +106,7 @@ function computeInstantResult(intent: string, slugStr: string, localeStr: string
 export async function generateMetadata({ params }: { params: Promise<{ locale: string; intent: string; slug: string[] }> }) {
     const { locale, intent, slug } = await params;
     const slugStr = slug.join('-');
-    const siteUrl = "https://datums-rechner.com";
+    const siteUrl = SITE_URL;
     
     // Resolve internal intent and slug
     const internalIntent = Object.keys(INTENT_TRANSLATIONS[locale]).find(k => INTENT_TRANSLATIONS[locale][k] === intent) || intent;
@@ -239,8 +240,8 @@ export default async function ProgrammaticPage({
         "@context": "https://schema.org",
         "@type": "BreadcrumbList",
         "itemListElement": [
-            { "@type": "ListItem", "position": 1, "name": isDe ? "Startseite" : "Home", "item": `https://datums-rechner.com/${locale}` },
-            { "@type": "ListItem", "position": 2, "name": isDe ? (mode === 'add_subtract' ? 'Datumsrechner' : 'Tage Zählen') : (mode === 'add_subtract' ? 'Date Calculator' : 'Days Counter'), "item": `https://datums-rechner.com/${locale}/${intent}` },
+            { "@type": "ListItem", "position": 1, "name": isDe ? "Startseite" : "Home", "item": `${SITE_URL}/${locale}` },
+            { "@type": "ListItem", "position": 2, "name": isDe ? (mode === 'add_subtract' ? 'Datumsrechner' : 'Tage Zählen') : (mode === 'add_subtract' ? 'Date Calculator' : 'Days Counter'), "item": `${SITE_URL}/${locale}/${intent}` },
             { "@type": "ListItem", "position": 3, "name": correctSlug.replace(/-/g, ' ') }
         ]
     };

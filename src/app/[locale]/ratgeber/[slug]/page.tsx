@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
 import { CalculatorCore } from '@/components/calculator/CalculatorCore';
 import { locales } from '@/i18n/routing';
+import { SITE_URL } from '@/lib/constants';
 import { INTENT_TRANSLATIONS } from '@/lib/seo/translations';
 
 export const revalidate = 86400; // 24 hours ISR
@@ -21,7 +22,7 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<{ slug: string; locale: string }> }) {
     const { locale, slug } = await params;
     const article = getArticleBySlug(slug, locale);
-    const siteUrl = "https://datums-rechner.com";
+    const siteUrl = SITE_URL;
     
     if (!article) return {};
 
