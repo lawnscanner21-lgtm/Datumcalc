@@ -26,14 +26,18 @@ const intentToModeMap: Record<string, string> = {
 export const revalidate = 86400; // 24 hours ISR revalidation
 export const dynamicParams = false; // Disable on-demand rendering for any URL not in generateStaticParams
 
+const ADD_REGEX = /^(\d+)-(tage|monate|jahre)-ab-heute$/;
+const DIFF_REGEX = /^tage-bis-(.+)$/;
+
 function computeInstantResult(intent: string, slugStr: string, localeStr: string) {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     const loc = localeStr === 'en' ? enUS : de;
 
     try {
-        if (intent === 'addieren' || intent === 'add') {
-            const match = slugStr.match(/^(\d+)-(tage|monate|jahre)-ab-heute$/);
+        const lowerIntent = intent.toLowerCase();
+        if (lowerIntent === 'addieren' || lowerIntent === 'add') {
+            const match = slugStr.match(ADD_REGEX);
             if (match) {
                 const amount = parseInt(match[1], 10);
                 const unit = match[2];
@@ -53,8 +57,8 @@ function computeInstantResult(intent: string, slugStr: string, localeStr: string
             }
         }
 
-        if (intent === 'differenz' || intent === 'difference') {
-            const match = slugStr.match(/^tage-bis-(.+)$/);
+        if (lowerIntent === 'differenz' || lowerIntent === 'difference') {
+            const match = slugStr.match(DIFF_REGEX);
             if (match) {
                 const eventStr = match[1].toLowerCase();
                 let targetDate = new Date(today.getFullYear(), 0, 1);
@@ -252,7 +256,7 @@ export default async function ProgrammaticPage({
         "headline": instantResult ? `${instantResult.headline} ${instantResult.highlight}` : `${intent} ${slugStr.replace(/-/g, ' ')}`,
         "author": { "@type": "Organization", "name": "Datumsrechner" },
         "datePublished": "2024-01-01T00:00:00Z",
-        "dateModified": new Date().toISOString()
+        "dateModified": new Date().toISOString().split('T')[0] // Use daily stable date for better caching
     };
 
     return (

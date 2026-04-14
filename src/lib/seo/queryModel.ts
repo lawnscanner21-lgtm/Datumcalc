@@ -40,6 +40,8 @@ export const QUERY_ALIASES: Record<string, string> = {
     'arbeitstage-in-diesem-jahr': 'arbeitstage-jahr'
 };
 
+const DYNAMIC_QUERY_REGEX = /^(\d+)-(tage|monate|jahre)-ab-heute$/;
+
 /**
  * Resolves an incoming slug to its canonical version.
  * If not found directly, tries to match regex patterns.
@@ -56,7 +58,7 @@ export const resolveCanonicalQuery = cache((slugStr: string): { canonicalSlug: s
     }
 
     // Dynamic extraction (e.g. 45-tage-ab-heute)
-    const match = slugStr.match(/^(\d+)-(tage|monate|jahre)-ab-heute$/);
+    const match = slugStr.match(DYNAMIC_QUERY_REGEX);
     if (match) {
         // Technically highly dynamic, we allow it but mark as indexable based on rules
         const num = parseInt(match[1]);
@@ -77,3 +79,4 @@ export const resolveCanonicalQuery = cache((slugStr: string): { canonicalSlug: s
 
     return { canonicalSlug: '', isExact: false };
 });
+

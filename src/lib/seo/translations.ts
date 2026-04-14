@@ -1,3 +1,6 @@
+import { cache } from 'react';
+import { SITE_URL } from '@/lib/constants';
+
 /**
  * URL Translation Engine
  * Maps internal SEO tokens to localized URL segments.
@@ -69,46 +72,60 @@ export const SLUG_TOKEN_TRANSLATIONS: Record<string, Record<string, string>> = {
     }
 };
 
+// Pre-compiled regex and lookup maps for performance
+const TRANSLATION_MAPS: Record<string, { regex: RegExp, map: Record<string, string> }[]> = {};
+const REVERSE_MAPS: Record<string, { regex: RegExp, map: Record<string, string> }[]> = {};
+
+// Initialize maps once
+Object.keys(SLUG_TOKEN_TRANSLATIONS).forEach(locale => {
+    if (locale === 'de') return;
+    
+    TRANSLATION_MAPS[locale] = Object.entries(SLUG_TOKEN_TRANSLATIONS['de']).map(([key, deVal]) => ({
+        regex: new RegExp(`\\b${deVal}\\b`, 'g'),
+        map: { [deVal]: SLUG_TOKEN_TRANSLATIONS[locale][key] }
+    }));
+
+    REVERSE_MAPS[locale] = Object.entries(SLUG_TOKEN_TRANSLATIONS[locale]).map(([key, locVal]) => ({
+        regex: new RegExp(`\\b${locVal}\\b`, 'g'),
+        map: { [locVal]: SLUG_TOKEN_TRANSLATIONS['de'][key] }
+    }));
+});
+
 /**
  * Translates a German slug into a localized one.
  */
-export function translateSlug(slug: string, locale: string): string {
-    const tokens = locale === 'de' ? {} : SLUG_TOKEN_TRANSLATIONS[locale];
-    if (!tokens) return slug;
+export const translateSlug = cache((slug: string, locale: string): string => {
+    if (locale === 'de' || !TRANSLATION_MAPS[locale]) return slug;
 
     let localized = slug;
-    Object.entries(SLUG_TOKEN_TRANSLATIONS['de']).forEach(([key, deVal]) => {
-        const regex = new RegExp(`\\b${deVal}\\b`, 'g');
-        localized = localized.replace(regex, tokens[key] || deVal);
+    TRANSLATION_MAPS[locale].forEach(({ regex, map }) => {
+        const deVal = Object.keys(map)[0];
+        localized = localized.replace(regex, map[deVal]);
     });
     return localized;
-}
+});
 
 /**
  * Reverses a localized slug back to its German canonical version.
  */
-export function reverseTranslateSlug(slug: string, locale: string): string {
-    if (locale === 'de') return slug;
-    const tokens = SLUG_TOKEN_TRANSLATIONS[locale];
-    if (!tokens) return slug;
+export const reverseTranslateSlug = cache((slug: string, locale: string): string => {
+    if (locale === 'de' || !REVERSE_MAPS[locale]) return slug;
 
     let canonical = slug;
-    // Map from localized value back to key, then to DE value
-    Object.entries(tokens).forEach(([key, locVal]) => {
-        const regex = new RegExp(`\\b${locVal}\\b`, 'g');
-        canonical = canonical.replace(regex, SLUG_TOKEN_TRANSLATIONS['de'][key]);
+    REVERSE_MAPS[locale].forEach(({ regex, map }) => {
+        const locVal = Object.keys(map)[0];
+        canonical = canonical.replace(regex, map[locVal]);
     });
     return canonical;
-}
-
-import { SITE_URL } from '@/lib/constants';
+});
 
 /**
  * Gets a fully localized URL for a calculator page.
  */
-export function getLocalizedCalculatorUrl(locale: string, intent: string, slug: string): string {
+export const getLocalizedCalculatorUrl = cache((locale: string, intent: string, slug: string): string => {
     const siteUrl = SITE_URL;
     const locIntent = INTENT_TRANSLATIONS[locale][intent] || intent;
     const locSlug = translateSlug(slug, locale);
     return `${siteUrl}/${locale}/${locIntent}/${locSlug}`;
-}
+});
+
