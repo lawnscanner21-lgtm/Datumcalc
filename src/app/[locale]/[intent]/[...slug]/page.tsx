@@ -130,14 +130,17 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
         permanentRedirect(correctPath); 
     }
 
-    // Build hreflang alternates
+    const correctUrl = `${SITE_URL}${correctPath}`;
+
+    // Build hreflang alternates (prefix-aware)
     const languages: Record<string, string> = {};
     locales.forEach(loc => {
-        const locIntent = INTENT_TRANSLATIONS[loc][internalIntent] || internalIntent;
         const locSlug = translateSlug(canonicalSlug, loc);
-        languages[loc] = `${siteUrl}/${loc}/${locIntent}/${locSlug}`;
+        const locPath = getCanonicalPath(loc, internalIntent, locSlug);
+        languages[loc] = `${SITE_URL}${locPath}`;
     });
-    languages['x-default'] = `${siteUrl}/de/${INTENT_TRANSLATIONS['de'][internalIntent]}/${translateSlug(canonicalSlug, 'de')}`;
+    const deSlug = translateSlug(canonicalSlug, 'de');
+    languages['x-default'] = `${SITE_URL}${getCanonicalPath('de', internalIntent, deSlug)}`;
 
     // SERP Domination formatting
     const isDe = locale === 'de';

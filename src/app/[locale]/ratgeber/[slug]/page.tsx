@@ -35,12 +35,13 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
         permanentRedirect(correctPath);
     }
     
-    // Build hreflang alternates
+    // Build hreflang alternates (prefix-aware)
     const languages: Record<string, string> = {};
     locales.forEach(loc => {
-        languages[loc] = `${siteUrl}/${loc}/${INTENT_TRANSLATIONS[loc]['ratgeber']}/${slug}`;
+        const locPath = getCanonicalPath(loc, 'ratgeber', slug);
+        languages[loc] = `${SITE_URL}${locPath}`;
     });
-    languages['x-default'] = `${siteUrl}/de/ratgeber/${slug}`;
+    languages['x-default'] = `${SITE_URL}${getCanonicalPath('de', 'ratgeber', slug)}`;
 
     return {
         title: `${article.title} | ${locale === 'de' ? 'Ratgeber' : 'Guide'}`,
