@@ -118,11 +118,33 @@ export function reverseTranslateSlug(slug: string, locale?: string): string {
 import { SITE_URL } from '@/lib/constants';
 
 /**
- * Gets a fully localized URL for a calculator page.
+ * Generates the canonical path for a page, respecting the 'as-needed' locale prefix rules.
+ * Default locale 'de' avoids prefix, others include it.
  */
-export function getLocalizedCalculatorUrl(locale: string, intent: string, slug: string): string {
-    const siteUrl = SITE_URL;
-    const locIntent = INTENT_TRANSLATIONS[locale][intent] || intent;
-    const locSlug = translateSlug(slug, locale);
-    return `${siteUrl}/${locale}/${locIntent}/${locSlug}`;
+export function getCanonicalPath(locale: string, intent: string, slug?: string): string {
+    const prefix = locale === 'de' ? '' : `/${locale}`;
+    
+    // Normalize intent segment
+    const internalIntent = Object.keys(INTENT_TRANSLATIONS[locale]).find(k => INTENT_TRANSLATIONS[locale][k] === intent);
+    
+    // Robust intent lookup
+    let finalInternalIntent = internalIntent;
+    if (!finalInternalIntent) {
+        for (const loc of ['de', 'en', 'es', 'fr', 'it', 'pt']) {
+            const found = Object.keys(INTENT_TRANSLATIONS[loc]).find(k => INTENT_TRANSLATIONS[loc][k] === intent);
+            if (found) {
+                finalInternalIntent = found;
+                break;
+            }
+        }
+    }
+    
+    const intentKey = finalInternalIntent || intent;
+    const locIntent = INTENT_TRANSLATIONS[locale][intentKey] || intentKey;
+    
+    if (slug) {
+        return `${prefix}/${locIntent}/${slug}`;
+    }
+    
+    return `${prefix}/${locIntent}`;
 }

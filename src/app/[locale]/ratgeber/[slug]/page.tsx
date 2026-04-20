@@ -1,10 +1,10 @@
 import { getArticleBySlug, articles, getArticles } from '@/lib/articles';
-import { notFound } from 'next/navigation';
+import { notFound, redirect, permanentRedirect } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
 import { CalculatorCore } from '@/components/calculator/CalculatorCore';
 import { locales } from '@/i18n/routing';
 import { SITE_URL } from '@/lib/constants';
-import { INTENT_TRANSLATIONS } from '@/lib/seo/translations';
+import { INTENT_TRANSLATIONS, getCanonicalPath } from '@/lib/seo/translations';
 
 export const revalidate = 86400; // 24 hours ISR
 export const dynamicParams = true; // Allow on-demand rendering for localized guides
@@ -27,7 +27,13 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     
     if (!article) return {};
 
-    const fullUrl = `${siteUrl}/${locale}/${INTENT_TRANSLATIONS[locale]['ratgeber']}/${slug}`;
+    const correctPath = getCanonicalPath(locale, 'ratgeber', article.slug);
+    const fullUrl = `${SITE_URL}${correctPath}`;
+
+    // Normalize: Redirect if accessed via mismatched slug (e.g. mixed locale URL)
+    if (slug !== article.slug) {
+        permanentRedirect(correctPath);
+    }
     
     // Build hreflang alternates
     const languages: Record<string, string> = {};
@@ -56,9 +62,16 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 export default async function ArticlePage({ params }: { params: Promise<{ slug: string; locale: string }> }) {
     const { locale, slug } = await params;
     const article = getArticleBySlug(slug, locale);
-    const t = await getTranslations({ locale, namespace: 'Article' });
 
     if (!article) notFound();
+
+    // Normalize: Redirect if accessed via mismatched slug (e.g. mixed locale URL)
+    const correctPath = getCanonicalPath(locale, 'ratgeber', article.slug);
+    if (slug !== article.slug) {
+        permanentRedirect(correctPath);
+    }
+
+    const t = await getTranslations({ locale, namespace: 'Article' });
 
     return (
         <article className="flex-1 w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">

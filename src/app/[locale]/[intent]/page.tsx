@@ -1,10 +1,10 @@
 import { CANONICAL_QUERIES } from '@/lib/seo/queryModel';
 import Link from 'next/link';
-import { notFound, redirect } from 'next/navigation';
+import { notFound, redirect, permanentRedirect } from 'next/navigation';
 import { locales } from '@/i18n/routing';
 
 export const dynamic = 'force-static';
-import { INTENT_TRANSLATIONS, translateSlug } from '@/lib/seo/translations';
+import { INTENT_TRANSLATIONS, translateSlug, getCanonicalPath } from '@/lib/seo/translations';
 import { SITE_URL } from '@/lib/constants';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string; intent: string }> }) {
@@ -64,9 +64,11 @@ export default async function IntentHubPage({ params }: { params: Promise<{ loca
     }
 
     // NORMALIZE: Ensure strictly localized intent URL
+    const correctPath = getCanonicalPath(locale, internalIntent);
     const correctIntent = INTENT_TRANSLATIONS[locale][internalIntent] || internalIntent;
+    
     if (intent !== correctIntent) {
-        redirect(`/${locale}/${correctIntent}`);
+        permanentRedirect(correctPath);
     }
 
     const intentMap: Record<string, string> = { 

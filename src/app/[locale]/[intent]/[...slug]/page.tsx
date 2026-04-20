@@ -1,6 +1,6 @@
 import { CalculatorCore } from '@/components/calculator/CalculatorCore';
 import { getTranslations } from 'next-intl/server';
-import { notFound, redirect } from 'next/navigation';
+import { notFound, redirect, permanentRedirect } from 'next/navigation';
 import { SEOContentBlock } from '@/components/seo/SEOContentBlock';
 import { FAQBlock } from '@/components/seo/FAQBlock';
 import { InternalLinksBlock } from '@/components/seo/InternalLinksBlock';
@@ -11,7 +11,7 @@ import { de, enUS } from 'date-fns/locale';
 import { resolveCanonicalQuery, CANONICAL_QUERIES } from '@/lib/seo/queryModel';
 import { locales } from '@/i18n/routing';
 import { SITE_URL } from '@/lib/constants';
-import { INTENT_TRANSLATIONS, translateSlug, reverseTranslateSlug } from '@/lib/seo/translations';
+import { INTENT_TRANSLATIONS, translateSlug, reverseTranslateSlug, getCanonicalPath } from '@/lib/seo/translations';
 
 const intentToModeMap: Record<string, string> = {
     'differenz': 'difference',
@@ -121,14 +121,13 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     const canonicalSlug = reverseTranslateSlug(slugStr, locale);
     
     // NORMALIZE: Ensure we always point to the strictly correct localized URL
-    const correctIntent = INTENT_TRANSLATIONS[locale][internalIntent] || internalIntent;
     const correctSlug = translateSlug(canonicalSlug, locale);
-    const correctUrl = `${siteUrl}/${locale}/${correctIntent}/${correctSlug}`;
+    const correctPath = getCanonicalPath(locale, internalIntent, correctSlug);
 
     // STRICT ENFORCEMENT: Redirect if accessed via mismatched segments (like GSC errors)
-    // Use 308 for permanent SEO redirection
-    if (intent !== correctIntent || slugStr !== correctSlug) {
-        redirect(`/${locale}/${correctIntent}/${correctSlug}`); 
+    // Use permanentRedirect (308) for better SEO
+    if (intent !== (INTENT_TRANSLATIONS[locale][internalIntent] || internalIntent) || slugStr !== correctSlug) {
+        permanentRedirect(correctPath); 
     }
 
     // Build hreflang alternates
@@ -234,11 +233,11 @@ export default async function ProgrammaticPage({
     const canonicalSlugStr = reverseTranslateSlug(slugStr, locale);
     
     // NORMALIZE & REDIRECT: Ensure strictly localized URLs
-    const correctIntent = INTENT_TRANSLATIONS[locale][internalIntent] || internalIntent;
     const correctSlug = translateSlug(canonicalSlugStr, locale);
+    const correctPath = getCanonicalPath(locale, internalIntent, correctSlug);
     
-    if (intent !== correctIntent || slugStr !== correctSlug) {
-        redirect(`/${locale}/${correctIntent}/${correctSlug}`);
+    if (intent !== (INTENT_TRANSLATIONS[locale][internalIntent] || internalIntent) || slugStr !== correctSlug) {
+        permanentRedirect(correctPath);
     }
 
     if (!mode) {
