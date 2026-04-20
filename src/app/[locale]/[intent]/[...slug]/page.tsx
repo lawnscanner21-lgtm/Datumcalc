@@ -24,7 +24,7 @@ const intentToModeMap: Record<string, string> = {
     'age': 'age'
 };
 export const revalidate = 86400; // 24 hours ISR revalidation
-export const dynamicParams = false; // Disable on-demand rendering for any URL not in generateStaticParams
+export const dynamicParams = true; // Allow on-demand rendering for long-tail SEO URLs
 
 function computeInstantResult(intent: string, slugStr: string, localeStr: string) {
     const today = new Date();
@@ -108,8 +108,16 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     const slugStr = slug.join('-');
     const siteUrl = SITE_URL;
     
-    // Resolve internal intent and slug
-    const internalIntent = Object.keys(INTENT_TRANSLATIONS[locale]).find(k => INTENT_TRANSLATIONS[locale][k] === intent) || intent;
+    // Resolve internal intent across ALL locales (robust)
+    let internalIntent = Object.keys(INTENT_TRANSLATIONS[locale]).find(k => INTENT_TRANSLATIONS[locale][k] === intent);
+    if (!internalIntent) {
+        for (const loc of locales) {
+            internalIntent = Object.keys(INTENT_TRANSLATIONS[loc]).find(k => INTENT_TRANSLATIONS[loc][k] === intent);
+            if (internalIntent) break;
+        }
+    }
+    if (!internalIntent) return {}; // Let it 404 if truly unknown
+
     const canonicalSlug = reverseTranslateSlug(slugStr, locale);
     
     // NORMALIZE: Ensure we always point to the strictly correct localized URL
@@ -118,9 +126,9 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     const correctUrl = `${siteUrl}/${locale}/${correctIntent}/${correctSlug}`;
 
     // STRICT ENFORCEMENT: Redirect if accessed via mismatched segments (like GSC errors)
+    // Use 308 for permanent SEO redirection
     if (intent !== correctIntent || slugStr !== correctSlug) {
-        redirect(correctUrl); // Next.js redirects are 307 by default, but typically for SEO we want 301 if it's a permanent move. 
-        // Note: next/navigation redirect doesn't support 301 in server components easily without 'permanentRedirect'. 
+        redirect(`${SITE_URL}/${locale}/${correctIntent}/${correctSlug}`); 
     }
 
     // Build hreflang alternates
@@ -167,9 +175,14 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
             : `How many days until ${displaySlug}? Get a precise result including leap year considerations and time spans.`;
     }
 
+    // robots: prevent index bloat for non-canonical number variations
+    const isPriority = CANONICAL_QUERIES[canonicalSlug]?.isIndexable;
+    const robots = isPriority ? 'index, follow' : 'noindex, follow';
+
     return {
         title,
         description,
+        robots,
         alternates: {
             canonical: correctUrl,
             languages
@@ -204,8 +217,16 @@ export default async function ProgrammaticPage({
 }: {
     params: Promise<{ locale: string; intent: string; slug: string[] }>
 }) {
-    const { locale, intent, slug } = await params;
-    const internalIntent = Object.keys(INTENT_TRANSLATIONS[locale]).find(k => INTENT_TRANSLATIONS[locale][k] === intent) || intent;
+    // Resolve internal intent across ALL locales (robust)
+    let internalIntent = Object.keys(INTENT_TRANSLATIONS[locale]).find(k => INTENT_TRANSLATIONS[locale][k] === intent);
+    if (!internalIntent) {
+        for (const loc of locales) {
+            internalIntent = Object.keys(INTENT_TRANSLATIONS[loc]).find(k => INTENT_TRANSLATIONS[loc][k] === intent);
+            if (internalIntent) break;
+        }
+    }
+    if (!internalIntent) notFound();
+
     const mode = intentToModeMap[internalIntent.toLowerCase()];
     const slugStr = slug.join('-');
     const canonicalSlugStr = reverseTranslateSlug(slugStr, locale);

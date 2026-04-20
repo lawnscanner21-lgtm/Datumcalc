@@ -48,9 +48,28 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 
 export default async function IntentHubPage({ params }: { params: Promise<{ locale: string; intent: string }> }) {
     const { locale, intent } = await params;
-    const internalIntent = Object.keys(INTENT_TRANSLATIONS[locale]).find(k => INTENT_TRANSLATIONS[locale][k] === intent) || intent;
+    // Resolve internal intent across ALL locales (robust fallback)
+    let internalIntent = Object.keys(INTENT_TRANSLATIONS[locale]).find(k => INTENT_TRANSLATIONS[locale][k] === intent);
     
-    // Internal mapping for calcMode
+    if (!internalIntent) {
+        // Search other locales
+        for (const loc of locales) {
+            internalIntent = Object.keys(INTENT_TRANSLATIONS[loc]).find(k => INTENT_TRANSLATIONS[loc][k] === intent);
+            if (internalIntent) break;
+        }
+    }
+
+    if (!internalIntent) {
+        notFound();
+    }
+
+    // NORMALIZE: Ensure strictly localized intent URL
+    const correctIntent = INTENT_TRANSLATIONS[locale][internalIntent] || internalIntent;
+    if (intent !== correctIntent) {
+        const { redirect } = require('next/navigation');
+        redirect(`/${locale}/${correctIntent}`);
+    }
+
     const intentMap: Record<string, string> = { 
         'addieren': 'add_subtract',
         'differenz': 'difference',

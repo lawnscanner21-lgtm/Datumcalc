@@ -86,18 +86,32 @@ export function translateSlug(slug: string, locale: string): string {
 
 /**
  * Reverses a localized slug back to its German canonical version.
+ * Greedily searches across ALL locales to handle "mixed" URLs from GSC.
  */
-export function reverseTranslateSlug(slug: string, locale: string): string {
-    if (locale === 'de') return slug;
-    const tokens = SLUG_TOKEN_TRANSLATIONS[locale];
-    if (!tokens) return slug;
-
+export function reverseTranslateSlug(slug: string, locale?: string): string {
+    // 1. Try specified locale first (Performance)
     let canonical = slug;
-    // Map from localized value back to key, then to DE value
-    Object.entries(tokens).forEach(([key, locVal]) => {
-        const regex = new RegExp(`\\b${locVal}\\b`, 'g');
-        canonical = canonical.replace(regex, SLUG_TOKEN_TRANSLATIONS['de'][key]);
+    if (locale && locale !== 'de' && SLUG_TOKEN_TRANSLATIONS[locale]) {
+        Object.entries(SLUG_TOKEN_TRANSLATIONS[locale]).forEach(([key, locVal]) => {
+            const regex = new RegExp(`\\b${locVal}\\b`, 'g');
+            canonical = canonical.replace(regex, SLUG_TOKEN_TRANSLATIONS['de'][key]);
+        });
+    }
+
+    // 2. If it still looks non-German or we want exhaustive search, check ALL locales
+    // This handles cases where a bot puts a French word in a Spanish URL
+    const allLocales = Object.keys(SLUG_TOKEN_TRANSLATIONS);
+    allLocales.forEach(loc => {
+        if (loc === 'de') return;
+        const tokens = SLUG_TOKEN_TRANSLATIONS[loc];
+        Object.entries(tokens).forEach(([key, locVal]) => {
+            // Only replace if the target canonical token isn't already there 
+            // (prevents double translation issues if words overlap)
+            const regex = new RegExp(`\\b${locVal}\\b`, 'g');
+            canonical = canonical.replace(regex, SLUG_TOKEN_TRANSLATIONS['de'][key]);
+        });
     });
+
     return canonical;
 }
 

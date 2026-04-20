@@ -7,6 +7,7 @@ import { SITE_URL } from '@/lib/constants';
 import { INTENT_TRANSLATIONS } from '@/lib/seo/translations';
 
 export const revalidate = 86400; // 24 hours ISR
+export const dynamicParams = true; // Allow on-demand rendering for localized guides
 
 export function generateStaticParams() {
     return locales.flatMap(locale => {
