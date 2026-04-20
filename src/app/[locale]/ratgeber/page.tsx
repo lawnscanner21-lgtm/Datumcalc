@@ -1,4 +1,3 @@
-import { Link } from '@/i18n/routing';
 import { getArticles } from '@/lib/articles';
 import { getTranslations } from 'next-intl/server';
 import { Link, locales } from '@/i18n/routing';
