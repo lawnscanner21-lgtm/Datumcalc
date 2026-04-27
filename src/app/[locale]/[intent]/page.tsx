@@ -74,7 +74,7 @@ export default async function IntentHubPage({ params }: { params: Promise<{ loca
     const correctPath = getCanonicalPath(locale, internalIntent);
     const correctIntent = INTENT_TRANSLATIONS[locale][internalIntent] || internalIntent;
     
-    if (intent !== correctIntent) {
+    if (intent.toLowerCase() !== correctIntent.toLowerCase()) {
         permanentRedirect(correctPath);
     }
 

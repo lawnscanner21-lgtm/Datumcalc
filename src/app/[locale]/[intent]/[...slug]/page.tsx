@@ -131,7 +131,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 
     // STRICT ENFORCEMENT: Redirect if accessed via mismatched segments (like GSC errors)
     const expectedIntent = INTENT_TRANSLATIONS[locale][internalIntent] || internalIntent;
-    if (intent !== expectedIntent || slugStr !== correctSlug) {
+    if (intent.toLowerCase() !== expectedIntent.toLowerCase() || slugStr.toLowerCase() !== correctSlug.toLowerCase()) {
         permanentRedirect(correctPath); 
     }
 

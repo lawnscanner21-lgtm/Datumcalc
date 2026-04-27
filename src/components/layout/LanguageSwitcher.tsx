@@ -12,8 +12,16 @@ export function LanguageSwitcher() {
     const params = useParams();
 
     const handleLocaleChange = (newLocale: string) => {
-        // @ts-expect-error - next-intl's router.replace typing has issues with template pathnames in global components, but this is the recommended "safe" approach
-        router.replace({ pathname, params }, { locale: newLocale as 'de' | 'en' | 'es' | 'fr' | 'it' | 'pt' });
+        // Create a clean params object for next-intl
+        const cleanParams = { ...params };
+        if ('locale' in cleanParams) delete cleanParams.locale;
+
+        try {
+            // @ts-expect-error - dynamic pathnames typing
+            router.replace({ pathname, params: cleanParams }, { locale: newLocale as any });
+        } catch (e) {
+            router.push(`/${newLocale === 'de' ? '' : newLocale}`);
+        }
     };
 
     return (

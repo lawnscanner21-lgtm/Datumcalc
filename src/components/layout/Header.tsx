@@ -62,8 +62,20 @@ export function Header() {
     ];
 
     const handleLocaleChange = (newLocale: string) => {
-        // @ts-expect-error - next-intl's router.replace typing has issues with template pathnames in global components, but this is the recommended "safe" approach
-        router.replace({ pathname, params }, { locale: newLocale as 'de' | 'en' | 'es' | 'fr' | 'it' | 'pt' });
+        // Create a clean params object for next-intl
+        const cleanParams = { ...params };
+        
+        // Remove locale from params as next-intl handles it via the second argument
+        if ('locale' in cleanParams) delete cleanParams.locale;
+
+        try {
+            // @ts-expect-error - dynamic pathnames typing
+            router.replace({ pathname, params: cleanParams }, { locale: newLocale as any });
+        } catch (e) {
+            // Fallback for edge cases where the path might not be in the map
+            router.push(`/${newLocale === 'de' ? '' : newLocale}`);
+        }
+        
         setLangOpen(false);
         setMobileMenuOpen(false);
     };
@@ -302,19 +314,20 @@ export function Header() {
                         <p className="text-xs font-bold uppercase tracking-[0.2em] text-white/25 mb-4 px-2">
                             {t('Nav.languageLabel')}
                         </p>
-                        <div className="flex flex-wrap gap-2">
+                        <div className="flex flex-col gap-2">
                             {locales.map((loc) => (
                                 <button
                                     key={loc}
                                     onClick={() => handleLocaleChange(loc)}
                                     aria-pressed={locale === loc}
-                                    className={`px-4 py-2 rounded-xl text-sm font-bold uppercase tracking-wider transition-all duration-200 ${
+                                    className={`w-full text-left px-5 py-4 rounded-2xl text-base font-bold transition-all duration-200 flex items-center justify-between ${
                                         locale === loc
                                             ? 'bg-neon-blue/15 text-neon-blue border border-neon-blue/30'
-                                            : 'text-white/30 hover:text-white/70 border border-white/5 hover:border-white/15'
+                                            : 'text-white/40 hover:text-white/70 border border-white/5 hover:border-white/15 bg-white/[0.02]'
                                     }`}
                                 >
-                                    {loc}
+                                    <span className="capitalize">{tCommon(loc)}</span>
+                                    <span className="text-[10px] opacity-40 uppercase tracking-widest">{loc}</span>
                                 </button>
                             ))}
                         </div>
