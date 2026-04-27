@@ -53,5 +53,40 @@
         "practice": "Berechne dein Datum jetzt sofort",
         "factCheck": "Faktencheck: Aktuell geprüft",
         "authorTitle": "Mathematiker & Autor"
+    },
+    "SmartInput": {
+        "placeholder": "Was möchtest du berechnen? (z.B. 100 Tage ab heute)",
+        "button": "Berechnen",
+        "popular": "Beliebte Suchen:",
+        "example1": "100 Tage ab heute",
+        "example2": "Tage bis Weihnachten",
+        "example3": "Arbeitstage 2024",
+        "history": "Letzte Berechnungen",
+        "clearHistory": "Verlauf löschen"
+    },
+    "Calculator": {
+        "startDate": "Startdatum",
+        "endDate": "Enddatum",
+        "result": "Ergebnis",
+        "save": "Speichern",
+        "share": "Link kopieren",
+        "copied": "Kopiert!",
+        "days": "Tage",
+        "weeks": "Wochen",
+        "months": "Monate",
+        "years": "Jahre",
+        "action": "Aktion",
+        "amount": "Anzahl",
+        "unit": "Einheit",
+        "add": "Addieren",
+        "subtract": "Subtrahieren",
+        "businessDays": "Arbeitstage",
+        "holidays": "Feiertage berücksichtigen",
+        "birthDate": "Geburtsdatum",
+        "currentAge": "Aktuelles Alter",
+        "nextBirthday": "Nächster Geburtstag",
+        "yearsAbbr": "j",
+        "monthsAbbr": "m",
+        "daysAbbr": "t"
     }
 }

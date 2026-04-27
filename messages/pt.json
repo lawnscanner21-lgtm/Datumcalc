@@ -53,5 +53,40 @@
         "practice": "Calcule sua data agora mesmo",
         "factCheck": "Verificação de fatos: Atualmente verificado",
         "authorTitle": "Matemático e Autor"
+    },
+    "SmartInput": {
+        "placeholder": "O que você quer calcular? (ex: 100 dias a partir de hoje)",
+        "button": "Calcular",
+        "popular": "Buscas populares:",
+        "example1": "100 dias a partir de hoje",
+        "example2": "Dias até o Natal",
+        "example3": "Dias úteis 2024",
+        "history": "Cálculos Recentes",
+        "clearHistory": "Limpar Histórico"
+    },
+    "Calculator": {
+        "startDate": "Data de início",
+        "endDate": "Data de término",
+        "result": "Resultado",
+        "save": "Salvar",
+        "share": "Copiar link",
+        "copied": "Copiado!",
+        "days": "Dias",
+        "weeks": "Semanas",
+        "months": "Meses",
+        "years": "Anos",
+        "action": "Ação",
+        "amount": "Quantidade",
+        "unit": "Unidade",
+        "add": "Adicionar",
+        "subtract": "Subtrair",
+        "businessDays": "Dias úteis",
+        "holidays": "Incluir feriados",
+        "birthDate": "Data de nascimento",
+        "currentAge": "Idade atual",
+        "nextBirthday": "Próximo aniversário",
+        "yearsAbbr": "a",
+        "monthsAbbr": "m",
+        "daysAbbr": "d"
     }
 }

@@ -163,7 +163,7 @@ export default async function LocaleLayout({
                 />
             </head>
             <body className="min-h-full flex flex-col selection:bg-neon/30">
-                <NextIntlClientProvider messages={messages}>
+                <NextIntlClientProvider messages={messages} locale={locale}>
                     <Header />
                     <main id="main-content" className="flex-1 flex flex-col z-10" tabIndex={-1}>
                         {children}

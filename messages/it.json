@@ -53,5 +53,40 @@
         "practice": "Calcola la tua data ora",
         "factCheck": "Verifica dei fatti: Attualmente verificato",
         "authorTitle": "Matematico e Autore"
+    },
+    "SmartInput": {
+        "placeholder": "Cosa vuoi calcolare? (es. 100 giorni da oggi)",
+        "button": "Calcolare",
+        "popular": "Ricerche popolari:",
+        "example1": "100 giorni da oggi",
+        "example2": "Giorni a Natale",
+        "example3": "Giorni lavorativi 2024",
+        "history": "Calcoli Recenti",
+        "clearHistory": "Cancella Cronologia"
+    },
+    "Calculator": {
+        "startDate": "Data di inizio",
+        "endDate": "Data di fine",
+        "result": "Risultato",
+        "save": "Salva",
+        "share": "Copia link",
+        "copied": "Copiato!",
+        "days": "Giorni",
+        "weeks": "Settimane",
+        "months": "Mesi",
+        "years": "Anni",
+        "action": "Azione",
+        "amount": "Quantità",
+        "unit": "Unità",
+        "add": "Aggiungi",
+        "subtract": "Sottrai",
+        "businessDays": "Giorni lavorativi",
+        "holidays": "Includi festività",
+        "birthDate": "Data di nascita",
+        "currentAge": "Età attuale",
+        "nextBirthday": "Prossimo compleanno",
+        "yearsAbbr": "a",
+        "monthsAbbr": "m",
+        "daysAbbr": "g"
     }
 }

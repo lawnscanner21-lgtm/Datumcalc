@@ -53,5 +53,40 @@
         "practice": "Calculate your date right now",
         "factCheck": "Fact Check: Currently verified",
         "authorTitle": "Mathematician & Author"
+    },
+    "SmartInput": {
+        "placeholder": "What do you want to calculate? (e.g. 100 days from today)",
+        "button": "Calculate",
+        "popular": "Popular searches:",
+        "example1": "100 days from today",
+        "example2": "Days until Christmas",
+        "example3": "Business days 2024",
+        "history": "Recent Calculations",
+        "clearHistory": "Clear History"
+    },
+    "Calculator": {
+        "startDate": "Start Date",
+        "endDate": "End Date",
+        "result": "Result",
+        "save": "Save",
+        "share": "Copy Link",
+        "copied": "Copied!",
+        "days": "Days",
+        "weeks": "Weeks",
+        "months": "Months",
+        "years": "Years",
+        "action": "Action",
+        "amount": "Amount",
+        "unit": "Unit",
+        "add": "Add",
+        "subtract": "Subtract",
+        "businessDays": "Business Days",
+        "holidays": "Include Holidays",
+        "birthDate": "Birth Date",
+        "currentAge": "Current Age",
+        "nextBirthday": "Next Birthday",
+        "yearsAbbr": "y",
+        "monthsAbbr": "m",
+        "daysAbbr": "d"
     }
 }
