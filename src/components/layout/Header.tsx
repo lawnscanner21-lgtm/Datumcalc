@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { Link, usePathname, useRouter } from '@/i18n/routing';
+import { Link, usePathname, useRouter, routing, locales } from '@/i18n/routing';
 import { useParams, usePathname as useNextPathname, useRouter as useNextRouter } from 'next/navigation';
 import { ROUTES } from '@/lib/routes';
 import { translateSlug, reverseTranslateSlug, getCanonicalPath, INTENT_TRANSLATIONS } from '@/lib/seo/translations';
@@ -18,7 +18,6 @@ import {
     ChevronDown,
 } from 'lucide-react';
 import { useTranslations, useLocale } from 'next-intl';
-import { locales } from '@/i18n/routing';
 
 export function Header() {
     const t = useTranslations('Header');
