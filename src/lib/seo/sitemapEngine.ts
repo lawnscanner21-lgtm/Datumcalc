@@ -56,7 +56,7 @@ export function getSEOSitemapUrls() {
     
     locales.forEach(locale => {
         Object.values(CANONICAL_QUERIES).forEach((def) => {
-            if (def.isIndexable && def.priority !== 'Low' && def.intentType !== 'Informational') {
+            if (def.isIndexable && def.intentType !== 'Informational') {
                 const internalIntent = CALC_MODE_TO_INTENT[def.calcMode] || 'differenz';
                 const locSlug = translateSlug(def.canonicalSlug, locale);
                 const canonicalPath = getCanonicalPath(locale, internalIntent, locSlug);
@@ -69,24 +69,6 @@ export function getSEOSitemapUrls() {
                 });
             }
         });
-
-        // Generate numeric loop for strictly indexed numbers to expand dynamically
-        const strictlyIndexedNumbers = [30, 45, 60, 90, 100, 120, 180, 365, 500, 1000];
-        for (const num of strictlyIndexedNumbers) {
-            const canonicalSlug = `${num}-tage-ab-heute`;
-            // Skip if already hardcoded in CANONICAL_QUERIES above
-            if (!CANONICAL_QUERIES[canonicalSlug]) {
-                const locSlug = translateSlug(canonicalSlug, locale);
-                const canonicalPath = getCanonicalPath(locale, 'addieren', locSlug);
-                
-                urls.push({
-                    url: `${SITE_URL}${canonicalPath}`,
-                    lastModified: STATIC_LASTMOD,
-                    changeFrequency: 'weekly',
-                    priority: 0.7
-                });
-            }
-        }
     });
 
     return urls;

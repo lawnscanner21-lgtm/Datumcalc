@@ -124,10 +124,11 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     }
     if (!internalIntent) return {}; // Let it 404 if truly unknown
 
-    const canonicalSlug = reverseTranslateSlug(slugStr, locale);
+    const canonicalSlugStr = reverseTranslateSlug(slugStr, locale);
+    const { canonicalSlug, isExact, def } = resolveCanonicalQuery(canonicalSlugStr);
     
     // NORMALIZE: Ensure we always point to the strictly correct localized URL
-    const correctSlug = translateSlug(canonicalSlug, locale);
+    const correctSlug = translateSlug(canonicalSlug || canonicalSlugStr, locale);
     const correctPath = getCanonicalPath(locale, internalIntent, correctSlug);
 
     // STRICT ENFORCEMENT: Redirect if accessed via mismatched segments (like GSC errors)
@@ -141,11 +142,11 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     // Build hreflang alternates (prefix-aware)
     const languages: Record<string, string> = {};
     locales.forEach(loc => {
-        const locSlug = translateSlug(canonicalSlug, loc);
+        const locSlug = translateSlug(canonicalSlug || canonicalSlugStr, loc);
         const locPath = getCanonicalPath(loc, internalIntent, locSlug);
         languages[loc] = `${SITE_URL}${locPath}`;
     });
-    const deSlug = translateSlug(canonicalSlug, 'de');
+    const deSlug = translateSlug(canonicalSlug || canonicalSlugStr, 'de');
     languages['x-default'] = `${SITE_URL}${getCanonicalPath('de', internalIntent, deSlug)}`;
 
     // SERP Domination formatting
@@ -163,7 +164,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
         : `Use the free date calculator for exact results on ${displaySlug}. ISO 8601 compliant, precise and lightning fast.`;
 
     if (isAdd) {
-        const match = canonicalSlug.match(/^(\d+)-(tage|monate|jahre)-ab-heute$/);
+        const match = (canonicalSlug || canonicalSlugStr).match(/^(\d+)-(tage|monate|jahre)-ab-heute$/);
         if (match) {
             const num = match[1];
             const unit = match[2];
@@ -184,8 +185,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     }
 
     // robots: prevent index bloat for non-canonical number variations
-    const isPriority = CANONICAL_QUERIES[canonicalSlug]?.isIndexable;
-    const robots = isPriority ? 'index, follow' : 'noindex, follow';
+    const robots = def?.isIndexable ? 'index, follow' : 'noindex, follow';
 
     return {
         title,
@@ -346,10 +346,12 @@ export function generateStaticParams() {
     const params: { locale: string; intent: string; slug: string[] }[] = [];
 
     for (const locale of locales) {
-        // 1. Canonical Queries
+        // Canonical Queries (Strictly enforced 220-page limit)
         Object.values(CANONICAL_QUERIES).forEach(def => {
             if (def.isIndexable) {
-                const internalIntent = def.calcMode === 'add_subtract' ? 'addieren' : 'differenz';
+                const internalIntent = def.calcMode === 'add_subtract' ? 'addieren' : 
+                                     def.calcMode === 'difference' ? 'differenz' : 
+                                     def.calcMode === 'business_days' ? 'arbeitstage' : 'alter';
                 const locIntent = INTENT_TRANSLATIONS[locale][internalIntent] || internalIntent;
                 const locSlug = translateSlug(def.canonicalSlug, locale);
                 
@@ -360,22 +362,6 @@ export function generateStaticParams() {
                 });
             }
         });
-
-        // 2. Numeric dynamic queries (consistent with sitemap)
-        const strictlyIndexedNumbers = [30, 45, 60, 90, 100, 120, 180, 365, 500, 1000];
-        for (const num of strictlyIndexedNumbers) {
-            const canonicalSlug = `${num}-tage-ab-heute`;
-            if (!CANONICAL_QUERIES[canonicalSlug]) {
-                const locIntent = INTENT_TRANSLATIONS[locale]['addieren'] || 'addieren';
-                const locSlug = translateSlug(canonicalSlug, locale);
-                
-                params.push({
-                    locale,
-                    intent: locIntent,
-                    slug: locSlug.split('-')
-                });
-            }
-        }
     }
 
     return params;

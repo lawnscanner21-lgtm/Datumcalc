@@ -65,25 +65,23 @@ export function Header() {
     ];
 
     const handleLocaleChange = (newLocale: string) => {
-        if (!nextPathname) return;
-
-        // If we have dynamic SEO params (intent and slug), translate them to prevent malformed redirect chains.
+        // Use 'pathname' which is already cleaned of locale prefix by next-intl
         if (params && (params.intent || params.slug)) {
             // Handle Ratgeber / guide routes
-            if (nextPathname.includes('/ratgeber/') || nextPathname.includes('/guide/') || nextPathname.includes('/guia/') || nextPathname.includes('/guida/')) {
+            if (pathname.includes('/ratgeber') || pathname.includes('/guide') || pathname.includes('/guia') || pathname.includes('/guida')) {
                 const guideIntent = newLocale === 'de' ? 'ratgeber' :
                     newLocale === 'en' ? 'guide' :
                     newLocale === 'es' ? 'guia' :
                     newLocale === 'fr' ? 'guide' :
                     newLocale === 'it' ? 'guida' : 'guia'; // pt
                 const slugStr = Array.isArray(params.slug) ? params.slug.join('/') : (params.slug || '');
-                const newPath = newLocale === 'de' ? `/${guideIntent}/${slugStr}` : `/${newLocale}/${guideIntent}/${slugStr}`;
-                nextRouter.push(newPath || '/');
+                const target = `/${guideIntent}/${slugStr}`;
+                router.push(target as any, { locale: newLocale });
                 setLangOpen(false);
                 setMobileMenuOpen(false);
                 return;
             } else if (params.intent) {
-                // Calculator dynamic routes — translate intent AND slug segments
+                // Calculator dynamic routes
                 const currentIntent = Array.isArray(params.intent) ? params.intent[0] : params.intent as string;
                 const currentSlugArr = params.slug ? (Array.isArray(params.slug) ? params.slug : [params.slug]) : undefined;
                 const currentSlugStr = currentSlugArr ? currentSlugArr.join('-') : undefined;
@@ -91,11 +89,16 @@ export function Header() {
                 if (currentSlugStr) {
                     const canonicalSlug = reverseTranslateSlug(currentSlugStr, locale);
                     const locSlug = translateSlug(canonicalSlug, newLocale);
-                    const newPath = getCanonicalPath(newLocale, currentIntent, locSlug);
-                    nextRouter.push(newPath || '/');
+                    // getCanonicalPath returns with locale prefix, but router.push with locale option handles it better
+                    const internalIntent = Object.keys(INTENT_TRANSLATIONS[locale]).find(k => INTENT_TRANSLATIONS[locale][k] === currentIntent) || currentIntent;
+                    const locIntent = INTENT_TRANSLATIONS[newLocale][internalIntent] || internalIntent;
+                    const target = `/${locIntent}/${locSlug}`;
+                    
+                    router.push(target as any, { locale: newLocale });
                 } else {
-                    const newPath = getCanonicalPath(newLocale, currentIntent);
-                    nextRouter.push(newPath || '/');
+                    const internalIntent = Object.keys(INTENT_TRANSLATIONS[locale]).find(k => INTENT_TRANSLATIONS[locale][k] === currentIntent) || currentIntent;
+                    const locIntent = INTENT_TRANSLATIONS[newLocale][internalIntent] || internalIntent;
+                    router.push(`/${locIntent}` as any, { locale: newLocale });
                 }
                 setLangOpen(false);
                 setMobileMenuOpen(false);
@@ -103,19 +106,8 @@ export function Header() {
             }
         }
 
-        // Fallback: simple locale-prefix swap for static pages
-        let cleanPath = nextPathname;
-        for (const loc of locales) {
-            if (cleanPath === `/${loc}` || cleanPath.startsWith(`/${loc}/`)) {
-                cleanPath = cleanPath.substring(loc.length + 1);
-                break;
-            }
-        }
-        if (!cleanPath.startsWith('/')) cleanPath = `/${cleanPath}`;
-        let newPath = newLocale === 'de' ? cleanPath : `/${newLocale}${cleanPath}`;
-        if (newPath.endsWith('/') && newPath.length > 1) newPath = newPath.slice(0, -1);
-
-        nextRouter.push(newPath === '' ? '/' : newPath);
+        // Static pages: just push the current cleaned pathname with new locale
+        router.push(pathname as any, { locale: newLocale });
         setLangOpen(false);
         setMobileMenuOpen(false);
     };
