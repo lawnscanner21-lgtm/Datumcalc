@@ -7,8 +7,7 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       // Redirect /de/* -> /* (default locale should not have a prefix)
-      { source: '/de', destination: '/', permanent: true },
-      { source: '/de/:path*', destination: '/:path*', permanent: true },
+
 
       // Stale German calculator routes served under wrong locale prefixes
       { source: '/en/addieren/:slug*', destination: '/en/add/:slug*', permanent: true },
