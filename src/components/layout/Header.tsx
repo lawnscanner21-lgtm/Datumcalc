@@ -65,49 +65,41 @@ export function Header() {
     ];
 
     const handleLocaleChange = (newLocale: string) => {
-        // Use 'pathname' which is already cleaned of locale prefix by next-intl
+        const prefix = newLocale === 'de' ? '' : `/${newLocale}`;
+        
+        // Dynamic SEO routes (calculators)
         if (params && (params.intent || params.slug)) {
-            // Handle Ratgeber / guide routes
+            const currentIntent = Array.isArray(params.intent) ? params.intent[0] : params.intent as string;
+            const currentSlugArr = params.slug ? (Array.isArray(params.slug) ? params.slug : [params.slug]) : undefined;
+            const currentSlugStr = currentSlugArr ? currentSlugArr.join('-') : undefined;
+
+            // Resolve internal intent key (German)
+            let internalIntent = Object.keys(INTENT_TRANSLATIONS[locale]).find(k => INTENT_TRANSLATIONS[locale][k] === currentIntent) || currentIntent;
+            
+            // Handle Ratgeber / guide routes specially
             if (pathname.includes('/ratgeber') || pathname.includes('/guide') || pathname.includes('/guia') || pathname.includes('/guida')) {
-                const guideIntent = newLocale === 'de' ? 'ratgeber' :
-                    newLocale === 'en' ? 'guide' :
-                    newLocale === 'es' ? 'guia' :
-                    newLocale === 'fr' ? 'guide' :
-                    newLocale === 'it' ? 'guida' : 'guia'; // pt
+                const guideIntent = INTENT_TRANSLATIONS[newLocale]['ratgeber'] || 'ratgeber';
                 const slugStr = Array.isArray(params.slug) ? params.slug.join('/') : (params.slug || '');
-                const target = `/${guideIntent}/${slugStr}`;
-                router.push(target as any, { locale: newLocale });
-                setLangOpen(false);
-                setMobileMenuOpen(false);
-                return;
-            } else if (params.intent) {
-                // Calculator dynamic routes
-                const currentIntent = Array.isArray(params.intent) ? params.intent[0] : params.intent as string;
-                const currentSlugArr = params.slug ? (Array.isArray(params.slug) ? params.slug : [params.slug]) : undefined;
-                const currentSlugStr = currentSlugArr ? currentSlugArr.join('-') : undefined;
-
-                if (currentSlugStr) {
-                    const canonicalSlug = reverseTranslateSlug(currentSlugStr, locale);
-                    const locSlug = translateSlug(canonicalSlug, newLocale);
-                    // getCanonicalPath returns with locale prefix, but router.push with locale option handles it better
-                    const internalIntent = Object.keys(INTENT_TRANSLATIONS[locale]).find(k => INTENT_TRANSLATIONS[locale][k] === currentIntent) || currentIntent;
-                    const locIntent = INTENT_TRANSLATIONS[newLocale][internalIntent] || internalIntent;
-                    const target = `/${locIntent}/${locSlug}`;
-                    
-                    router.push(target as any, { locale: newLocale });
-                } else {
-                    const internalIntent = Object.keys(INTENT_TRANSLATIONS[locale]).find(k => INTENT_TRANSLATIONS[locale][k] === currentIntent) || currentIntent;
-                    const locIntent = INTENT_TRANSLATIONS[newLocale][internalIntent] || internalIntent;
-                    router.push(`/${locIntent}` as any, { locale: newLocale });
-                }
-                setLangOpen(false);
-                setMobileMenuOpen(false);
-                return;
+                nextRouter.push(`${prefix}/${guideIntent}/${slugStr}`);
+            } else if (currentSlugStr) {
+                // Calculator deep link
+                const canonicalSlug = reverseTranslateSlug(currentSlugStr, locale);
+                const locSlug = translateSlug(canonicalSlug, newLocale);
+                const locIntent = INTENT_TRANSLATIONS[newLocale][internalIntent] || internalIntent;
+                nextRouter.push(`${prefix}/${locIntent}/${locSlug}`);
+            } else {
+                // Intent landing page
+                const locIntent = INTENT_TRANSLATIONS[newLocale][internalIntent] || internalIntent;
+                nextRouter.push(`${prefix}/${locIntent}`);
             }
+        } else {
+            // Static pages (About, Terms, etc.)
+            // pathname from next-intl is the unlocalized version (e.g. /ueber-uns)
+            const internalPath = pathname === '/' ? '' : pathname;
+            const localizedPath = routing.pathnames[internalPath]?.[newLocale] || internalPath;
+            nextRouter.push(`${prefix}${localizedPath}`);
         }
-
-        // Static pages: just push the current cleaned pathname with new locale
-        router.push(pathname as any, { locale: newLocale });
+        
         setLangOpen(false);
         setMobileMenuOpen(false);
     };
