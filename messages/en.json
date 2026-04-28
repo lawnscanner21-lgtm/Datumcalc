@@ -34,7 +34,10 @@
             "languageLabel": "Select language",
             "openMenu": "Open menu",
             "closeMenu": "Close menu",
-            "mobileNavLabel": "Mobile Navigation"
+            "mobileNavLabel": "Mobile Navigation",
+            "alter": "Age",
+            "alterDesc": "Calculate your exact age",
+            "verified": "Mathematically & Calendrically verified"
         }
     },
     "Modes": {

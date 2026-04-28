@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Link, usePathname, useRouter } from '@/i18n/routing';
 import { useParams, usePathname as useNextPathname, useRouter as useNextRouter } from 'next/navigation';
 import { ROUTES } from '@/lib/routes';
+import { translateSlug, reverseTranslateSlug, getCanonicalPath } from '@/lib/seo/translations';
 import {
     CalendarDays,
     Menu,
@@ -66,6 +67,43 @@ export function Header() {
     const handleLocaleChange = (newLocale: string) => {
         if (!nextPathname) return;
 
+        // If we have dynamic SEO params (intent and slug), translate them to prevent malformed redirect chains.
+        if (params && (params.intent || params.slug)) {
+            // Handle Ratgeber / guide routes
+            if (nextPathname.includes('/ratgeber/') || nextPathname.includes('/guide/') || nextPathname.includes('/guia/') || nextPathname.includes('/guida/')) {
+                const guideIntent = newLocale === 'de' ? 'ratgeber' :
+                    newLocale === 'en' ? 'guide' :
+                    newLocale === 'es' ? 'guia' :
+                    newLocale === 'fr' ? 'guide' :
+                    newLocale === 'it' ? 'guida' : 'guia'; // pt
+                const slugStr = Array.isArray(params.slug) ? params.slug.join('/') : (params.slug || '');
+                const newPath = newLocale === 'de' ? `/${guideIntent}/${slugStr}` : `/${newLocale}/${guideIntent}/${slugStr}`;
+                nextRouter.push(newPath || '/');
+                setLangOpen(false);
+                setMobileMenuOpen(false);
+                return;
+            } else if (params.intent) {
+                // Calculator dynamic routes — translate intent AND slug segments
+                const currentIntent = Array.isArray(params.intent) ? params.intent[0] : params.intent as string;
+                const currentSlugArr = params.slug ? (Array.isArray(params.slug) ? params.slug : [params.slug]) : undefined;
+                const currentSlugStr = currentSlugArr ? currentSlugArr.join('-') : undefined;
+
+                if (currentSlugStr) {
+                    const canonicalSlug = reverseTranslateSlug(currentSlugStr, locale);
+                    const locSlug = translateSlug(canonicalSlug, newLocale);
+                    const newPath = getCanonicalPath(newLocale, currentIntent, locSlug);
+                    nextRouter.push(newPath || '/');
+                } else {
+                    const newPath = getCanonicalPath(newLocale, currentIntent);
+                    nextRouter.push(newPath || '/');
+                }
+                setLangOpen(false);
+                setMobileMenuOpen(false);
+                return;
+            }
+        }
+
+        // Fallback: simple locale-prefix swap for static pages
         let cleanPath = nextPathname;
         for (const loc of locales) {
             if (cleanPath === `/${loc}` || cleanPath.startsWith(`/${loc}/`)) {
@@ -73,21 +111,15 @@ export function Header() {
                 break;
             }
         }
-        
-        if (!cleanPath.startsWith('/')) {
-            cleanPath = `/${cleanPath}`;
-        }
-
+        if (!cleanPath.startsWith('/')) cleanPath = `/${cleanPath}`;
         let newPath = newLocale === 'de' ? cleanPath : `/${newLocale}${cleanPath}`;
-        if (newPath.endsWith('/') && newPath.length > 1) {
-            newPath = newPath.slice(0, -1);
-        }
-        
+        if (newPath.endsWith('/') && newPath.length > 1) newPath = newPath.slice(0, -1);
+
         nextRouter.push(newPath === '' ? '/' : newPath);
-        
         setLangOpen(false);
         setMobileMenuOpen(false);
     };
+
 
     return (
         <>

@@ -4,6 +4,8 @@ import { useLocale, useTranslations } from 'next-intl';
 import { locales, usePathname, useRouter } from '@/i18n/routing';
 import { useParams, usePathname as useNextPathname, useRouter as useNextRouter } from 'next/navigation';
 
+import { translateSlug, reverseTranslateSlug, getCanonicalPath } from '@/lib/seo/translations';
+
 export function LanguageSwitcher() {
     const t = useTranslations('Common.languages');
     const locale = useLocale();
@@ -16,6 +18,41 @@ export function LanguageSwitcher() {
     const handleLocaleChange = (newLocale: string) => {
         if (!nextPathname) return;
 
+        // If we have dynamic SEO params (intent and slug), we MUST translate them to prevent malformed URLs.
+        if (params && (params.intent || params.slug)) {
+            // Handle Ratgeber specific routes
+            if (nextPathname.includes('/ratgeber/') || nextPathname.includes('/guide/') || nextPathname.includes('/guia/') || nextPathname.includes('/a-propos/') || nextPathname.includes('/chi-siamo/')) {
+                const guideIntent = newLocale === 'de' ? 'ratgeber' :
+                    newLocale === 'en' ? 'guide' :
+                    newLocale === 'es' ? 'guia' :
+                    newLocale === 'fr' ? 'guide' :
+                    newLocale === 'it' ? 'guida' : 'guia'; // pt
+                
+                const slugStr = Array.isArray(params.slug) ? params.slug.join('/') : (params.slug || '');
+                const newPath = newLocale === 'de' ? `/${guideIntent}/${slugStr}` : `/${newLocale}/${guideIntent}/${slugStr}`;
+                nextRouter.push(newPath === '' ? '/' : newPath);
+                return;
+            } else if (params.intent) {
+                // Calculator mode routes with translated slugs
+                const currentIntent = Array.isArray(params.intent) ? params.intent[0] : params.intent;
+                const currentSlugArr = params.slug ? (Array.isArray(params.slug) ? params.slug : [params.slug]) : undefined;
+                const currentSlugStr = currentSlugArr ? currentSlugArr.join('-') : undefined;
+
+                if (currentSlugStr) {
+                    const canonicalSlug = reverseTranslateSlug(currentSlugStr, locale);
+                    const locSlug = translateSlug(canonicalSlug, newLocale);
+                    const newPath = getCanonicalPath(newLocale, currentIntent, locSlug); // getCanonicalPath will resolve intent internally
+                    nextRouter.push(newPath === '' ? '/' : newPath);
+                    return;
+                } else {
+                    const newPath = getCanonicalPath(newLocale, currentIntent);
+                    nextRouter.push(newPath === '' ? '/' : newPath);
+                    return;
+                }
+            }
+        }
+
+        // Fallback robust path replacement for non-dynamic or complex cases
         let cleanPath = nextPathname;
         for (const loc of locales) {
             if (cleanPath === `/${loc}` || cleanPath.startsWith(`/${loc}/`)) {

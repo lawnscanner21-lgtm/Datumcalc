@@ -34,7 +34,10 @@
             "languageLabel": "Seleziona lingua",
             "openMenu": "Apri menu",
             "closeMenu": "Chiudi menu",
-            "mobileNavLabel": "Navigazione mobile"
+            "mobileNavLabel": "Navigazione mobile",
+            "alter": "Età",
+            "alterDesc": "Calcola la tua età esatta",
+            "verified": "Verificato matematicamente e calendarialmente"
         }
     },
     "Modes": {
@@ -88,5 +91,21 @@
         "yearsAbbr": "a",
         "monthsAbbr": "m",
         "daysAbbr": "g"
+    },
+    "Events": {
+        "weihnachten": "Natale",
+        "silvester": "Capodanno",
+        "sommeranfang": "Solstizio d'estate",
+        "ostern": "Pasqua"
+    },
+    "SlugPage": {
+        "in": "In",
+        "is": "è",
+        "basedOn": "Basato su oggi",
+        "until": "Fino a",
+        "areYet": "mancano ancora",
+        "theDateIs": "La data è",
+        "verified": "Verificato matematicamente e calendarialmente",
+        "description": "Calcolo esatto conforme a ISO-8601 per {slug}."
     }
 }
