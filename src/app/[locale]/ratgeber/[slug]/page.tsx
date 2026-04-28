@@ -1,6 +1,6 @@
 import { getArticleBySlug, articles, getArticles } from '@/lib/articles';
 import { notFound, redirect, permanentRedirect } from 'next/navigation';
-import { getTranslations } from 'next-intl/server';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { CalculatorCore } from '@/components/calculator/CalculatorCore';
 import { locales } from '@/i18n/routing';
 import { SITE_URL } from '@/lib/constants';
@@ -22,6 +22,7 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string; locale: string }> }) {
     const { locale, slug } = await params;
+    setRequestLocale(locale);
     const article = getArticleBySlug(slug, locale);
     const siteUrl = SITE_URL;
     
@@ -62,6 +63,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function ArticlePage({ params }: { params: Promise<{ slug: string; locale: string }> }) {
     const { locale, slug } = await params;
+    setRequestLocale(locale);
     const article = getArticleBySlug(slug, locale);
 
     if (!article) notFound();

@@ -2,7 +2,7 @@
 
 import { useLocale, useTranslations } from 'next-intl';
 import { locales, usePathname, useRouter } from '@/i18n/routing';
-import { useParams } from 'next/navigation';
+import { useParams, usePathname as useNextPathname, useRouter as useNextRouter } from 'next/navigation';
 
 export function LanguageSwitcher() {
     const t = useTranslations('Common.languages');
@@ -10,18 +10,30 @@ export function LanguageSwitcher() {
     const pathname = usePathname();
     const router = useRouter();
     const params = useParams();
+    const nextPathname = useNextPathname();
+    const nextRouter = useNextRouter();
 
     const handleLocaleChange = (newLocale: string) => {
-        // Create a clean params object for next-intl
-        const cleanParams = { ...params };
-        if ('locale' in cleanParams) delete cleanParams.locale;
+        if (!nextPathname) return;
 
-        try {
-            // @ts-expect-error - dynamic pathnames typing
-            router.replace({ pathname, params: cleanParams }, { locale: newLocale as any });
-        } catch (e) {
-            router.push(`/${newLocale === 'de' ? '' : newLocale}` as any);
+        let cleanPath = nextPathname;
+        for (const loc of locales) {
+            if (cleanPath === `/${loc}` || cleanPath.startsWith(`/${loc}/`)) {
+                cleanPath = cleanPath.substring(loc.length + 1);
+                break;
+            }
         }
+        
+        if (!cleanPath.startsWith('/')) {
+            cleanPath = `/${cleanPath}`;
+        }
+
+        let newPath = newLocale === 'de' ? cleanPath : `/${newLocale}${cleanPath}`;
+        if (newPath.endsWith('/') && newPath.length > 1) {
+            newPath = newPath.slice(0, -1);
+        }
+        
+        nextRouter.push(newPath === '' ? '/' : newPath);
     };
 
     return (

@@ -2,6 +2,7 @@ import { CANONICAL_QUERIES } from '@/lib/seo/queryModel';
 import { Link } from '@/i18n/routing';
 import { notFound, permanentRedirect } from 'next/navigation';
 import { locales } from '@/i18n/routing';
+import { setRequestLocale } from 'next-intl/server';
 
 export const revalidate = 604800; // 7 days ISR revalidation
 export const dynamicParams = true;
@@ -10,6 +11,7 @@ import { SITE_URL } from '@/lib/constants';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string; intent: string }> }) {
     const { locale, intent } = await params;
+    setRequestLocale(locale);
     
     // Resolve internal intent
     let internalIntent = Object.keys(INTENT_TRANSLATIONS[locale]).find(k => INTENT_TRANSLATIONS[locale][k] === intent);
@@ -55,6 +57,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 
 export default async function IntentHubPage({ params }: { params: Promise<{ locale: string; intent: string }> }) {
     const { locale, intent } = await params;
+    setRequestLocale(locale);
     // Resolve internal intent across ALL locales (robust fallback)
     let internalIntent = Object.keys(INTENT_TRANSLATIONS[locale]).find(k => INTENT_TRANSLATIONS[locale][k] === intent);
     

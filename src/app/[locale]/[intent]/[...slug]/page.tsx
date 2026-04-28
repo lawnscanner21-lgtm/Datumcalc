@@ -1,5 +1,5 @@
 import { CalculatorCore } from '@/components/calculator/CalculatorCore';
-import { getTranslations } from 'next-intl/server';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { notFound, redirect, permanentRedirect } from 'next/navigation';
 import { SEOContentBlock } from '@/components/seo/SEOContentBlock';
 import { FAQBlock } from '@/components/seo/FAQBlock';
@@ -110,6 +110,7 @@ async function computeInstantResult(intent: string, slugStr: string, localeStr: 
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string; intent: string; slug: string[] }> }) {
     const { locale, intent, slug } = await params;
+    setRequestLocale(locale);
     const slugStr = slug.join('-');
     const siteUrl = SITE_URL;
     
@@ -225,6 +226,7 @@ export default async function ProgrammaticPage({
     params: Promise<{ locale: string; intent: string; slug: string[] }>
 }) {
     const { locale, intent, slug } = await params;
+    setRequestLocale(locale);
     const t = await getTranslations({ locale, namespace: 'SlugPage' });
 
     let internalIntent = Object.keys(INTENT_TRANSLATIONS[locale]).find(k => INTENT_TRANSLATIONS[locale][k] === intent);
@@ -244,7 +246,7 @@ export default async function ProgrammaticPage({
     const correctPath = getCanonicalPath(locale, internalIntent, correctSlug);
     const expectedIntent = INTENT_TRANSLATIONS[locale][internalIntent] || internalIntent;
     
-    if (intent !== expectedIntent || slugStr !== correctSlug) {
+    if (intent.toLowerCase() !== expectedIntent.toLowerCase() || slugStr.toLowerCase() !== correctSlug.toLowerCase()) {
         permanentRedirect(correctPath);
     }
 

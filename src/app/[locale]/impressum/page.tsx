@@ -1,4 +1,4 @@
-import { getTranslations } from 'next-intl/server';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { locales } from '@/i18n/routing';
 import { SITE_URL, DOMAIN } from '@/lib/constants';
 
@@ -7,6 +7,7 @@ import { INTENT_TRANSLATIONS } from '@/lib/seo/translations';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
     const { locale } = await params;
+    setRequestLocale(locale);
     const t = await getTranslations({ locale, namespace: 'Common.titles' });
     const siteUrl = SITE_URL;
     const locSlug = INTENT_TRANSLATIONS[locale]['impressum'];
@@ -40,6 +41,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 
 export default async function ImprintPage({ params }: { params: Promise<{ locale: string }> }) {
     const { locale } = await params;
+    setRequestLocale(locale);
     const t = await getTranslations({ locale, namespace: 'Common.titles' });
 
     return (

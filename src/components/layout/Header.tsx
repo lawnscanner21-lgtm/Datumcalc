@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { Link, usePathname, useRouter } from '@/i18n/routing';
-import { useParams } from 'next/navigation';
+import { useParams, usePathname as useNextPathname, useRouter as useNextRouter } from 'next/navigation';
 import { ROUTES } from '@/lib/routes';
 import {
     CalendarDays,
@@ -26,6 +26,8 @@ export function Header() {
     const router = useRouter();
     const pathname = usePathname();
     const params = useParams();
+    const nextPathname = useNextPathname();
+    const nextRouter = useNextRouter();
     const [isScrolled, setIsScrolled] = useState(false);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [langOpen, setLangOpen] = useState(false);
@@ -62,19 +64,26 @@ export function Header() {
     ];
 
     const handleLocaleChange = (newLocale: string) => {
-        // Create a clean params object for next-intl
-        const cleanParams = { ...params };
-        
-        // Remove locale from params as next-intl handles it via the second argument
-        if ('locale' in cleanParams) delete cleanParams.locale;
+        if (!nextPathname) return;
 
-        try {
-            // @ts-expect-error - dynamic pathnames typing
-            router.replace({ pathname, params: cleanParams }, { locale: newLocale as any });
-        } catch (e) {
-            // Fallback for edge cases where the path might not be in the map
-            router.push(`/${newLocale === 'de' ? '' : newLocale}` as any);
+        let cleanPath = nextPathname;
+        for (const loc of locales) {
+            if (cleanPath === `/${loc}` || cleanPath.startsWith(`/${loc}/`)) {
+                cleanPath = cleanPath.substring(loc.length + 1);
+                break;
+            }
         }
+        
+        if (!cleanPath.startsWith('/')) {
+            cleanPath = `/${cleanPath}`;
+        }
+
+        let newPath = newLocale === 'de' ? cleanPath : `/${newLocale}${cleanPath}`;
+        if (newPath.endsWith('/') && newPath.length > 1) {
+            newPath = newPath.slice(0, -1);
+        }
+        
+        nextRouter.push(newPath === '' ? '/' : newPath);
         
         setLangOpen(false);
         setMobileMenuOpen(false);

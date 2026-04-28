@@ -3,7 +3,7 @@ import { Inter } from "next/font/google";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { NextIntlClientProvider } from 'next-intl';
-import { getMessages } from 'next-intl/server';
+import { getMessages, setRequestLocale } from 'next-intl/server';
 import { locales } from '@/i18n/routing';
 import { SITE_URL } from "@/lib/constants";
 import "../globals.css";
@@ -25,6 +25,7 @@ export async function generateMetadata(
     parent: ResolvingMetadata
 ): Promise<Metadata> {
     const { locale } = await params;
+    setRequestLocale(locale);
     
     // Build language alternates
     const languages: Record<string, string> = {};
@@ -101,6 +102,7 @@ export default async function LocaleLayout({
     params: Promise<{ locale: string }>;
 }>) {
     const { locale } = await params;
+    setRequestLocale(locale);
     const messages = await getMessages();
 
     const webAppSchema = {
