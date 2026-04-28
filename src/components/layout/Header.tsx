@@ -94,8 +94,8 @@ export function Header() {
         } else {
             // Static pages (About, Terms, etc.)
             // pathname from next-intl is the unlocalized version (e.g. /ueber-uns)
-            const internalPath = pathname === '/' ? '' : pathname;
-            const localizedPath = routing.pathnames[internalPath]?.[newLocale] || internalPath;
+            const internalPath = pathname as keyof typeof routing.pathnames;
+            const localizedPath = (routing.pathnames as any)[internalPath]?.[newLocale] || pathname;
             nextRouter.push(`${prefix}${localizedPath}`);
         }
         
