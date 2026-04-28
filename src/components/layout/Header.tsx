@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Link, usePathname, useRouter } from '@/i18n/routing';
 import { useParams, usePathname as useNextPathname, useRouter as useNextRouter } from 'next/navigation';
 import { ROUTES } from '@/lib/routes';
-import { translateSlug, reverseTranslateSlug, getCanonicalPath } from '@/lib/seo/translations';
+import { translateSlug, reverseTranslateSlug, getCanonicalPath, INTENT_TRANSLATIONS } from '@/lib/seo/translations';
 import {
     CalendarDays,
     Menu,
