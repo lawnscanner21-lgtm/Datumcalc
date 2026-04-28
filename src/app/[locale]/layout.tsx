@@ -32,7 +32,7 @@ export async function generateMetadata(
     locales.forEach(loc => {
         languages[loc] = `${siteUrl}${loc === 'de' ? '' : `/${loc}`}`;
     });
-    // Add x-default
+    // Add x-default pointing to root (German)
     languages['x-default'] = `${siteUrl}`;
 
     return {
@@ -45,6 +45,7 @@ export async function generateMetadata(
             : "Calculate exact date differences, add days or determine business days. Free, precise and ISO 8601 compliant.",
         metadataBase: new URL(siteUrl),
         alternates: {
+            canonical: `${siteUrl}${locale === 'de' ? '' : `/${locale}`}`,
             languages: languages,
         },
         icons: {

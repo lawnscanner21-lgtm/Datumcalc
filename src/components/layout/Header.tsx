@@ -150,18 +150,16 @@ export function Header() {
                             title={t('title')}
                             aria-label={`${t('title')} – ${t('logoTagline')}`}
                             className="flex items-center gap-3 group relative z-50 shrink-0"
-                            itemProp="url"
                         >
                             <img
                                 src="/logo.png"
-                                alt="Datumsrechner Logo"
+                                alt={locale === 'de' ? 'Datumsrechner Logo' : 'Date Calculator Logo'}
                                 width={40}
                                 height={40}
                                 className="w-10 h-10 rounded-xl border border-white/20 shadow-[0_0_16px_rgba(0,210,255,0.25)] group-hover:shadow-[0_0_24px_rgba(255,0,85,0.45)] group-hover:scale-105 transition-all duration-300 object-cover"
                             />
                             <strong
                                 className="font-black text-xl sm:text-2xl tracking-tighter text-white leading-none select-none"
-                                itemProp="name"
                             >
                                 {t('title')}
                             </strong>

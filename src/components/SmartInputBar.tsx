@@ -31,7 +31,8 @@ export function SmartInputBar() {
 
         const locIntent = INTENT_TRANSLATIONS[locale][intent] || intent;
         const slug = lower.replace(/ /g, '-');
-        const url = `/${locale === 'de' ? '' : `${locale}/`}${locIntent}/${slug}`;
+        const prefix = locale === 'de' ? '' : `/${locale}`;
+        const url = `${prefix}/${locIntent}/${slug}`;
 
         router.push(url);
     };

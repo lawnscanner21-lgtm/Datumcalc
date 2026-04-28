@@ -11,14 +11,16 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     const t = await getTranslations({ locale, namespace: 'Common.titles' });
     const siteUrl = SITE_URL;
     const locSlug = INTENT_TRANSLATIONS[locale]['impressum'];
-    const fullUrl = `${siteUrl}/${locale}/${locSlug}`;
+    const prefix = locale === 'de' ? '' : `/${locale}`;
+    const fullUrl = `${siteUrl}${prefix}/${locSlug}`;
 
     // Build hreflang alternates
     const languages: Record<string, string> = {};
     locales.forEach(loc => {
-        languages[loc] = `${siteUrl}/${loc}/${INTENT_TRANSLATIONS[loc]['impressum']}`;
+        const lp = loc === 'de' ? '' : `/${loc}`;
+        languages[loc] = `${siteUrl}${lp}/${INTENT_TRANSLATIONS[loc]['impressum']}`;
     });
-    languages['x-default'] = `${siteUrl}/de/impressum`;
+    languages['x-default'] = `${siteUrl}/impressum`;
 
     return {
         title: locale === 'de' ? `Impressum & Rechtliche Hinweise | Datumsrechner ✓` : `Imprint & Legal Notice | Date Calculator ✓`,
