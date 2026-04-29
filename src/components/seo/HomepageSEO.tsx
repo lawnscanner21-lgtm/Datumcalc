@@ -2,6 +2,7 @@ import { Link } from '@/i18n/routing';
 import { ROUTES } from '@/lib/routes';
 import { CheckCircle2, CalendarCheck2, Clock4, Users, ShieldCheck } from 'lucide-react';
 import { SITE_URL } from '@/lib/constants';
+import { translateSlug } from '@/lib/seo/translations';
 
 const siteUrl = SITE_URL;
 const dateModified = new Date().toISOString().split('T')[0];
