@@ -133,7 +133,9 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 
     // STRICT ENFORCEMENT: Redirect if accessed via mismatched segments (like GSC errors)
     const expectedIntent = INTENT_TRANSLATIONS[locale][internalIntent] || internalIntent;
-    if (intent.toLowerCase() !== expectedIntent.toLowerCase() || slugStr.toLowerCase() !== correctSlug.toLowerCase()) {
+    const currentPath = locale === 'de' ? `/${intent}/${slugStr}` : `/${locale}/${intent}/${slugStr}`;
+    
+    if (currentPath.toLowerCase() !== correctPath.toLowerCase()) {
         permanentRedirect(correctPath); 
     }
 
@@ -244,9 +246,9 @@ export default async function ProgrammaticPage({
     
     const correctSlug = translateSlug(canonicalSlugStr, locale);
     const correctPath = getCanonicalPath(locale, internalIntent, correctSlug);
-    const expectedIntent = INTENT_TRANSLATIONS[locale][internalIntent] || internalIntent;
+    const currentPath = locale === 'de' ? `/${intent}/${slugStr}` : `/${locale}/${intent}/${slugStr}`;
     
-    if (intent.toLowerCase() !== expectedIntent.toLowerCase() || slugStr.toLowerCase() !== correctSlug.toLowerCase()) {
+    if (currentPath.toLowerCase() !== correctPath.toLowerCase()) {
         permanentRedirect(correctPath);
     }
 

@@ -463,18 +463,27 @@ export function HomepageSEO({ locale = 'de' }: { locale?: string }) {
                             ))}
                         </ul>
                     </div>
-                    {/* Guides */}
                     <div className="bg-white/[0.02] p-7 rounded-3xl border border-white/5 hover:bg-white/[0.04] hover:border-white/10 transition-all duration-300">
                         <h3 className="text-white font-bold text-xl mb-5 flex items-center gap-2">
                             <CheckCircle2 className="w-5 h-5 text-green-400" aria-hidden="true" />
                             {c.hero.ratgeber}
                         </h3>
                         <ul className="space-y-3">
-                            {[1,2,3].map((_, i) => (
-                                <li key={i}>
-                                    <span className="text-white/40 text-sm">Coming Soon</span>
-                                </li>
-                            ))}
+                            {[
+                                { de: 'was-ist-ein-arbeitstag', en: 'what-is-a-business-day' },
+                                { de: 'schaltjahre-erklaert', en: 'leap-years-explained' },
+                                { de: 'wochen-im-jahr', en: 'weeks-in-a-year' }
+                            ].map((g, i) => {
+                                const slug = loc === 'de' ? g.de : g.en; // Simplified for now
+                                return (
+                                    <li key={i}>
+                                        <Link href={ROUTES.getRatgeber(slug)} className="text-white/60 hover:text-white transition-colors flex items-center gap-2 group text-sm">
+                                            <span className="text-green-400/40 group-hover:text-green-400 text-xs" aria-hidden="true">▶</span>
+                                            {slug.replace(/-/g, ' ')}
+                                        </Link>
+                                    </li>
+                                );
+                            })}
                         </ul>
                     </div>
                 </div>

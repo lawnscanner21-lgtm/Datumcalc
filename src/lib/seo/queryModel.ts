@@ -50,6 +50,8 @@ export const CANONICAL_QUERIES: Record<string, QueryDefinition> = {
     'tage-bis-winteranfang': { canonicalSlug: 'tage-bis-winteranfang', intentType: 'Informational', priority: 'Medium', calcMode: 'difference', isIndexable: true },
     'tage-bis-fruehlingsanfang': { canonicalSlug: 'tage-bis-fruehlingsanfang', intentType: 'Informational', priority: 'Medium', calcMode: 'difference', isIndexable: true },
     'tage-bis-herbstanfang': { canonicalSlug: 'tage-bis-herbstanfang', intentType: 'Informational', priority: 'Medium', calcMode: 'difference', isIndexable: true },
+    'tage-bis-neujahr': { canonicalSlug: 'tage-bis-neujahr', intentType: 'Informational', priority: 'High', calcMode: 'difference', isIndexable: true },
+    'tage-bis-urlaub': { canonicalSlug: 'tage-bis-urlaub', intentType: 'Informational', priority: 'Medium', calcMode: 'difference', isIndexable: true },
 
     // Business & Special
     'arbeitstage-jahr': { canonicalSlug: 'arbeitstage-jahr', intentType: 'Informational', priority: 'High', calcMode: 'business_days', isIndexable: true },
