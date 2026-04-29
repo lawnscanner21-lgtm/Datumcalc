@@ -1,9 +1,12 @@
 import { Link } from '@/i18n/routing';
 import { ROUTES } from '@/lib/routes';
-import { translateSlug } from '@/lib/seo/translations';
+import { translateSlug, INTENT_TRANSLATIONS } from '@/lib/seo/translations';
+import { useTranslations } from 'next-intl';
 
 export function InternalLinksBlock({ locale, intent, slug }: { locale: string; intent: string; slug: string }) {
-    // Dynamically build related links (±10% numeric variations, 1 event, 1 use case)
+    const t = useTranslations('Header.Nav');
+    const tEvents = useTranslations('Events');
+    
     const links: { label: string; href: any; type: string }[] = [];
     
     const match = slug.match(/^(\d+)-/);
@@ -12,7 +15,6 @@ export function InternalLinksBlock({ locale, intent, slug }: { locale: string; i
     const isDe = locale === 'de';
     
     if (numValue > 0) {
-        // +-10%, +-20% logic approx
         const values = [
             Math.round(numValue * 0.8),
             Math.round(numValue * 0.9),
@@ -21,9 +23,9 @@ export function InternalLinksBlock({ locale, intent, slug }: { locale: string; i
         ];
         
         values.forEach(v => {
-            const label = isDe ? `${v} Tage ab heute` : `${v} ${translateSlug('tage ab-heute', locale)}`;
+            const locLabel = translateSlug(`${v}-tage-ab-heute`, locale).replace(/-/g, ' ');
             links.push({ 
-                label, 
+                label: locLabel, 
                 href: ROUTES.getAddieren(translateSlug(`${v}-tage-ab-heute`, locale)), 
                 type: isDe ? 'Variation' : 'Variation' 
             });
@@ -31,9 +33,9 @@ export function InternalLinksBlock({ locale, intent, slug }: { locale: string; i
     } else {
         const standard = [30, 90, 100, 365];
         standard.forEach(v => {
-            const label = isDe ? `${v} Tage ab heute` : `${v} ${translateSlug('tage ab-heute', locale)}`;
+            const locLabel = translateSlug(`${v}-tage-ab-heute`, locale).replace(/-/g, ' ');
             links.push({ 
-                label, 
+                label: locLabel, 
                 href: ROUTES.getAddieren(translateSlug(`${v}-tage-ab-heute`, locale)), 
                 type: isDe ? 'Beliebt' : 'Popular' 
             });
@@ -42,32 +44,36 @@ export function InternalLinksBlock({ locale, intent, slug }: { locale: string; i
 
     // Add more event & guide links
     const events = [
-        { de: 'Tage bis Weihnachten', slug: 'tage-bis-weihnachten' },
-        { de: 'Tage bis Silvester', slug: 'tage-bis-silvester' }
+        { key: 'weihnachten', slug: 'tage-bis-weihnachten' },
+        { key: 'silvester', slug: 'tage-bis-silvester' }
     ];
 
     events.forEach(e => {
+        const label = `${t('differenz')}: ${tEvents(e.key)}`;
         links.push({ 
-            label: isDe ? e.de : translateSlug(e.slug, locale).replace(/-/g, ' '), 
+            label, 
             href: ROUTES.getDifferenz(translateSlug(e.slug, locale)), 
             type: isDe ? 'Event' : 'Event' 
         });
     });
 
+    const workSlug = INTENT_TRANSLATIONS[locale]['arbeitstage'];
     links.push({ 
-        label: isDe ? 'Was ist ein Arbeitstag?' : 'What is a business day?', 
-        href: ROUTES.getRatgeber(isDe ? 'was-ist-ein-arbeitstag' : 'what-is-a-business-day'), 
+        label: t('arbeitstage'), 
+        href: `/${locale === 'de' ? '' : locale}/${workSlug}`, 
         type: isDe ? 'Ratgeber' : 'Guide' 
     });
+
+    const guideSlug = INTENT_TRANSLATIONS[locale]['ratgeber'];
     links.push({ 
-        label: isDe ? 'Schaltjahre erklärt' : 'Leap years explained', 
-        href: ROUTES.getRatgeber(isDe ? 'schaltjahre-erklaert' : 'leap-years-explained'), 
+        label: t('ratgeber'), 
+        href: `/${locale === 'de' ? '' : locale}/${guideSlug}`, 
         type: isDe ? 'Ratgeber' : 'Guide' 
     });
 
     return (
         <section className="bg-white/5 border border-white/10 rounded-2xl p-6 md:p-8 mb-12">
-            <h2 className="text-xl font-bold mb-6 text-white">Verwandte Berechnungen & Themen</h2>
+            <h2 className="text-xl font-bold mb-6 text-white">{isDe ? 'Verwandte Berechnungen & Themen' : 'Related Calculations'}</h2>
             <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 {links.map((link, i) => (
                     <li key={i}>

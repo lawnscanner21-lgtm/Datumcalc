@@ -136,6 +136,206 @@ const CONTENT: Record<string, any> = {
             title: 'Frequently Asked Questions',
             subtitle: 'Expert answers all about date calculation.'
         }
+    },
+    fr: {
+        faqs: [
+            {
+                question: 'Les calculs sont-ils indépendants des fuseaux horaires ?',
+                answer: 'Oui. La logique interne de notre calculateur utilise des horodatages UTC localisés et neutralisés.',
+            },
+            {
+                question: 'Les jours fériés sont-ils pris en compte ?',
+                answer: 'Dans la version actuelle, les week-ends réguliers sont filtrés. Le support des jours fériés spécifiques par pays sera bientôt disponible.',
+            },
+            {
+                question: 'Les années bissextiles sont-elles calculées correctement ?',
+                answer: 'Absolument. Notre moteur est basé sur les normes ISO-8601 et calcule les années bissextiles avec précision.',
+            },
+        ],
+        trustSignals: [
+            { icon: CheckCircle2, label: 'Conforme ISO 8601', color: 'text-green-400' },
+            { icon: CalendarCheck2, label: 'Années bissextiles incluses', color: 'text-neon-blue' },
+            { icon: Clock4, label: 'Ultra rapide', color: 'text-neon' },
+            { icon: ShieldCheck, label: '100% gratuit', color: 'text-white/70' },
+        ],
+        hero: {
+            title: 'Explorez le Calculateur de Date',
+            subtitle: 'Échéances et événements fréquemment recherchés.',
+            fristen: 'Échéances populaires',
+            ereignisse: 'Événements & Décomptes',
+            ratgeber: 'Guides & Savoir'
+        },
+        seo: {
+            headline: 'Le calculateur de date ultime pour les professionnels',
+            u1: 'Que vous planifiez des délais de projet ou calculiez votre âge exact, notre <strong>calculateur de date</strong> fournit des réponses précises en quelques secondes.',
+            u2: 'Calculez les <strong>jours entre deux dates</strong>, <strong>ajoutez ou soustrayez des dates</strong> et déterminez les <strong>jours ouvrables</strong>.',
+            tableTitle: 'Cas d\'utilisation',
+            th1: 'Cas d\'utilisation',
+            th2: 'Outil recommandé',
+            th3: 'Exemple typique',
+            case1: 'Délais & Préavis',
+            case2: 'Planification de projet',
+            case3: 'Décomptes d\'événements',
+            case4: 'Calculer l\'âge',
+            footer: 'Notre système prend en compte automatiquement les années bissextiles et les longueurs de mois irrégulières grâce aux algorithmes ISO-8601.'
+        },
+        howto: {
+            title: 'Comment ça marche ?',
+            subtitle: 'Le résultat en trois étapes simples.',
+            steps: [
+                { title: 'Choisir l\'outil', desc: 'Sélectionnez parmi différence de date, ajout, jours ouvrables ou âge.' },
+                { title: 'Saisir la date', desc: 'Entrez les dates de début et de fin.' },
+                { title: 'Obtenir le résultat', desc: 'Le résultat apparaît instantanément.' }
+            ]
+        },
+        faqHeading: {
+            title: 'Questions Fréquemment Posées',
+            subtitle: 'Réponses d\'experts sur le calcul de date.'
+        }
+    },
+    es: {
+        faqs: [
+            {
+                question: '¿Los cálculos son independientes de la zona horaria?',
+                answer: 'Sí. La lógica interna de nuestra calculadora utiliza marcas de tiempo UTC localizadas y neutralizadas.',
+            },
+        ],
+        trustSignals: [
+            { icon: CheckCircle2, label: 'Conforme a ISO 8601', color: 'text-green-400' },
+            { icon: CalendarCheck2, label: 'Años bisiestos calculados', color: 'text-neon-blue' },
+            { icon: Clock4, label: 'Súper rápido', color: 'text-neon' },
+            { icon: ShieldCheck, label: '100% gratis', color: 'text-white/70' },
+        ],
+        hero: {
+            title: 'Explora la Calculadora de Fechas',
+            subtitle: 'Plazos y eventos buscados con frecuencia.',
+            fristen: 'Plazos populares',
+            ereignisse: 'Eventos y cuentas atrás',
+            ratgeber: 'Guías y conocimiento'
+        },
+        seo: {
+            headline: 'La calculadora de fechas definitiva',
+            u1: 'Ya sea que estés planeando plazos de proyectos o calculando tu edad exacta, nuestra <strong>calculadora de fechas</strong> ofrece respuestas precisas.',
+            u2: 'Calcula <strong>días entre dos fechas</strong>, <strong>suma o resta fechas</strong> y determina <strong>días laborables</strong>.',
+            tableTitle: 'Casos de uso',
+            th1: 'Caso de uso',
+            th2: 'Herramienta recomendada',
+            th3: 'Ejemplo típico',
+            case1: 'Plazos y avisos',
+            case2: 'Planificación de proyectos',
+            case3: 'Cuentas atrás de eventos',
+            case4: 'Calcular edad',
+            footer: 'Nuestro sistema tiene en cuenta automáticamente los años bisiestos y las duraciones de los meses.'
+        },
+        howto: {
+            title: '¿Cómo funciona?',
+            subtitle: 'Resultado en tres sencillos pasos.',
+            steps: [
+                { title: 'Elegir herramienta', desc: 'Selecciona entre diferencia de fechas, suma, días laborables o edad.' },
+                { title: 'Ingresar fecha', desc: 'Introduce las fechas de inicio y fin.' },
+                { title: 'Obtener resultado', desc: 'El resultado aparece al instante.' }
+            ]
+        },
+        faqHeading: {
+            title: 'Preguntas frecuentes',
+            subtitle: 'Respuestas de expertos sobre el cálculo de fechas.'
+        }
+    },
+    it: {
+        faqs: [
+            {
+                question: 'I calcoli sono indipendenti dal fuso orario?',
+                answer: 'Sì. La logica interna del nostro calcolatore utilizza timestamp UTC localizzati.',
+            },
+        ],
+        trustSignals: [
+            { icon: CheckCircle2, label: 'Conforme ISO 8601', color: 'text-green-400' },
+            { icon: CalendarCheck2, label: 'Anni bisestili calcolati', color: 'text-neon-blue' },
+            { icon: Clock4, label: 'Velocissimo', color: 'text-neon' },
+            { icon: ShieldCheck, label: '100% gratuito', color: 'text-white/70' },
+        ],
+        hero: {
+            title: 'Esplora il Calcolatore di Date',
+            subtitle: 'Scadenze ed eventi cercati di frequente.',
+            fristen: 'Scadenze popolari',
+            ereignisse: 'Eventi e conti alla rovescia',
+            ratgeber: 'Guide e conoscenza'
+        },
+        seo: {
+            headline: 'Il calcolatore di date definitivo',
+            u1: 'Sia che tu stia pianificando scadenze di progetti o calcolando la tua età esatta, il nostro <strong>calcolatore di date</strong> fornisce risposte precise.',
+            u2: 'Calcola <strong>giorni tra due date</strong>, <strong>aggiungi o sottrai date</strong> e determina i <strong>giorni lavorativi</strong>.',
+            tableTitle: 'Casi d\'uso',
+            th1: 'Caso d\'uso',
+            th2: 'Strumento consigliato',
+            th3: 'Esempio tipico',
+            case1: 'Scadenze e preavvisi',
+            case2: 'Pianificazione progetti',
+            case3: 'Conti alla rovescia eventi',
+            case4: 'Calcola età',
+            footer: 'Il nostro sistema tiene conto automaticamente degli anni bisestili.'
+        },
+        howto: {
+            title: 'Come funziona?',
+            subtitle: 'Risultato in tre semplici passaggi.',
+            steps: [
+                { title: 'Scegli strumento', desc: 'Seleziona tra differenza date, aggiunta, giorni lavorativi o età.' },
+                { title: 'Inserisci data', desc: 'Inserisci le date di inizio e fine.' },
+                { title: 'Ottieni risultato', desc: 'Il risultato appare all\'istante.' }
+            ]
+        },
+        faqHeading: {
+            title: 'Domande frequenti',
+            subtitle: 'Risposte di esperti sul calcolo delle date.'
+        }
+    },
+    pt: {
+        faqs: [
+            {
+                question: 'Os cálculos são independentes do fuso horário?',
+                answer: 'Sim. A lógica interna da nossa calculadora utiliza carimbos de data/hora UTC.',
+            },
+        ],
+        trustSignals: [
+            { icon: CheckCircle2, label: 'Compatível com ISO 8601', color: 'text-green-400' },
+            { icon: CalendarCheck2, label: 'Anos bissextos calculados', color: 'text-neon-blue' },
+            { icon: Clock4, label: 'Muito rápido', color: 'text-neon' },
+            { icon: ShieldCheck, label: '100% gratuito', color: 'text-white/70' },
+        ],
+        hero: {
+            title: 'Explore a Calculadora de Datas',
+            subtitle: 'Prazos e eventos pesquisados com frequência.',
+            fristen: 'Prazos populares',
+            ereignisse: 'Eventos e contagens decrescentes',
+            ratgeber: 'Guias e conhecimento'
+        },
+        seo: {
+            headline: 'A calculadora de datas definitiva',
+            u1: 'Se você está planejando prazos de projetos ou calculando sua idade exata, nossa <strong>calculadora de datas</strong> oferece respostas precisas.',
+            u2: 'Calcule <strong>dias entre duas datas</strong>, <strong>some ou subtraia datas</strong> e determine <strong>dias úteis</strong>.',
+            tableTitle: 'Casos de uso',
+            th1: 'Caso de uso',
+            th2: 'Ferramenta recomendada',
+            th3: 'Exemplo típico',
+            case1: 'Prazos e avisos',
+            case2: 'Planejamento de projetos',
+            case3: 'Contagens de eventos',
+            case4: 'Calcular idade',
+            footer: 'Nosso sistema leva em conta automaticamente os anos bissextos.'
+        },
+        howto: {
+            title: 'Como funciona?',
+            subtitle: 'Resultado em três passos simples.',
+            steps: [
+                { title: 'Escolher ferramenta', desc: 'Selecione entre diferença de datas, soma, dias úteis ou idade.' },
+                { title: 'Inserir data', desc: 'Insira as datas de início e fim.' },
+                { title: 'Obter resultado', desc: 'O resultado aparece instantaneamente.' }
+            ]
+        },
+        faqHeading: {
+            title: 'Perguntas frequentes',
+            subtitle: 'Respostas de especialistas sobre o cálculo de datas.'
+        }
     }
 };
 
@@ -143,23 +343,29 @@ export function HomepageSEO({ locale = 'de' }: { locale?: string }) {
     const loc = CONTENT[locale] ? locale : 'en';
     const c = CONTENT[loc];
 
-    const topQueries = [
-        { title: loc === 'de' ? '30 Tage ab heute' : '30 days from today',   href: ROUTES.getAddieren(loc === 'de' ? '30-tage-ab-heute' : '30-days-from-today') },
-        { title: loc === 'de' ? '60 Tage ab heute' : '60 days from today',   href: ROUTES.getAddieren(loc === 'de' ? '60-tage-ab-heute' : '60-days-from-today') },
-        { title: loc === 'de' ? '90 Tage ab heute' : '90 days from today',   href: ROUTES.getAddieren(loc === 'de' ? '90-tage-ab-heute' : '90-days-from-today') },
-        { title: loc === 'de' ? '100 Tage ab heute' : '100 days from today',  href: ROUTES.getAddieren(loc === 'de' ? '100-tage-ab-heute' : '100-days-from-today') },
-        { title: loc === 'de' ? '6 Monate ab heute' : '6 months from today',  href: ROUTES.getAddieren(loc === 'de' ? '6-monate-ab-heute' : '6-months-from-today') },
-        { title: loc === 'de' ? '1 Jahr ab heute' : '1 year from today',    href: ROUTES.getAddieren(loc === 'de' ? '1-jahr-ab-heute' : '1-year-from-today') },
-    ];
-
+    const topQueries = [30, 60, 90, 100, 180, 365].map(v => {
+        const canonical = v === 180 ? '6-monate-ab-heute' : v === 365 ? '1-jahr-ab-heute' : `${v}-tage-ab-heute`;
+        const locSlug = translateSlug(canonical, loc);
+        return {
+            title: locSlug.replace(/-/g, ' '),
+            href: ROUTES.getAddieren(locSlug)
+        };
+    });
+ 
     const eventQueries = [
-        { title: loc === 'de' ? 'Tage bis Weihnachten' : 'Days until Christmas',    href: ROUTES.getDifferenz(loc === 'de' ? 'tage-bis-weihnachten' : 'days-until-christmas') },
-        { title: loc === 'de' ? 'Tage bis Silvester' : 'Days until New Year\'s Eve',      href: ROUTES.getDifferenz(loc === 'de' ? 'tage-bis-silvester' : 'days-until-new-years-eve') },
-        { title: loc === 'de' ? 'Tage bis Ostern' : 'Days until Easter',         href: ROUTES.getDifferenz(loc === 'de' ? 'tage-bis-ostern' : 'days-until-easter') },
-        { title: loc === 'de' ? 'Tage bis Sommeranfang' : 'Days until start of summer',   href: ROUTES.getDifferenz(loc === 'de' ? 'tage-bis-sommeranfang' : 'days-until-start-of-summer') },
-        { title: loc === 'de' ? 'Tage bis Neujahr' : 'Days until New Year',        href: ROUTES.getDifferenz(loc === 'de' ? 'tage-bis-neujahr' : 'days-until-new-year') },
-        { title: loc === 'de' ? 'Tage bis zum Urlaub' : 'Days until vacation',     href: ROUTES.getDifferenz(loc === 'de' ? 'tage-bis-urlaub' : 'days-until-vacation') },
-    ];
+        'tage-bis-weihnachten',
+        'tage-bis-silvester',
+        'tage-bis-ostern',
+        'tage-bis-sommeranfang',
+        'tage-bis-neujahr',
+        'tage-bis-urlaub'
+    ].map(slug => {
+        const locSlug = translateSlug(slug, loc);
+        return {
+            title: locSlug.replace(/-/g, ' '),
+            href: ROUTES.getDifferenz(locSlug)
+        };
+    });
 
     const faqJsonLd = {
         '@context': 'https://schema.org',
