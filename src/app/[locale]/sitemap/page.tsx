@@ -168,17 +168,25 @@ export default async function SitemapPage({ params }: { params: Promise<{ locale
                         <span className="text-neon">04.</span> {tSitemap('legal')}
                     </h2>
                     <ul className="space-y-3">
-                        {legalRoutes.map(route => (
+                        {legalRoutes.map(route => {
+                            const keyMap: Record<string, any> = {
+                                'ueber-uns': 'about',
+                                'agb': 'terms',
+                                'datenschutz': 'privacy',
+                                'impressum': 'imprint'
+                            };
+                            return (
                             <li key={route}>
                                 <Link 
                                     href={(`/${route}` as any)} 
                                     className="text-white/60 hover:text-neon flex items-center justify-between group py-2"
                                 >
-                                    <span className="capitalize">{tNav(route)}</span>
+                                    <span className="capitalize">{t(keyMap[route])}</span>
                                     <div className="w-1 h-1 rounded-full bg-white/20 group-hover:bg-neon transition-colors"></div>
                                 </Link>
                             </li>
-                        ))}
+                            );
+                        })}
                     </ul>
 
                     <div className="mt-12 p-6 rounded-2xl bg-gradient-to-br from-neon/10 to-transparent border border-neon/20">
