@@ -107,5 +107,11 @@
         "theDateIs": "La data è",
         "verified": "Verificato matematicamente e calendarialmente",
         "description": "Calcolo esatto conforme a ISO-8601 per {slug}."
+    },
+    "Sitemap": {
+        "subtitle": "Tutti i contenuti e gli strumenti di datums-rechner.com in un colpo d'occhio.",
+        "calculators": "Calcolatrici e Strumenti",
+        "commonSpans": "Intervalli di Tempo Comuni",
+        "legal": "Legale"
     }
 }

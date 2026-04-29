@@ -211,6 +211,62 @@ export const articles: Record<string, Article[]> = {
           <p>For programmers and mathematicians, this standard is essential because date information can be sorted lexicographically correct. Our date calculator is internally based entirely on these standardized timestamps to guarantee the highest mathematical precision.</p>
         `
         }
+    ],
+    es: [
+        {
+            slug: 'anos-bisiestos-explicados',
+            title: 'Años bisiestos explicados: ¿Por qué existe el 29 de febrero?',
+            description: 'Todo lo que necesitas saber sobre los años bisiestos. Aprende por qué nuestro calendario necesita un día extra cada cuatro años.',
+            publishedAt: '24 de marzo de 2024',
+            readTime: '3 min',
+            content: '<h2>¿Qué es un año bisiesto?</h2><p>Un año bisiesto tiene 366 días...</p>'
+        },
+        {
+            slug: 'calculo-de-dias-laborables',
+            title: '¿Cómo calcular días laborables y días hábiles?',
+            description: 'La diferencia entre días naturales, días hábiles y días laborables. Una guía para plazos legales y planificación de proyectos.',
+            publishedAt: '22 de marzo de 2024',
+            readTime: '4 min',
+            content: '<h2>Días laborables vs. días hábiles</h2><p>Existen diferencias legales...</p>'
+        }
+    ],
+    fr: [
+        {
+            slug: 'annees-bissextiles-expliquees',
+            title: 'Les années bissextiles expliquées : pourquoi le 29 février existe',
+            description: 'Tout ce que vous devez savoir sur les années bissextiles. Apprenez pourquoi notre calendrier a besoin d\'un jour supplémentaire tous les quatre ans.',
+            publishedAt: '24 mars 2024',
+            readTime: '3 min',
+            content: '<h2>Qu\'est-ce qu\'une année bissextile ?</h2><p>Une année bissextile compte 366 jours...</p>'
+        },
+        {
+            slug: 'calcul-des-jours-ouvrables',
+            title: 'Comment calculer les jours ouvrables et les jours ouvrés ?',
+            description: 'La différence entre les jours calendaires, les jours ouvrables et les jours ouvrés. Un guide pour les délais légaux.',
+            publishedAt: '22 mars 2024',
+            readTime: '4 min',
+            content: '<h2>Jours ouvrables vs jours ouvrés</h2><p>Il existe des différences légales...</p>'
+        }
+    ],
+    it: [
+        {
+            slug: 'anni-bisestili-spiegati',
+            title: 'Anni bisestili spiegati: perché esiste il 29 febbraio',
+            description: 'Tutto quello che c\'è da sapere sugli anni bisestili. Scopri perché il nostro calendario ha bisogno di un giorno in più ogni quattro anni.',
+            publishedAt: '24 marzo 2024',
+            readTime: '3 min',
+            content: '<h2>Cos\'è un anno bisestile?</h2><p>Un anno bisestile ha 366 giorni...</p>'
+        }
+    ],
+    pt: [
+        {
+            slug: 'anos-bissextos-explicados',
+            title: 'Anos bissextos explicados: Por que existe o 29 de fevereiro',
+            description: 'Tudo o que você precisa saber sobre anos bissextos. Saiba por que nosso calendário precisa de um dia extra a cada quatro anos.',
+            publishedAt: '24 de março de 2024',
+            readTime: '3 min',
+            content: '<h2>O que é um ano bissexto?</h2><p>Um ano bissexto tem 366 dias...</p>'
+        }
     ]
 };
 

@@ -107,5 +107,11 @@
         "theDateIs": "The date is",
         "verified": "Mathematically & Calendrically verified",
         "description": "Exact ISO-8601 compliant calculation for {slug}."
+    },
+    "Sitemap": {
+        "subtitle": "All contents and tools of datums-rechner.com at a glance.",
+        "calculators": "Calculators & Tools",
+        "commonSpans": "Common Time Spans",
+        "legal": "Legal"
     }
 }

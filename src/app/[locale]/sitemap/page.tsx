@@ -43,6 +43,8 @@ export default async function SitemapPage({ params }: { params: Promise<{ locale
     const { locale } = await params;
     setRequestLocale(locale);
     const t = await getTranslations({ locale, namespace: 'Common.titles' });
+    const tNav = await getTranslations({ locale, namespace: 'Header.Nav' });
+    const tSitemap = await getTranslations({ locale, namespace: 'Sitemap' });
     const isDe = locale === 'de';
 
     const calculatorIntents = [
@@ -50,34 +52,30 @@ export default async function SitemapPage({ params }: { params: Promise<{ locale
         { id: 'differenz', icon: '📅' },
         { id: 'arbeitstage', icon: '💼' },
         { id: 'alter', icon: '🎂' }
-    ];
+    ] as const;
 
-    const legalRoutes = ['ueber-uns', 'agb', 'datenschutz', 'impressum'];
+    const legalRoutes = ['ueber-uns', 'agb', 'datenschutz', 'impressum'] as const;
 
     return (
         <main className="flex-1 w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
             <header className="text-center mb-16">
-                <h1 className="text-4xl md:text-6xl font-black tracking-tight mb-4">
+                <h1 className="text-4xl md:text-6xl font-black tracking-tight mb-4 text-white">
                     {t('sitemap')}
                 </h1>
                 <p className="text-xl text-white/60">
-                    {isDe 
-                        ? `Alle Inhalte und Werkzeuge von ${DOMAIN} auf einen Blick.`
-                        : `All contents and tools of ${DOMAIN} at a glance.`}
+                    {tSitemap('subtitle')}
                 </p>
             </header>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
                 {/* 1. Calculator Categories & Tools */}
                 <section className="space-y-8">
-                    <h2 className="text-2xl font-bold border-b border-white/10 pb-4 mb-6 flex items-center gap-3">
-                        <span className="text-neon">01.</span> Rechner & Tools
+                    <h2 className="text-2xl font-bold border-b border-white/10 pb-4 mb-6 flex items-center gap-3 text-white">
+                        <span className="text-neon">01.</span> {tSitemap('calculators')}
                     </h2>
                     {calculatorIntents.map(intent => {
-                        const locIntent = INTENT_TRANSLATIONS[locale][intent.id] || intent.id;
                         const internalIntent = intent.id;
                         
-                        // Centralized mapping (scalable)
                         const intentToMode: Record<string, string> = {
                             addieren: 'add_subtract',
                             differenz: 'difference',
@@ -92,9 +90,9 @@ export default async function SitemapPage({ params }: { params: Promise<{ locale
 
                         return (
                             <div key={intent.id} className="space-y-4">
-                                <Link href={(`/${internalIntent}` as any)} className="text-lg font-bold hover:text-neon flex items-center gap-2">
+                                <Link href={(`/${internalIntent}` as any)} className="text-lg font-bold hover:text-neon flex items-center gap-2 text-white">
                                     <span>{intent.icon}</span>
-                                    <span className="capitalize">{locIntent}</span>
+                                    <span className="capitalize">{tNav(internalIntent)}</span>
                                 </Link>
                                 <ul className="pl-8 space-y-2 border-l border-white/5">
                                     {queries.slice(0, 10).map((def) => (
@@ -118,7 +116,7 @@ export default async function SitemapPage({ params }: { params: Promise<{ locale
 
                 {/* 2. Guides & Articles */}
                 <section className="space-y-8">
-                    <h2 className="text-2xl font-bold border-b border-white/10 pb-4 mb-6 flex items-center gap-3">
+                    <h2 className="text-2xl font-bold border-b border-white/10 pb-4 mb-6 flex items-center gap-3 text-white">
                         <span className="text-neon">02.</span> {isDe ? 'Ratgeber' : 'Guides'}
                     </h2>
                     <ul className="space-y-4">
@@ -139,21 +137,20 @@ export default async function SitemapPage({ params }: { params: Promise<{ locale
                     </ul>
                 </section>
 
-                {/* 3. Numeric Variations Directory (Anti-Orphan) */}
+                {/* 3. Numeric Variations Directory */}
                 <section className="space-y-8 lg:col-span-3">
-                    <h2 className="text-2xl font-bold border-b border-white/10 pb-4 mb-6 flex items-center gap-3">
-                        <span className="text-neon">03.</span> {isDe ? 'Häufige Zeitspannen' : 'Common Time Spans'}
+                    <h2 className="text-2xl font-bold border-b border-white/10 pb-4 mb-6 flex items-center gap-3 text-white">
+                        <span className="text-neon">03.</span> {tSitemap('commonSpans')}
                     </h2>
                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
                         {[30, 45, 60, 90, 100, 120, 150, 180, 200, 365, 500, 730, 1000].map(days => {
                             const canonicalSlug = `${days}-tage-ab-heute`;
                             const locSlug = translateSlug(canonicalSlug, locale);
-                            const locIntent = INTENT_TRANSLATIONS[locale]['addieren'] || 'addieren';
                             return (
                                 <Link 
                                     key={days}
                                     href={{
-                                        pathname: (`/${locIntent}/[...slug]` as any),
+                                        pathname: '/addieren/[...slug]',
                                         params: { slug: [locSlug] }
                                     }}
                                     className="px-4 py-2 rounded-lg bg-white/5 border border-white/5 hover:border-neon/30 text-xs text-center text-white/50 hover:text-white transition-all capitalize"
@@ -165,10 +162,10 @@ export default async function SitemapPage({ params }: { params: Promise<{ locale
                     </div>
                 </section>
 
-                {/* 4. Legal & Settings */}
+                {/* 4. Legal */}
                 <section className="space-y-8">
-                    <h2 className="text-2xl font-bold border-b border-white/10 pb-4 mb-6 flex items-center gap-3">
-                        <span className="text-neon">04.</span> {isDe ? 'Rechtliches' : 'Legal'}
+                    <h2 className="text-2xl font-bold border-b border-white/10 pb-4 mb-6 flex items-center gap-3 text-white">
+                        <span className="text-neon">04.</span> {tSitemap('legal')}
                     </h2>
                     <ul className="space-y-3">
                         {legalRoutes.map(route => (
@@ -177,7 +174,7 @@ export default async function SitemapPage({ params }: { params: Promise<{ locale
                                     href={(`/${route}` as any)} 
                                     className="text-white/60 hover:text-neon flex items-center justify-between group py-2"
                                 >
-                                    <span className="capitalize">{(INTENT_TRANSLATIONS[locale][route] || route).replace(/-/g, ' ')}</span>
+                                    <span className="capitalize">{tNav(route)}</span>
                                     <div className="w-1 h-1 rounded-full bg-white/20 group-hover:bg-neon transition-colors"></div>
                                 </Link>
                             </li>
