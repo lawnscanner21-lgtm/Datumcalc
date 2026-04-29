@@ -34,38 +34,38 @@ export const SLUG_TOKEN_TRANSLATIONS: Record<string, Record<string, string>> = {
     de: { 
         'tage': 'tage', 'monate': 'monate', 'jahre': 'jahre', 
         'ab-heute': 'ab-heute', 'tage-bis': 'tage-bis',
-        'weihnachten': 'weihnachten', 'silvester': 'silvester', 
-        'ostern': 'ostern', 'sommeranfang': 'sommeranfang'
+        'weihnachten': 'weihnachten', 'silvester': 'silvester', 'neujahr': 'neujahr',
+        'ostern': 'ostern', 'sommeranfang': 'sommeranfang', 'urlaub': 'urlaub'
     },
     en: { 
         'tage': 'days', 'monate': 'months', 'jahre': 'years', 
         'ab-heute': 'from-today', 'tage-bis': 'days-until',
-        'weihnachten': 'christmas', 'silvester': 'new-year', 
-        'ostern': 'easter', 'sommeranfang': 'summer-solstice'
+        'weihnachten': 'christmas', 'silvester': 'new-years-eve', 'neujahr': 'new-year',
+        'ostern': 'easter', 'sommeranfang': 'summer-solstice', 'urlaub': 'vacation'
     },
     es: { 
         'tage': 'dias', 'monate': 'meses', 'jahre': 'anos', 
         'ab-heute': 'desde-hoy', 'tage-bis': 'dias-hasta',
-        'weihnachten': 'navidad', 'silvester': 'nochevieja', 
-        'ostern': 'pascua', 'sommeranfang': 'solsticio-de-verano'
+        'weihnachten': 'navidad', 'silvester': 'nochevieja', 'neujahr': 'ano-nuevo',
+        'ostern': 'pascua', 'sommeranfang': 'solsticio-de-verano', 'urlaub': 'vacaciones'
     },
     fr: { 
         'tage': 'jours', 'monate': 'mois', 'jahre': 'annees', 
         'ab-heute': 'a-partir-d-aujourd-hui', 'tage-bis': 'jours-jusqu-a',
-        'weihnachten': 'noel', 'silvester': 'nouvel-an', 
-        'ostern': 'paques', 'sommeranfang': 'solstice-d-ete'
+        'weihnachten': 'noel', 'silvester': 'reveillon', 'neujahr': 'nouvel-an',
+        'ostern': 'paques', 'sommeranfang': 'solstice-d-ete', 'urlaub': 'vacances'
     },
     it: { 
         'tage': 'giorni', 'monate': 'mesi', 'jahre': 'anni', 
         'ab-heute': 'da-oggi', 'tage-bis': 'giorni-fino-a',
-        'weihnachten': 'natale', 'silvester': 'capodanno', 
-        'ostern': 'pasqua', 'sommeranfang': 'solstizio-d-estate'
+        'weihnachten': 'natale', 'silvester': 'san-silvestro', 'neujahr': 'capodanno',
+        'ostern': 'pasqua', 'sommeranfang': 'solstizio-d-estate', 'urlaub': 'vacanza'
     },
     pt: { 
         'tage': 'dias', 'monate': 'meses', 'jahre': 'anos', 
         'ab-heute': 'a-partir-de-hoje', 'tage-bis': 'dias-ate',
-        'weihnachten': 'natal', 'silvester': 'ano-novo', 
-        'ostern': 'pascoa', 'sommeranfang': 'solsticio-de-verao'
+        'weihnachten': 'natal', 'silvester': 'reveillon', 'neujahr': 'ano-novo',
+        'ostern': 'pascoa', 'sommeranfang': 'solsticio-de-verao', 'urlaub': 'ferias'
     }
 };
 
