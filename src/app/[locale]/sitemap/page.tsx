@@ -117,7 +117,7 @@ export default async function SitemapPage({ params }: { params: Promise<{ locale
                 {/* 2. Guides & Articles */}
                 <section className="space-y-8">
                     <h2 className="text-2xl font-bold border-b border-white/10 pb-4 mb-6 flex items-center gap-3 text-white">
-                        <span className="text-neon">02.</span> {isDe ? 'Ratgeber' : 'Guides'}
+                        <span className="text-neon">02.</span> {tNav('ratgeber')}
                     </h2>
                     <ul className="space-y-4">
                         {getArticles(locale).map(article => (
