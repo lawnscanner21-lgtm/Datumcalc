@@ -7,26 +7,6 @@ export const INTENT_TRANSLATIONS: Record<string, Record<string, string>> = {
     de: { 
         addieren: 'addieren', differenz: 'differenz', arbeitstage: 'arbeitstage', alter: 'alter', 
         ratgeber: 'ratgeber', 'ueber-uns': 'ueber-uns', agb: 'agb', datenschutz: 'datenschutz', impressum: 'impressum', sitemap: 'sitemap' 
-    },
-    en: { 
-        addieren: 'add', differenz: 'difference', arbeitstage: 'business', alter: 'age', 
-        ratgeber: 'guide', 'ueber-uns': 'about-us', agb: 'terms', datenschutz: 'privacy', impressum: 'imprint', sitemap: 'sitemap' 
-    },
-    es: { 
-        addieren: 'sumar', differenz: 'diferencia', arbeitstage: 'laborables', alter: 'edad', 
-        ratgeber: 'guia', 'ueber-uns': 'sobre-nosotros', agb: 'terminos', datenschutz: 'privacidad', impressum: 'aviso-legal', sitemap: 'sitemap' 
-    },
-    fr: { 
-        addieren: 'ajouter', differenz: 'difference', arbeitstage: 'ouvrables', alter: 'age', 
-        ratgeber: 'guide', 'ueber-uns': 'a-propos', agb: 'conditions', datenschutz: 'confidentialite', impressum: 'mentions-legales', sitemap: 'sitemap' 
-    },
-    it: { 
-        addieren: 'aggiungere', differenz: 'differenza', arbeitstage: 'lavorativi', alter: 'eta', 
-        ratgeber: 'guida', 'ueber-uns': 'chi-siamo', agb: 'condizioni', datenschutz: 'privacy', impressum: 'note-legali', sitemap: 'sitemap' 
-    },
-    pt: { 
-        addieren: 'adicionar', differenz: 'diferenca', arbeitstage: 'uteis', alter: 'idade', 
-        ratgeber: 'guia', 'ueber-uns': 'sobre-nos', agb: 'termos', datenschutz: 'privacidade', impressum: 'aviso-legal', sitemap: 'sitemap' 
     }
 };
 
@@ -36,36 +16,6 @@ export const SLUG_TOKEN_TRANSLATIONS: Record<string, Record<string, string>> = {
         'ab-heute': 'ab-heute', 'tage-bis': 'tage-bis',
         'weihnachten': 'weihnachten', 'silvester': 'silvester', 'neujahr': 'neujahr',
         'ostern': 'ostern', 'sommeranfang': 'sommeranfang', 'urlaub': 'urlaub'
-    },
-    en: { 
-        'tage': 'days', 'monate': 'months', 'jahre': 'years', 
-        'ab-heute': 'from-today', 'tage-bis': 'days-until',
-        'weihnachten': 'christmas', 'silvester': 'new-years-eve', 'neujahr': 'new-year',
-        'ostern': 'easter', 'sommeranfang': 'summer-solstice', 'urlaub': 'vacation'
-    },
-    es: { 
-        'tage': 'dias', 'monate': 'meses', 'jahre': 'anos', 
-        'ab-heute': 'desde-hoy', 'tage-bis': 'dias-hasta',
-        'weihnachten': 'navidad', 'silvester': 'nochevieja', 'neujahr': 'ano-nuevo',
-        'ostern': 'pascua', 'sommeranfang': 'solsticio-de-verano', 'urlaub': 'vacaciones'
-    },
-    fr: { 
-        'tage': 'jours', 'monate': 'mois', 'jahre': 'annees', 
-        'ab-heute': 'a-partir-d-aujourd-hui', 'tage-bis': 'jours-jusqu-a',
-        'weihnachten': 'noel', 'silvester': 'reveillon', 'neujahr': 'nouvel-an',
-        'ostern': 'paques', 'sommeranfang': 'solstice-d-ete', 'urlaub': 'vacances'
-    },
-    it: { 
-        'tage': 'giorni', 'monate': 'mesi', 'jahre': 'anni', 
-        'ab-heute': 'da-oggi', 'tage-bis': 'giorni-fino-a',
-        'weihnachten': 'natale', 'silvester': 'san-silvestro', 'neujahr': 'capodanno',
-        'ostern': 'pasqua', 'sommeranfang': 'solstizio-d-estate', 'urlaub': 'vacanza'
-    },
-    pt: { 
-        'tage': 'dias', 'monate': 'meses', 'jahre': 'anos', 
-        'ab-heute': 'a-partir-de-hoje', 'tage-bis': 'dias-ate',
-        'weihnachten': 'natal', 'silvester': 'reveillon', 'neujahr': 'ano-novo',
-        'ostern': 'pascoa', 'sommeranfang': 'solsticio-de-verao', 'urlaub': 'ferias'
     }
 };
 
