@@ -1,4 +1,4 @@
-import { getTranslations } from 'next-intl/server';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { locales } from '@/i18n/routing';
 import { SITE_URL, DOMAIN } from '@/lib/constants';
 
@@ -8,17 +8,20 @@ import { CalculatorCore } from '@/components/calculator/CalculatorCore';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
     const { locale } = await params;
+    setRequestLocale(locale);
     const t = await getTranslations({ locale, namespace: 'Common.titles' });
     const siteUrl = SITE_URL;
     const locSlug = INTENT_TRANSLATIONS[locale]['ueber-uns'];
-    const fullUrl = `${siteUrl}/${locale}/${locSlug}`;
+    const prefix = locale === 'de' ? '' : `/${locale}`;
+    const fullUrl = `${siteUrl}${prefix}/${locSlug}`;
 
     // Build hreflang alternates
     const languages: Record<string, string> = {};
     locales.forEach(loc => {
-        languages[loc] = `${siteUrl}/${loc}/${INTENT_TRANSLATIONS[loc]['ueber-uns']}`;
+        const lp = loc === 'de' ? '' : `/${loc}`;
+        languages[loc] = `${siteUrl}${lp}/${INTENT_TRANSLATIONS[loc]['ueber-uns']}`;
     });
-    languages['x-default'] = `${siteUrl}/de/ueber-uns`;
+    languages['x-default'] = `${siteUrl}/ueber-uns`;
 
     return {
         title: locale === 'de' ? `Über uns | Mission & Mathematische Präzision ✓` : `About us | Mission & Mathematical Precision ✓`,
@@ -41,6 +44,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 
 export default async function AboutUsPage({ params }: { params: Promise<{ locale: string }> }) {
     const { locale } = await params;
+    setRequestLocale(locale);
     const t = await getTranslations({ locale, namespace: 'Common.titles' });
 
     return (

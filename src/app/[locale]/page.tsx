@@ -1,5 +1,5 @@
 import { CalculatorCore } from '@/components/calculator/CalculatorCore';
-import { getTranslations } from 'next-intl/server';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { SmartInputBar } from '@/components/SmartInputBar';
 import { HomepageSEO } from '@/components/seo/HomepageSEO';
 import { locales } from '@/i18n/routing';
@@ -9,15 +9,16 @@ export const dynamic = 'force-static';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
     const { locale } = await params;
+    setRequestLocale(locale);
     const t = await getTranslations({ locale, namespace: 'Header' });
     const siteUrl = SITE_URL;
     
     // Build hreflang alternates
     const languages: Record<string, string> = {};
     locales.forEach(loc => {
-        languages[loc] = `${siteUrl}/${loc}`;
+        languages[loc] = `${siteUrl}${loc === 'de' ? '' : `/${loc}`}`;
     });
-    languages['x-default'] = `${siteUrl}/de`;
+    languages['x-default'] = `${siteUrl}`;
 
     return {
         title: locale === 'de' 
@@ -27,13 +28,13 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
             ? "Exakte Zeitberechnung online: Ermitteln Sie Datumsdifferenzen, addieren Sie Fristen oder berechnen Sie Arbeitstage nach ISO 8601 Standard."
             : "Exact time calculation online: determine date differences, add deadlines or calculate business days and working days per ISO 8601.",
         alternates: {
-            canonical: `${siteUrl}/${locale}`,
+            canonical: `${siteUrl}${locale === 'de' ? '' : `/${locale}`}`,
             languages
         },
         openGraph: {
             title: locale === 'de' ? "Der präzise Datumsrechner online" : "The precise date calculator online",
             description: locale === 'de' ? "Kostenlose Tools für Zeitspannen und Fristen." : "Free tools for time spans and deadlines.",
-            url: `${siteUrl}/${locale}`,
+            url: `${siteUrl}${locale === 'de' ? '' : `/${locale}`}`,
             type: 'website',
         }
     };
@@ -41,6 +42,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 
 export default async function Home({ params }: { params: Promise<{ locale: string }> }) {
     const { locale } = await params;
+    setRequestLocale(locale);
     const t = await getTranslations({ locale, namespace: 'Header' });
 
     return (

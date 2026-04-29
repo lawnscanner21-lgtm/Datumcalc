@@ -1,9 +1,10 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { Link, usePathname, useRouter } from '@/i18n/routing';
-import { useParams } from 'next/navigation';
+import { Link, usePathname, useRouter, routing, locales } from '@/i18n/routing';
+import { useParams, usePathname as useNextPathname, useRouter as useNextRouter } from 'next/navigation';
 import { ROUTES } from '@/lib/routes';
+import { translateSlug, reverseTranslateSlug, getCanonicalPath, INTENT_TRANSLATIONS } from '@/lib/seo/translations';
 import {
     CalendarDays,
     Menu,
@@ -17,7 +18,6 @@ import {
     ChevronDown,
 } from 'lucide-react';
 import { useTranslations, useLocale } from 'next-intl';
-import { locales } from '@/i18n/routing';
 
 export function Header() {
     const t = useTranslations('Header');
@@ -26,6 +26,8 @@ export function Header() {
     const router = useRouter();
     const pathname = usePathname();
     const params = useParams();
+    const nextPathname = useNextPathname();
+    const nextRouter = useNextRouter();
     const [isScrolled, setIsScrolled] = useState(false);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [langOpen, setLangOpen] = useState(false);
@@ -62,11 +64,45 @@ export function Header() {
     ];
 
     const handleLocaleChange = (newLocale: string) => {
-        // @ts-expect-error - next-intl's router.replace typing has issues with template pathnames in global components, but this is the recommended "safe" approach
-        router.replace({ pathname, params }, { locale: newLocale as 'de' | 'en' | 'es' | 'fr' | 'it' | 'pt' });
+        const prefix = newLocale === 'de' ? '' : `/${newLocale}`;
+        
+        // Dynamic SEO routes (calculators)
+        if (params && (params.intent || params.slug)) {
+            const currentIntent = Array.isArray(params.intent) ? params.intent[0] : params.intent as string;
+            const currentSlugArr = params.slug ? (Array.isArray(params.slug) ? params.slug : [params.slug]) : undefined;
+            const currentSlugStr = currentSlugArr ? currentSlugArr.join('-') : undefined;
+
+            // Resolve internal intent key (German)
+            let internalIntent = Object.keys(INTENT_TRANSLATIONS[locale]).find(k => INTENT_TRANSLATIONS[locale][k] === currentIntent) || currentIntent;
+            
+            // Handle Ratgeber / guide routes specially
+            if (pathname.includes('/ratgeber') || pathname.includes('/guide') || pathname.includes('/guia') || pathname.includes('/guida')) {
+                const guideIntent = INTENT_TRANSLATIONS[newLocale]['ratgeber'] || 'ratgeber';
+                const slugStr = Array.isArray(params.slug) ? params.slug.join('/') : (params.slug || '');
+                nextRouter.push(`${prefix}/${guideIntent}/${slugStr}`);
+            } else if (currentSlugStr) {
+                // Calculator deep link
+                const canonicalSlug = reverseTranslateSlug(currentSlugStr, locale);
+                const locSlug = translateSlug(canonicalSlug, newLocale);
+                const locIntent = INTENT_TRANSLATIONS[newLocale][internalIntent] || internalIntent;
+                nextRouter.push(`${prefix}/${locIntent}/${locSlug}`);
+            } else {
+                // Intent landing page
+                const locIntent = INTENT_TRANSLATIONS[newLocale][internalIntent] || internalIntent;
+                nextRouter.push(`${prefix}/${locIntent}`);
+            }
+        } else {
+            // Static pages (About, Terms, etc.)
+            // pathname from next-intl is the unlocalized version (e.g. /ueber-uns)
+            const internalPath = pathname as keyof typeof routing.pathnames;
+            const localizedPath = (routing.pathnames as any)[internalPath]?.[newLocale] || pathname;
+            nextRouter.push(`${prefix}${localizedPath}`);
+        }
+        
         setLangOpen(false);
         setMobileMenuOpen(false);
     };
+
 
     return (
         <>
@@ -97,18 +133,16 @@ export function Header() {
                             title={t('title')}
                             aria-label={`${t('title')} – ${t('logoTagline')}`}
                             className="flex items-center gap-3 group relative z-50 shrink-0"
-                            itemProp="url"
                         >
                             <img
                                 src="/logo.png"
-                                alt="Datumsrechner Logo"
+                                alt={locale === 'de' ? 'Datumsrechner Logo' : 'Date Calculator Logo'}
                                 width={40}
                                 height={40}
                                 className="w-10 h-10 rounded-xl border border-white/20 shadow-[0_0_16px_rgba(0,210,255,0.25)] group-hover:shadow-[0_0_24px_rgba(255,0,85,0.45)] group-hover:scale-105 transition-all duration-300 object-cover"
                             />
                             <strong
                                 className="font-black text-xl sm:text-2xl tracking-tighter text-white leading-none select-none"
-                                itemProp="name"
                             >
                                 {t('title')}
                             </strong>
@@ -302,19 +336,20 @@ export function Header() {
                         <p className="text-xs font-bold uppercase tracking-[0.2em] text-white/25 mb-4 px-2">
                             {t('Nav.languageLabel')}
                         </p>
-                        <div className="flex flex-wrap gap-2">
+                        <div className="flex flex-col gap-2">
                             {locales.map((loc) => (
                                 <button
                                     key={loc}
                                     onClick={() => handleLocaleChange(loc)}
                                     aria-pressed={locale === loc}
-                                    className={`px-4 py-2 rounded-xl text-sm font-bold uppercase tracking-wider transition-all duration-200 ${
+                                    className={`w-full text-left px-5 py-4 rounded-2xl text-base font-bold transition-all duration-200 flex items-center justify-between ${
                                         locale === loc
                                             ? 'bg-neon-blue/15 text-neon-blue border border-neon-blue/30'
-                                            : 'text-white/30 hover:text-white/70 border border-white/5 hover:border-white/15'
+                                            : 'text-white/40 hover:text-white/70 border border-white/5 hover:border-white/15 bg-white/[0.02]'
                                     }`}
                                 >
-                                    {loc}
+                                    <span className="capitalize">{tCommon(loc)}</span>
+                                    <span className="text-[10px] opacity-40 uppercase tracking-widest">{loc}</span>
                                 </button>
                             ))}
                         </div>

@@ -1,5 +1,5 @@
 import { getArticles } from '@/lib/articles';
-import { getTranslations } from 'next-intl/server';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { Link, locales } from '@/i18n/routing';
 import { SITE_URL } from '@/lib/constants';
 
@@ -8,6 +8,7 @@ import { INTENT_TRANSLATIONS } from '@/lib/seo/translations';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
     const { locale } = await params;
+    setRequestLocale(locale);
     const isDe = locale === 'de';
     const siteUrl = SITE_URL;
     const locSlug = INTENT_TRANSLATIONS[locale]['ratgeber'];
@@ -39,6 +40,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 
 export default async function RatgeberIndexPage({ params }: { params: Promise<{ locale: string }> }) {
     const { locale } = await params;
+    setRequestLocale(locale);
     const articles = getArticles(locale);
     const isDe = locale === 'de';
 

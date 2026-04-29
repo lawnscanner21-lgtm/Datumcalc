@@ -3,7 +3,7 @@ import { Inter } from "next/font/google";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { NextIntlClientProvider } from 'next-intl';
-import { getMessages } from 'next-intl/server';
+import { getMessages, setRequestLocale } from 'next-intl/server';
 import { locales } from '@/i18n/routing';
 import { SITE_URL } from "@/lib/constants";
 import "../globals.css";
@@ -25,14 +25,15 @@ export async function generateMetadata(
     parent: ResolvingMetadata
 ): Promise<Metadata> {
     const { locale } = await params;
+    setRequestLocale(locale);
     
     // Build language alternates
     const languages: Record<string, string> = {};
     locales.forEach(loc => {
-        languages[loc] = `${siteUrl}/${loc}`;
+        languages[loc] = `${siteUrl}${loc === 'de' ? '' : `/${loc}`}`;
     });
-    // Add x-default
-    languages['x-default'] = `${siteUrl}/de`;
+    // Add x-default pointing to root (German)
+    languages['x-default'] = `${siteUrl}`;
 
     return {
         title: {
@@ -44,6 +45,7 @@ export async function generateMetadata(
             : "Calculate exact date differences, add days or determine business days. Free, precise and ISO 8601 compliant.",
         metadataBase: new URL(siteUrl),
         alternates: {
+            canonical: `${siteUrl}${locale === 'de' ? '' : `/${locale}`}`,
             languages: languages,
         },
         icons: {
@@ -54,7 +56,7 @@ export async function generateMetadata(
         openGraph: {
             type: 'website',
             locale: locale,
-            url: `${siteUrl}/${locale}`,
+            url: `${siteUrl}${locale === 'de' ? '' : `/${locale}`}`,
             siteName: 'Datumsrechner',
             title: locale === 'de' ? "Datumsrechner | Exakte Zeitberechnung" : "Date Calculator | Exact time calculation",
             description: locale === 'de' 
@@ -101,6 +103,7 @@ export default async function LocaleLayout({
     params: Promise<{ locale: string }>;
 }>) {
     const { locale } = await params;
+    setRequestLocale(locale);
     const messages = await getMessages();
 
     const webAppSchema = {
@@ -163,7 +166,7 @@ export default async function LocaleLayout({
                 />
             </head>
             <body className="min-h-full flex flex-col selection:bg-neon/30">
-                <NextIntlClientProvider messages={messages}>
+                <NextIntlClientProvider messages={messages} locale={locale}>
                     <Header />
                     <main id="main-content" className="flex-1 flex flex-col z-10" tabIndex={-1}>
                         {children}

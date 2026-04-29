@@ -1,4 +1,4 @@
-import { getTranslations } from 'next-intl/server';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { locales } from '@/i18n/routing';
 import { SITE_URL, DOMAIN } from '@/lib/constants';
 import { INTENT_TRANSLATIONS, translateSlug } from '@/lib/seo/translations';
@@ -8,17 +8,20 @@ import { Link } from '@/i18n/routing';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
     const { locale } = await params;
+    setRequestLocale(locale);
     const t = await getTranslations({ locale, namespace: 'Common.titles' });
     const siteUrl = SITE_URL;
-    const locSlug = INTENT_TRANSLATIONS[locale]['sitemap'];
-    const fullUrl = `${siteUrl}/${locale}/${locSlug}`;
+    
+    const prefix = locale === 'de' ? '' : `/${locale}`;
+    const fullUrl = `${siteUrl}${prefix}/sitemap`;
 
     // Build hreflang alternates
     const languages: Record<string, string> = {};
     locales.forEach(loc => {
-        languages[loc] = `${siteUrl}/${loc}/${INTENT_TRANSLATIONS[loc]['sitemap']}`;
+        const locPrefix = loc === 'de' ? '' : `/${loc}`;
+        languages[loc] = `${siteUrl}${locPrefix}/sitemap`;
     });
-    languages['x-default'] = `${siteUrl}/de/sitemap`;
+    languages['x-default'] = `${siteUrl}/sitemap`;
 
     return {
         title: `${t('sitemap')} - Datumsrechner`,
@@ -38,6 +41,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 
 export default async function SitemapPage({ params }: { params: Promise<{ locale: string }> }) {
     const { locale } = await params;
+    setRequestLocale(locale);
     const t = await getTranslations({ locale, namespace: 'Common.titles' });
     const isDe = locale === 'de';
 
@@ -57,7 +61,9 @@ export default async function SitemapPage({ params }: { params: Promise<{ locale
                     {t('sitemap')}
                 </h1>
                 <p className="text-xl text-white/60">
-                    Alle Inhalte und Werkzeuge von ${DOMAIN} auf einen Blick.
+                    {isDe 
+                        ? `Alle Inhalte und Werkzeuge von ${DOMAIN} auf einen Blick.`
+                        : `All contents and tools of ${DOMAIN} at a glance.`}
                 </p>
             </header>
 

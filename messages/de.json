@@ -11,47 +11,101 @@
         "titles": {
             "imprint": "Impressum",
             "privacy": "Datenschutz",
-            "terms": "AGB",
+            "terms": "Nutzungsbedingungen",
             "about": "Über uns",
             "sitemap": "Sitemap"
         }
     },
     "Header": {
         "title": "Datumsrechner",
-        "logoTagline": "Kostenloser Datumsrechner online",
+        "logoTagline": "Kostenloser Online-Datumsrechner",
         "skipToContent": "Zum Inhalt springen",
         "Nav": {
             "ariaLabel": "Hauptnavigation",
             "differenz": "Differenz",
             "differenzDesc": "Tage zwischen zwei Daten berechnen",
-            "addieren": "Addieren",
-            "addierenDesc": "Tage zu einem Datum hinzufügen oder subtrahieren",
+            "addieren": "Addieren / Subtrahieren",
+            "addierenDesc": "Tage zu einem Datum addieren oder subtrahieren",
             "arbeitstage": "Arbeitstage",
             "arbeitstageDesc": "Netto-Arbeitstage zwischen Daten berechnen",
             "ratgeber": "Ratgeber",
-            "ratgeberDesc": "Wissensartikel rund um Datum und Zeit",
+            "ratgeberDesc": "Wissensbeiträge rund um Datum und Zeit",
             "cta": "Jetzt berechnen",
-            "languageLabel": "Sprache wählen",
+            "languageLabel": "Sprache auswählen",
             "openMenu": "Menü öffnen",
             "closeMenu": "Menü schließen",
-            "mobileNavLabel": "Mobile Navigation"
+            "mobileNavLabel": "Mobile Navigation",
+            "alter": "Alter",
+            "alterDesc": "Berechnen Sie Ihr genaues Alter",
+            "verified": "Mathematisch & kalendarisch verifiziert"
         }
     },
     "Modes": {
         "dateDifference": "Datumsdifferenz",
         "addSubtract": "Datum addieren/subtrahieren",
         "businessDays": "Arbeitstage",
-        "ageCalculator": "Alter berechnen"
+        "ageCalculator": "Altersrechner"
     },
     "Article": {
         "readTime": "Lesezeit",
-        "takeaways": "In Kürze: Das Wichtigste",
+        "takeaways": "Das Wichtigste auf einen Blick",
         "takeawaysItem1": "Alle Berechnungen basieren auf standardisierten Algorithmen (ISO 8601).",
-        "takeawaysItem2": "Erkennen Sie Muster besser, um Fristen präziser zu setzen.",
-        "takeawaysItem3": "Die Mathematik hinter den Kalendern erleichtern den Arbeitsalltag spürbar.",
+        "takeawaysItem2": "Muster besser erkennen, um Fristen präziser zu setzen.",
+        "takeawaysItem3": "Die Mathematik hinter den Kalendern erleichtert die tägliche Arbeit spürbar.",
         "theory": "Theorie in die Praxis umsetzen",
-        "practice": "Berechne dein Datum jetzt sofort",
-        "factCheck": "Faktencheck: Aktuell geprüft",
+        "practice": "Berechnen Sie Ihr Datum jetzt",
+        "factCheck": "Faktencheck: Aktuell verifiziert",
         "authorTitle": "Mathematiker & Autor"
+    },
+    "SmartInput": {
+        "placeholder": "Was möchten Sie berechnen? (z. B. 100 Tage ab heute)",
+        "button": "Berechnen",
+        "popular": "Beliebte Suchanfragen:",
+        "example1": "100 Tage ab heute",
+        "example2": "Tage bis Weihnachten",
+        "example3": "Arbeitstage 2024",
+        "history": "Letzte Berechnungen",
+        "clearHistory": "Verlauf löschen"
+    },
+    "Calculator": {
+        "startDate": "Startdatum",
+        "endDate": "Enddatum",
+        "result": "Ergebnis",
+        "save": "Speichern",
+        "share": "Link kopieren",
+        "copied": "Kopiert!",
+        "days": "Tage",
+        "weeks": "Wochen",
+        "months": "Monate",
+        "years": "Jahre",
+        "action": "Aktion",
+        "amount": "Anzahl",
+        "unit": "Einheit",
+        "add": "Addieren",
+        "subtract": "Subtrahieren",
+        "businessDays": "Arbeitstage",
+        "holidays": "Feiertage berücksichtigen",
+        "birthDate": "Geburtsdatum",
+        "currentAge": "Aktuelles Alter",
+        "nextBirthday": "Nächster Geburtstag",
+        "yearsAbbr": "J",
+        "monthsAbbr": "M",
+        "daysAbbr": "T"
+    },
+    "Events": {
+        "weihnachten": "Weihnachten",
+        "silvester": "Silvester",
+        "sommeranfang": "Sommeranfang",
+        "ostern": "Ostern"
+    },
+    "SlugPage": {
+        "in": "In",
+        "is": "ist",
+        "basedOn": "Basierend auf heute",
+        "until": "Bis",
+        "areYet": "sind es noch",
+        "theDateIs": "Das Datum ist",
+        "verified": "Mathematisch & kalendarisch verifiziert",
+        "description": "Exakte ISO-8601-konforme Berechnung für {slug}."
     }
 }

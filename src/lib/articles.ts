@@ -219,6 +219,11 @@ export function getArticles(locale: string): Article[] {
 }
 
 export function getArticleBySlug(slug: string, locale: string = 'de') {
-    const localeArticles = articles[locale] || articles['de'];
-    return localeArticles.find(a => a.slug === slug);
+    // 1. Try requested locale
+    let article = articles[locale]?.find(a => a.slug === slug);
+    if (article) return article;
+
+    // 2. Fallback: Search ALL locales (essential for GSC remediation)
+    const allArticles = Object.values(articles).flat();
+    return allArticles.find(a => a.slug === slug);
 }

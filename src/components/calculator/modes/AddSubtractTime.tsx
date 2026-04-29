@@ -2,12 +2,17 @@
 
 import { useState, useEffect } from 'react';
 import { calculateOffsetDate, TimeUnit, Operation } from '@/lib/calculator';
+import { format } from 'date-fns';
 import { useRecentCalculations } from '@/hooks/useRecentCalculations';
 import { Copy, Share2, Check, BookmarkPlus } from 'lucide-react';
-import { format } from 'date-fns';
-import { de } from 'date-fns/locale';
+import { useTranslations, useLocale } from 'next-intl';
+import * as dateLocales from 'date-fns/locale';
 
 export function AddSubtractTime() {
+    const t = useTranslations('Calculator');
+    const locale = useLocale();
+    const dateLocale = (dateLocales as any)[locale] || dateLocales.de;
+
     const [baseDate, setBaseDate] = useState<string>('');
     const [amount, setAmount] = useState<number | ''>('');
     const [unit, setUnit] = useState<TimeUnit>('days');
@@ -47,7 +52,7 @@ export function AddSubtractTime() {
         if (result) {
             addCalculation({
                 type: 'add_subtract',
-                title: `${format(new Date(baseDate), 'dd.MM')} ${operation === 'add' ? '+' : '-'} ${amount} ${unit}`,
+                title: `${format(new Date(baseDate), 'dd.MM')} ${operation === 'add' ? '+' : '-'} ${amount} ${t(unit)}`,
                 result: format(result, 'dd.MM.yyyy')
             });
         }
@@ -63,19 +68,19 @@ export function AddSubtractTime() {
         <div className="space-y-6 animate-in fade-in duration-300">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
                 <div className="space-y-2 md:col-span-1">
-                    <label className="text-sm font-medium text-white/80">Aktion</label>
+                    <label className="text-sm font-medium text-white/80">{t('action')}</label>
                     <select
                         value={operation}
                         onChange={(e) => setOperation(e.target.value as Operation)}
                         className="w-full bg-[#1a1a1a] border border-white/5 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-neon transition-colors appearance-none"
                     >
-                        <option value="add">Addieren</option>
-                        <option value="subtract">Subtrahieren</option>
+                        <option value="add">{t('add')}</option>
+                        <option value="subtract">{t('subtract')}</option>
                     </select>
                 </div>
 
                 <div className="space-y-2 md:col-span-1">
-                    <label className="text-sm font-medium text-white/80">Anzahl</label>
+                    <label className="text-sm font-medium text-white/80">{t('amount')}</label>
                     <input
                         type="number"
                         value={amount}
@@ -86,21 +91,21 @@ export function AddSubtractTime() {
                 </div>
 
                 <div className="space-y-2 md:col-span-1">
-                    <label className="text-sm font-medium text-white/80">Einheit</label>
+                    <label className="text-sm font-medium text-white/80">{t('unit')}</label>
                     <select
                         value={unit}
                         onChange={(e) => setUnit(e.target.value as TimeUnit)}
                         className="w-full bg-[#1a1a1a] border border-white/5 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-neon transition-colors appearance-none"
                     >
-                        <option value="days">Tage</option>
-                        <option value="weeks">Wochen</option>
-                        <option value="months">Monate</option>
-                        <option value="years">Jahre</option>
+                        <option value="days">{t('days')}</option>
+                        <option value="weeks">{t('weeks')}</option>
+                        <option value="months">{t('months')}</option>
+                        <option value="years">{t('years')}</option>
                     </select>
                 </div>
 
                 <div className="space-y-2 md:col-span-1">
-                    <label className="text-sm font-medium text-white/80">Startdatum</label>
+                    <label className="text-sm font-medium text-white/80">{t('startDate')}</label>
                     <input
                         type="date"
                         value={baseDate}
@@ -114,16 +119,16 @@ export function AddSubtractTime() {
                 <div className="mt-8 p-6 rounded-2xl bg-gradient-to-br from-white/5 to-white/0 border border-neon/30 shadow-[0_0_30px_rgba(255,0,85,0.05)] space-y-4 relative">
                     <div className="flex justify-between items-start">
                         <div>
-                            <h3 className="text-lg font-medium text-white/80">Ergebnis Datum</h3>
+                            <h3 className="text-lg font-medium text-white/80">{t('result')}</h3>
                             <p className="text-3xl mt-2 font-bold bg-clip-text text-transparent bg-gradient-to-r from-neon to-neon-blue">
-                                {format(result, 'EEEE, dd. MMMM yyyy', { locale: de })}
+                                {format(result, 'EEEE, dd. MMMM yyyy', { locale: dateLocale })}
                             </p>
                         </div>
                         <div className="flex gap-2">
-                            <button onClick={handleSave} className="bg-white/5 hover:bg-white/10 border border-white/10 p-2 rounded-xl transition-colors tooltip" title="Speichern">
+                            <button onClick={handleSave} className="bg-white/5 hover:bg-white/10 border border-white/10 p-2 rounded-xl transition-colors tooltip" title={t('save')}>
                                 <BookmarkPlus className="w-5 h-5 text-neon-blue" />
                             </button>
-                            <button onClick={shareUrl} className="bg-white/5 hover:bg-white/10 border border-white/10 p-2 rounded-xl transition-colors tooltip" title="Link kopieren">
+                            <button onClick={shareUrl} className="bg-white/5 hover:bg-white/10 border border-white/10 p-2 rounded-xl transition-colors tooltip" title={t('share')}>
                                 {copied ? <Check className="w-5 h-5 text-green-400" /> : <Share2 className="w-5 h-5 text-neon" />}
                             </button>
                         </div>

@@ -34,7 +34,10 @@
             "languageLabel": "Seleccionar idioma",
             "openMenu": "Abrir menú",
             "closeMenu": "Cerrar menú",
-            "mobileNavLabel": "Navegación móvil"
+            "mobileNavLabel": "Navegación móvil",
+            "alter": "Edad",
+            "alterDesc": "Calcula tu edad exacta",
+            "verified": "Verificado matemática y calendáricamente"
         }
     },
     "Modes": {
@@ -53,5 +56,56 @@
         "practice": "Calcula tu fecha ahora mismo",
         "factCheck": "Verificación de hechos: Actualmente verificado",
         "authorTitle": "Matemático y Autor"
+    },
+    "SmartInput": {
+        "placeholder": "¿Qué quieres calcular? (p. ej. 100 días desde hoy)",
+        "button": "Calcular",
+        "popular": "Búsquedas populares:",
+        "example1": "100 días desde hoy",
+        "example2": "Días hasta Navidad",
+        "example3": "Días hábiles 2024",
+        "history": "Cálculos Recientes",
+        "clearHistory": "Borrar Historial"
+    },
+    "Calculator": {
+        "startDate": "Fecha de inicio",
+        "endDate": "Fecha de finalización",
+        "result": "Resultado",
+        "save": "Guardar",
+        "share": "Copiar enlace",
+        "copied": "¡Copiado!",
+        "days": "Días",
+        "weeks": "Semanas",
+        "months": "Meses",
+        "years": "Años",
+        "action": "Acción",
+        "amount": "Cantidad",
+        "unit": "Unidad",
+        "add": "Sumar",
+        "subtract": "Restar",
+        "businessDays": "Días hábiles",
+        "holidays": "Incluir festivos",
+        "birthDate": "Fecha de nacimiento",
+        "currentAge": "Edad actual",
+        "nextBirthday": "Próximo cumpleaños",
+        "yearsAbbr": "a",
+        "monthsAbbr": "m",
+        "daysAbbr": "d"
+    },
+    "Events": {
+        "weihnachten": "Navidad",
+        "silvester": "Nochevieja",
+        "sommeranfang": "Solsticio de verano",
+        "ostern": "Pascua"
+    },
+    "SlugPage": {
+        "in": "En",
+        "is": "es",
+        "basedOn": "Basado en hoy",
+        "until": "Hasta",
+        "areYet": "aún faltan",
+        "theDateIs": "La fecha es",
+        "verified": "Verificado matemática y calendáricamente",
+        "description": "Cálculo exacto compatible con ISO-8601 para {slug}."
     }
 }

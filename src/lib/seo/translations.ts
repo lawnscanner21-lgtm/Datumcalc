@@ -71,13 +71,18 @@ export const SLUG_TOKEN_TRANSLATIONS: Record<string, Record<string, string>> = {
 
 /**
  * Translates a German slug into a localized one.
+ * Sorts by length descending to prevent substring collisions (e.g. 'tage' in 'tage-bis').
  */
 export function translateSlug(slug: string, locale: string): string {
     const tokens = locale === 'de' ? {} : SLUG_TOKEN_TRANSLATIONS[locale];
     if (!tokens) return slug;
 
     let localized = slug;
-    Object.entries(SLUG_TOKEN_TRANSLATIONS['de']).forEach(([key, deVal]) => {
+    // Sort keys by length descending to replace "tage-bis" before "tage"
+    const sortedKeys = Object.entries(SLUG_TOKEN_TRANSLATIONS['de'])
+        .sort((a, b) => b[1].length - a[1].length);
+
+    sortedKeys.forEach(([key, deVal]) => {
         const regex = new RegExp(`\\b${deVal}\\b`, 'g');
         localized = localized.replace(regex, tokens[key] || deVal);
     });
@@ -86,29 +91,71 @@ export function translateSlug(slug: string, locale: string): string {
 
 /**
  * Reverses a localized slug back to its German canonical version.
+ * Greedily searches across ALL locales to handle "mixed" URLs from GSC.
+ * Sorts by length descending to prevent substring collisions.
  */
-export function reverseTranslateSlug(slug: string, locale: string): string {
-    if (locale === 'de') return slug;
-    const tokens = SLUG_TOKEN_TRANSLATIONS[locale];
-    if (!tokens) return slug;
-
+export function reverseTranslateSlug(slug: string, locale?: string): string {
     let canonical = slug;
-    // Map from localized value back to key, then to DE value
-    Object.entries(tokens).forEach(([key, locVal]) => {
-        const regex = new RegExp(`\\b${locVal}\\b`, 'g');
-        canonical = canonical.replace(regex, SLUG_TOKEN_TRANSLATIONS['de'][key]);
+
+    // Helper to apply reverse translation for a specific locale tokenset
+    const applyReverse = (loc: string) => {
+        const tokens = SLUG_TOKEN_TRANSLATIONS[loc];
+        if (!tokens) return;
+        
+        const sortedEntries = Object.entries(tokens)
+            .sort((a, b) => b[1].length - a[1].length);
+
+        sortedEntries.forEach(([key, locVal]) => {
+            const regex = new RegExp(`\\b${locVal}\\b`, 'g');
+            canonical = canonical.replace(regex, SLUG_TOKEN_TRANSLATIONS['de'][key]);
+        });
+    };
+
+    // 1. Try specified locale first (Performance & Accuracy)
+    if (locale && locale !== 'de') {
+        applyReverse(locale);
+    }
+
+    // 2. Exhaustive search across ALL locales to handle mixed-language "Redirect Error" URLs
+    const allLocales = Object.keys(SLUG_TOKEN_TRANSLATIONS);
+    allLocales.forEach(loc => {
+        if (loc === 'de' || loc === locale) return;
+        applyReverse(loc);
     });
+
     return canonical;
 }
 
 import { SITE_URL } from '@/lib/constants';
 
 /**
- * Gets a fully localized URL for a calculator page.
+ * Generates the canonical path for a page, respecting the 'as-needed' locale prefix rules.
+ * Default locale 'de' avoids prefix, others include it.
  */
-export function getLocalizedCalculatorUrl(locale: string, intent: string, slug: string): string {
-    const siteUrl = SITE_URL;
-    const locIntent = INTENT_TRANSLATIONS[locale][intent] || intent;
-    const locSlug = translateSlug(slug, locale);
-    return `${siteUrl}/${locale}/${locIntent}/${locSlug}`;
+export function getCanonicalPath(locale: string, intent: string, slug?: string): string {
+    const prefix = locale === 'de' ? '' : `/${locale}`;
+    
+    // Normalize intent segment
+    const internalIntent = Object.keys(INTENT_TRANSLATIONS[locale]).find(k => INTENT_TRANSLATIONS[locale][k] === intent);
+    
+    // Robust intent lookup
+    let finalInternalIntent = internalIntent;
+    if (!finalInternalIntent) {
+        for (const loc of ['de', 'en', 'es', 'fr', 'it', 'pt']) {
+            const found = Object.keys(INTENT_TRANSLATIONS[loc]).find(k => INTENT_TRANSLATIONS[loc][k] === intent);
+            if (found) {
+                finalInternalIntent = found;
+                break;
+            }
+        }
+    }
+    
+    const intentKey = finalInternalIntent || intent;
+    const locIntent = INTENT_TRANSLATIONS[locale][intentKey] || intentKey;
+    
+    if (slug) {
+        return `${prefix}/${locIntent}/${slug}`;
+    }
+    
+    return `${prefix}/${locIntent}`;
 }

@@ -34,7 +34,10 @@
             "languageLabel": "Select language",
             "openMenu": "Open menu",
             "closeMenu": "Close menu",
-            "mobileNavLabel": "Mobile Navigation"
+            "mobileNavLabel": "Mobile Navigation",
+            "alter": "Age",
+            "alterDesc": "Calculate your exact age",
+            "verified": "Mathematically & Calendrically verified"
         }
     },
     "Modes": {
@@ -53,5 +56,56 @@
         "practice": "Calculate your date right now",
         "factCheck": "Fact Check: Currently verified",
         "authorTitle": "Mathematician & Author"
+    },
+    "SmartInput": {
+        "placeholder": "What do you want to calculate? (e.g. 100 days from today)",
+        "button": "Calculate",
+        "popular": "Popular searches:",
+        "example1": "100 days from today",
+        "example2": "Days until Christmas",
+        "example3": "Business days 2024",
+        "history": "Recent Calculations",
+        "clearHistory": "Clear History"
+    },
+    "Calculator": {
+        "startDate": "Start Date",
+        "endDate": "End Date",
+        "result": "Result",
+        "save": "Save",
+        "share": "Copy Link",
+        "copied": "Copied!",
+        "days": "Days",
+        "weeks": "Weeks",
+        "months": "Months",
+        "years": "Years",
+        "action": "Action",
+        "amount": "Amount",
+        "unit": "Unit",
+        "add": "Add",
+        "subtract": "Subtract",
+        "businessDays": "Business Days",
+        "holidays": "Include Holidays",
+        "birthDate": "Birth Date",
+        "currentAge": "Current Age",
+        "nextBirthday": "Next Birthday",
+        "yearsAbbr": "y",
+        "monthsAbbr": "m",
+        "daysAbbr": "d"
+    },
+    "Events": {
+        "weihnachten": "Christmas",
+        "silvester": "New Year's Eve",
+        "sommeranfang": "Summer Solstice",
+        "ostern": "Easter"
+    },
+    "SlugPage": {
+        "in": "In",
+        "is": "is",
+        "basedOn": "Based on today",
+        "until": "Until",
+        "areYet": "there are still",
+        "theDateIs": "The date is",
+        "verified": "Mathematically & Calendrically verified",
+        "description": "Exact ISO-8601 compliant calculation for {slug}."
     }
 }

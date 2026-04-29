@@ -1,8 +1,10 @@
 'use client';
 
 import { useLocale, useTranslations } from 'next-intl';
-import { locales, usePathname, useRouter } from '@/i18n/routing';
-import { useParams } from 'next/navigation';
+import { locales, usePathname, useRouter, routing } from '@/i18n/routing';
+import { useParams, usePathname as useNextPathname, useRouter as useNextRouter } from 'next/navigation';
+
+import { translateSlug, reverseTranslateSlug, getCanonicalPath, INTENT_TRANSLATIONS } from '@/lib/seo/translations';
 
 export function LanguageSwitcher() {
     const t = useTranslations('Common.languages');
@@ -10,10 +12,43 @@ export function LanguageSwitcher() {
     const pathname = usePathname();
     const router = useRouter();
     const params = useParams();
+    const nextPathname = useNextPathname();
+    const nextRouter = useNextRouter();
 
     const handleLocaleChange = (newLocale: string) => {
-        // @ts-expect-error - next-intl's router.replace typing has issues with template pathnames in global components, but this is the recommended "safe" approach
-        router.replace({ pathname, params }, { locale: newLocale as 'de' | 'en' | 'es' | 'fr' | 'it' | 'pt' });
+        const prefix = newLocale === 'de' ? '' : `/${newLocale}`;
+        
+        // Dynamic SEO routes (calculators)
+        if (params && (params.intent || params.slug)) {
+            const currentIntent = Array.isArray(params.intent) ? params.intent[0] : params.intent as string;
+            const currentSlugArr = params.slug ? (Array.isArray(params.slug) ? params.slug : [params.slug]) : undefined;
+            const currentSlugStr = currentSlugArr ? currentSlugArr.join('-') : undefined;
+
+            // Resolve internal intent key (German)
+            const internalIntent = Object.keys(INTENT_TRANSLATIONS[locale]).find(k => INTENT_TRANSLATIONS[locale][k] === currentIntent) || currentIntent;
+            
+            // Handle Ratgeber / guide routes specially
+            if (pathname.includes('/ratgeber') || pathname.includes('/guide') || pathname.includes('/guia') || pathname.includes('/guida')) {
+                const guideIntent = INTENT_TRANSLATIONS[newLocale]['ratgeber'] || 'ratgeber';
+                const slugStr = Array.isArray(params.slug) ? params.slug.join('/') : (params.slug || '');
+                nextRouter.push(`${prefix}/${guideIntent}/${slugStr}`);
+            } else if (currentSlugStr) {
+                // Calculator deep link
+                const canonicalSlug = reverseTranslateSlug(currentSlugStr, locale);
+                const locSlug = translateSlug(canonicalSlug, newLocale);
+                const locIntent = INTENT_TRANSLATIONS[newLocale][internalIntent] || internalIntent;
+                nextRouter.push(`${prefix}/${locIntent}/${locSlug}`);
+            } else {
+                // Intent landing page
+                const locIntent = INTENT_TRANSLATIONS[newLocale][internalIntent] || internalIntent;
+                nextRouter.push(`${prefix}/${locIntent}`);
+            }
+        } else {
+            // Static pages (About, Terms, etc.)
+            const internalPath = pathname as keyof typeof routing.pathnames;
+            const localizedPath = (routing.pathnames as any)[internalPath]?.[newLocale] || pathname;
+            nextRouter.push(`${prefix}${localizedPath}`);
+        }
     };
 
     return (

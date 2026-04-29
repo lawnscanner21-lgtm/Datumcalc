@@ -7,8 +7,9 @@ export const routing = defineRouting({
     locales,
     defaultLocale: 'de',
     localePrefix: 'as-needed',
+    localeDetection: false,
     pathnames: {
-        '/': '/',
+        '/': { de: '/', en: '/', es: '/', fr: '/', it: '/', pt: '/' },
         '/ueber-uns': { de: '/ueber-uns', en: '/about-us', es: '/sobre-nosotros', fr: '/a-propos', it: '/chi-siamo', pt: '/sobre-nos' },
         '/agb': { de: '/agb', en: '/terms', es: '/terminos', fr: '/conditions', it: '/condizioni', pt: '/termos' },
         '/datenschutz': { de: '/datenschutz', en: '/privacy', es: '/privacidad', fr: '/confidentialite', it: '/privacy', pt: '/privacidade' },

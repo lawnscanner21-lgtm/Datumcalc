@@ -1,28 +1,37 @@
 import { CANONICAL_QUERIES } from '@/lib/seo/queryModel';
-import Link from 'next/link';
-import { notFound } from 'next/navigation';
+import { Link } from '@/i18n/routing';
+import { notFound, permanentRedirect } from 'next/navigation';
 import { locales } from '@/i18n/routing';
+import { setRequestLocale } from 'next-intl/server';
 
-export const dynamic = 'force-static';
-import { INTENT_TRANSLATIONS, translateSlug } from '@/lib/seo/translations';
+export const revalidate = 604800; // 7 days ISR revalidation
+export const dynamicParams = true;
+import { INTENT_TRANSLATIONS, translateSlug, getCanonicalPath } from '@/lib/seo/translations';
 import { SITE_URL } from '@/lib/constants';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string; intent: string }> }) {
     const { locale, intent } = await params;
-    const siteUrl = SITE_URL;
+    setRequestLocale(locale);
     
     // Resolve internal intent
-    const internalIntent = Object.keys(INTENT_TRANSLATIONS[locale]).find(k => INTENT_TRANSLATIONS[locale][k] === intent) || intent;
+    let internalIntent = Object.keys(INTENT_TRANSLATIONS[locale]).find(k => INTENT_TRANSLATIONS[locale][k] === intent);
+    if (!internalIntent) {
+        for (const loc of locales) {
+            internalIntent = Object.keys(INTENT_TRANSLATIONS[loc]).find(k => INTENT_TRANSLATIONS[loc][k] === intent);
+            if (internalIntent) break;
+        }
+    }
+    const finalIntent = internalIntent || intent;
     
-    const fullUrl = `${siteUrl}/${locale}/${intent}`;
+    const canonicalPath = getCanonicalPath(locale, finalIntent);
+    const fullUrl = `${SITE_URL}${canonicalPath}`;
     
     // Build hreflang alternates
     const languages: Record<string, string> = {};
     locales.forEach(loc => {
-        const locIntent = INTENT_TRANSLATIONS[loc][internalIntent] || internalIntent;
-        languages[loc] = `${siteUrl}/${loc}/${locIntent}`;
+        languages[loc] = `${SITE_URL}${getCanonicalPath(loc, finalIntent)}`;
     });
-    languages['x-default'] = `${siteUrl}/de/${INTENT_TRANSLATIONS['de'][internalIntent] || internalIntent}`;
+    languages['x-default'] = `${SITE_URL}${getCanonicalPath('de', finalIntent)}`;
 
     const title = locale === 'de' 
         ? `${intent.charAt(0).toUpperCase() + intent.slice(1)} - Datumsrechner Hub ✓`
@@ -48,9 +57,30 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 
 export default async function IntentHubPage({ params }: { params: Promise<{ locale: string; intent: string }> }) {
     const { locale, intent } = await params;
-    const internalIntent = Object.keys(INTENT_TRANSLATIONS[locale]).find(k => INTENT_TRANSLATIONS[locale][k] === intent) || intent;
+    setRequestLocale(locale);
+    // Resolve internal intent across ALL locales (robust fallback)
+    let internalIntent = Object.keys(INTENT_TRANSLATIONS[locale]).find(k => INTENT_TRANSLATIONS[locale][k] === intent);
     
-    // Internal mapping for calcMode
+    if (!internalIntent) {
+        // Search other locales
+        for (const loc of locales) {
+            internalIntent = Object.keys(INTENT_TRANSLATIONS[loc]).find(k => INTENT_TRANSLATIONS[loc][k] === intent);
+            if (internalIntent) break;
+        }
+    }
+
+    if (!internalIntent) {
+        notFound();
+    }
+
+    // NORMALIZE: Ensure strictly localized intent URL
+    const correctPath = getCanonicalPath(locale, internalIntent);
+    const correctIntent = INTENT_TRANSLATIONS[locale][internalIntent] || internalIntent;
+    
+    if (intent.toLowerCase() !== correctIntent.toLowerCase()) {
+        permanentRedirect(correctPath);
+    }
+
     const intentMap: Record<string, string> = { 
         'addieren': 'add_subtract',
         'differenz': 'difference',
@@ -92,16 +122,20 @@ export default async function IntentHubPage({ params }: { params: Promise<{ loca
                             {locale === 'de' ? 'Häufige Berechnungen' : 'Popular Calculations'}
                         </h2>
                         <ul className="space-y-3">
-                            {transactional.map((def) => (
-                                <li key={def.canonicalSlug}>
-                                    <Link href={`/${locale}/${intent}/${translateSlug(def.canonicalSlug, locale)}`} className="text-white hover:text-neon flex items-center justify-between group p-3 rounded-lg hover:bg-white/5 transition-colors border border-transparent hover:border-white/5">
-                                        <span>{translateSlug(def.canonicalSlug, locale).replace(/-/g, ' ')}</span>
-                                        <svg className="w-5 h-5 opacity-0 group-hover:opacity-100 transition-opacity text-neon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                                        </svg>
-                                    </Link>
-                                </li>
-                            ))}
+                            {transactional.map((def) => {
+                                const locSlug = translateSlug(def.canonicalSlug, locale);
+                                const href = getCanonicalPath(locale, internalIntent!, locSlug);
+                                return (
+                                    <li key={def.canonicalSlug}>
+                                        <Link href={href as any} className="text-white hover:text-neon flex items-center justify-between group p-3 rounded-lg hover:bg-white/5 transition-colors border border-transparent hover:border-white/5">
+                                            <span>{locSlug.replace(/-/g, ' ')}</span>
+                                            <svg className="w-5 h-5 opacity-0 group-hover:opacity-100 transition-opacity text-neon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                                            </svg>
+                                        </Link>
+                                    </li>
+                                );
+                            })}
                         </ul>
                     </div>
                 )}
@@ -113,16 +147,20 @@ export default async function IntentHubPage({ params }: { params: Promise<{ loca
                             {locale === 'de' ? 'Meilensteine & Events' : 'Milestones & Events'}
                         </h2>
                         <ul className="space-y-3">
-                            {informational.map((def) => (
-                                <li key={def.canonicalSlug}>
-                                    <Link href={`/${locale}/${intent}/${translateSlug(def.canonicalSlug, locale)}`} className="text-white hover:text-neon flex items-center justify-between group p-3 rounded-lg hover:bg-white/5 transition-colors border border-transparent hover:border-white/5">
-                                        <span className="capitalize">{translateSlug(def.canonicalSlug, locale).replace(/-/g, ' ')}</span>
-                                        <svg className="w-5 h-5 opacity-0 group-hover:opacity-100 transition-opacity text-neon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                                        </svg>
-                                    </Link>
-                                </li>
-                            ))}
+                            {informational.map((def) => {
+                                const locSlug = translateSlug(def.canonicalSlug, locale);
+                                const href = getCanonicalPath(locale, internalIntent!, locSlug);
+                                return (
+                                    <li key={def.canonicalSlug}>
+                                        <Link href={href as any} className="text-white hover:text-neon flex items-center justify-between group p-3 rounded-lg hover:bg-white/5 transition-colors border border-transparent hover:border-white/5">
+                                            <span className="capitalize">{locSlug.replace(/-/g, ' ')}</span>
+                                            <svg className="w-5 h-5 opacity-0 group-hover:opacity-100 transition-opacity text-neon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                                            </svg>
+                                        </Link>
+                                    </li>
+                                );
+                            })}
                         </ul>
                     </div>
                 )}

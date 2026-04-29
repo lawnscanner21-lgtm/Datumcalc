@@ -2,13 +2,16 @@
 
 import { useState } from 'react';
 import { useRouter, useParams } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { Search } from 'lucide-react';
+import { INTENT_TRANSLATIONS } from '@/lib/seo/translations';
 
 export function SmartInputBar() {
+    const t = useTranslations('SmartInput');
     const [query, setQuery] = useState('');
     const router = useRouter();
     const params = useParams();
-    const locale = params?.locale || 'de';
+    const locale = (params?.locale as string) || 'de';
 
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
@@ -16,20 +19,20 @@ export function SmartInputBar() {
 
         // MVP intent parsing
         const lower = query.toLowerCase();
-        let url = `/${locale}/`;
-
-        if (lower.includes('tage ab heute') || lower.includes('tage nach')) {
-            url += `addieren/${lower.replace(/ /g, '-')}`;
-        } else if (lower.includes('tage bis') || lower.includes('tage vor')) {
-            url += `differenz/${lower.replace(/ /g, '-')}`;
+        
+        let intent = 'addieren';
+        if (lower.includes('tage bis') || lower.includes('tage vor')) {
+            intent = 'differenz';
         } else if (lower.includes('arbeitstage') || lower.includes('werktage')) {
-            url += `arbeitstage/${lower.replace(/ /g, '-')}`;
+            intent = 'arbeitstage';
         } else if (lower.includes('alter') || lower.includes('alt')) {
-            url += `alter/${lower.replace(/ /g, '-')}`;
-        } else {
-            // fallback search
-            url += `addieren/${lower.replace(/ /g, '-')}`;
+            intent = 'alter';
         }
+
+        const locIntent = INTENT_TRANSLATIONS[locale][intent] || intent;
+        const slug = lower.replace(/ /g, '-');
+        const prefix = locale === 'de' ? '' : `/${locale}`;
+        const url = `${prefix}/${locIntent}/${slug}`;
 
         router.push(url);
     };
@@ -44,21 +47,21 @@ export function SmartInputBar() {
                         type="text"
                         value={query}
                         onChange={(e) => setQuery(e.target.value)}
-                        placeholder="Was möchtest du berechnen? (z.B. 100 Tage ab heute)"
+                        placeholder={t('placeholder')}
                         className="w-full bg-transparent text-white placeholder-white/40 px-4 py-3 text-[17px] focus:outline-none"
                     />
                     <button
                         type="submit"
                         className="bg-gradient-to-r from-neon to-neon-blue text-white font-semibold px-6 py-3 rounded-xl hover:opacity-90 transition-opacity whitespace-nowrap"
                     >
-                        Berechnen
+                        {t('button')}
                     </button>
                 </div>
                 <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 mt-5 text-sm font-medium text-white/40">
-                    <span className="hidden sm:inline">Beliebte Suchen:</span>
-                    <button type="button" onClick={() => setQuery('100 Tage ab heute')} className="hover:text-neon transition-colors">100 Tage ab heute</button>
-                    <button type="button" onClick={() => setQuery('Tage bis Weihnachten')} className="hover:text-neon transition-colors">Tage bis Weihnachten</button>
-                    <button type="button" onClick={() => setQuery('Arbeitstage 2024')} className="hover:text-neon transition-colors">Arbeitstage 2024</button>
+                    <span className="hidden sm:inline">{t('popular')}</span>
+                    <button type="button" onClick={() => setQuery(t('example1'))} className="hover:text-neon transition-colors">{t('example1')}</button>
+                    <button type="button" onClick={() => setQuery(t('example2'))} className="hover:text-neon transition-colors">{t('example2')}</button>
+                    <button type="button" onClick={() => setQuery(t('example3'))} className="hover:text-neon transition-colors">{t('example3')}</button>
                 </div>
             </form>
         </div>

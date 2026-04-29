@@ -6,7 +6,10 @@ import { useRecentCalculations } from '@/hooks/useRecentCalculations';
 import { Share2, Check, BookmarkPlus } from 'lucide-react';
 import { format } from 'date-fns';
 
+import { useTranslations } from 'next-intl';
+
 export function BusinessDays() {
+    const t = useTranslations('Calculator');
     const [start, setStart] = useState<string>('');
     const [end, setEnd] = useState<string>('');
     const [copied, setCopied] = useState(false);
@@ -40,8 +43,8 @@ export function BusinessDays() {
         if (result !== null) {
             addCalculation({
                 type: 'business_days',
-                title: `Werktage zw. ${format(new Date(start), 'dd.MM')} u. ${format(new Date(end), 'dd.MM')}`,
-                result: `${Math.abs(result)} Tage`
+                title: `${t('businessDays')}: ${format(new Date(start), 'dd.MM')} - ${format(new Date(end), 'dd.MM')}`,
+                result: `${Math.abs(result)} ${t('days')}`
             });
         }
     };
@@ -56,7 +59,7 @@ export function BusinessDays() {
         <div className="space-y-6 animate-in fade-in duration-300">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
-                    <label className="text-sm font-medium text-white/80">Startdatum</label>
+                    <label className="text-sm font-medium text-white/80">{t('startDate')}</label>
                     <input
                         type="date"
                         value={start}
@@ -65,7 +68,7 @@ export function BusinessDays() {
                     />
                 </div>
                 <div className="space-y-2">
-                    <label className="text-sm font-medium text-white/80">Enddatum</label>
+                    <label className="text-sm font-medium text-white/80">{t('endDate')}</label>
                     <input
                         type="date"
                         value={end}
@@ -79,17 +82,17 @@ export function BusinessDays() {
                 <div className="mt-8 p-6 rounded-2xl bg-gradient-to-br from-white/5 to-white/0 border border-neon/30 shadow-[0_0_30px_rgba(255,0,85,0.05)] space-y-4 relative">
                     <div className="flex justify-between items-start">
                         <div>
-                            <h3 className="text-lg font-medium text-white/80">Arbeitstage</h3>
+                            <h3 className="text-lg font-medium text-white/80">{t('businessDays')}</h3>
                             <p className="text-3xl mt-2 font-bold bg-clip-text text-transparent bg-gradient-to-r from-neon to-neon-blue">
-                                {Math.abs(result)} Tage
+                                {Math.abs(result)} {t('days')}
                             </p>
-                            <p className="text-sm text-white/50 mt-1">Ohne Wochenenden (Samstag & Sonntag).</p>
+                            <p className="text-sm text-white/50 mt-1">Excl. Sat & Sun.</p>
                         </div>
                         <div className="flex gap-2">
-                            <button onClick={handleSave} className="bg-white/5 hover:bg-white/10 border border-white/10 p-2 rounded-xl transition-colors tooltip" title="Speichern">
+                            <button onClick={handleSave} className="bg-white/5 hover:bg-white/10 border border-white/10 p-2 rounded-xl transition-colors tooltip" title={t('save')}>
                                 <BookmarkPlus className="w-5 h-5 text-neon-blue" />
                             </button>
-                            <button onClick={shareUrl} className="bg-white/5 hover:bg-white/10 border border-white/10 p-2 rounded-xl transition-colors tooltip" title="Link kopieren">
+                            <button onClick={shareUrl} className="bg-white/5 hover:bg-white/10 border border-white/10 p-2 rounded-xl transition-colors tooltip" title={t('share')}>
                                 {copied ? <Check className="w-5 h-5 text-green-400" /> : <Share2 className="w-5 h-5 text-neon" />}
                             </button>
                         </div>

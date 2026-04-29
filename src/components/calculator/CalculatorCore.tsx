@@ -13,14 +13,17 @@ interface CalculatorCoreProps {
     initialMode?: Mode;
 }
 
+import { useTranslations } from 'next-intl';
+
 export function CalculatorCore({ initialMode = 'difference' }: CalculatorCoreProps) {
+    const t = useTranslations('Modes');
     const [activeMode, setActiveMode] = useState<Mode>(initialMode);
 
     const tabs: { id: Mode; label: string }[] = [
-        { id: 'difference', label: 'Differenz' },
-        { id: 'add_subtract', label: 'Addieren / Subtrahieren' },
-        { id: 'business_days', label: 'Arbeitstage' },
-        { id: 'age', label: 'Alter' },
+        { id: 'difference', label: t('dateDifference') },
+        { id: 'add_subtract', label: t('addSubtract') },
+        { id: 'business_days', label: t('businessDays') },
+        { id: 'age', label: t('ageCalculator') },
     ];
 
     return (
@@ -58,6 +61,7 @@ export function CalculatorCore({ initialMode = 'difference' }: CalculatorCorePro
 }
 
 function RecentCalculationsBlock() {
+    const t = useTranslations('SmartInput');
     const { history, clearHistory, removeCalculation } = useRecentCalculations();
     // avoid hydration mismatch by not rendering server side
     const [mounted, setMounted] = useState(false);
@@ -70,8 +74,8 @@ function RecentCalculationsBlock() {
     return (
         <div className="mt-12 pt-8 border-t border-white/10 animate-in fade-in duration-500">
             <div className="flex justify-between items-center mb-6">
-                <h3 className="text-xl font-bold text-white">Letzte Berechnungen</h3>
-                <button onClick={clearHistory} className="text-sm text-white/40 hover:text-white transition-colors">Verlauf löschen</button>
+                <h3 className="text-xl font-bold text-white">{t('history') || 'Recent Calculations'}</h3>
+                <button onClick={clearHistory} className="text-sm text-white/40 hover:text-white transition-colors">{t('clearHistory') || 'Clear History'}</button>
             </div>
             <div className="space-y-3">
                 {history.map(item => (
