@@ -191,7 +191,44 @@ export function Header() {
                         {/* ── Desktop Right Controls ── */}
                         <div className="hidden lg:flex items-center gap-3 shrink-0">
 
-
+                            {/* Language Dropdown */}
+                            <div ref={langRef} className="relative">
+                                <button
+                                    id="lang-toggle"
+                                    aria-haspopup="listbox"
+                                    aria-expanded={langOpen}
+                                    aria-label={t('Nav.languageLabel')}
+                                    onClick={() => setLangOpen(!langOpen)}
+                                    className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-white/50 hover:text-white px-3 py-2 rounded-xl border border-white/10 bg-white/[0.03] hover:bg-white/[0.07] hover:border-white/20 transition-all duration-200 outline-none focus-visible:ring-2 focus-visible:ring-neon-blue/70"
+                                >
+                                    <Globe className="w-3.5 h-3.5" aria-hidden="true" />
+                                    {locale.toUpperCase()}
+                                    <ChevronDown className={`w-3 h-3 transition-transform duration-200 ${langOpen ? 'rotate-180' : ''}`} aria-hidden="true" />
+                                </button>
+                                {langOpen && (
+                                    <div
+                                        role="listbox"
+                                        aria-labelledby="lang-toggle"
+                                        className="absolute right-0 top-full mt-2 min-w-[9rem] bg-[#111]/95 backdrop-blur-2xl border border-white/10 rounded-2xl shadow-[0_16px_40px_rgba(0,0,0,0.6)] overflow-hidden animate-slide-up-fade z-50 py-1.5"
+                                    >
+                                        {locales.map((loc) => (
+                                            <button
+                                                key={loc}
+                                                role="option"
+                                                aria-selected={locale === loc}
+                                                onClick={() => handleLocaleChange(loc)}
+                                                className={`w-full text-left px-4 py-2.5 text-sm transition-colors ${
+                                                    locale === loc
+                                                        ? 'text-neon-blue bg-neon-blue/10 font-bold'
+                                                        : 'text-white/60 hover:text-white hover:bg-white/[0.05] font-medium'
+                                                }`}
+                                            >
+                                                {tCommon(loc)}
+                                            </button>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
 
                             {/* CTA */}
                             <Link
@@ -294,7 +331,29 @@ export function Header() {
                         <ArrowRight className="w-5 h-5" aria-hidden="true" />
                     </Link>
 
-
+                    {/* Mobile Language Switcher */}
+                    <div className="border-t border-white/5 pt-6">
+                        <p className="text-xs font-bold uppercase tracking-[0.2em] text-white/25 mb-4 px-2">
+                            {t('Nav.languageLabel')}
+                        </p>
+                        <div className="flex flex-col gap-2">
+                            {locales.map((loc) => (
+                                <button
+                                    key={loc}
+                                    onClick={() => handleLocaleChange(loc)}
+                                    aria-pressed={locale === loc}
+                                    className={`w-full text-left px-5 py-4 rounded-2xl text-base font-bold transition-all duration-200 flex items-center justify-between ${
+                                        locale === loc
+                                            ? 'bg-neon-blue/15 text-neon-blue border border-neon-blue/30'
+                                            : 'text-white/40 hover:text-white/70 border border-white/5 hover:border-white/15 bg-white/[0.02]'
+                                    }`}
+                                >
+                                    <span className="capitalize">{tCommon(loc)}</span>
+                                    <span className="text-[10px] opacity-40 uppercase tracking-widest">{loc}</span>
+                                </button>
+                            ))}
+                        </div>
+                    </div>
                 </div>
             </div>
         </>

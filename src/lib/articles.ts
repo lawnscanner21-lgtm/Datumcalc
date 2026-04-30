@@ -87,13 +87,90 @@ export const articles: Record<string, Article[]> = {
           <p>Für Informatiker und Mathematiker ist dieser Standard essenziell, da Datumsangaben so lexikographisch korrekt sortiert werden können. Unser Datumsrechner basiert intern vollständig auf diesen standardisierten Zeitstempeln, um höchste mathematische Präzision zu garantieren.</p>
         `
         }
+    ],
+    en: [
+        {
+            slug: 'leap-years-explained',
+            title: 'Leap Years Explained: Why February 29th Exists',
+            description: 'Everything you need to know about leap years. Learn why our calendar needs an extra day every four years and how it is calculated.',
+            publishedAt: 'March 24, 2024',
+            readTime: '3 min',
+            content: `
+          <h2>What is a Leap Year?</h2>
+          <p>A leap year has 366 days instead of the usual 365. The extra day is added to the end of February – February 29th. This is necessary to synchronize our calendar with the solar year (the time it takes for the Earth to orbit the Sun).</p>
+          
+          <h2>Why do we need Leap Years?</h2>
+          <p>The Earth takes approximately 365.2422 days to complete one orbit around the Sun. If we strictly used 365 days every year, our calendar would shift by nearly a full day every four years. After 100 years, that would be 24 days! Summer in July would eventually occur in the middle of winter.</p>
+          
+          <h2>The Leap Year Rule</h2>
+          <p>The calculation is not as simple as "every four years." The exact global rule is:</p>
+          <ul>
+            <li>A year is a leap year if it is divisible by 4.</li>
+            <li><strong>Exception:</strong> If the year is divisible by 100, it is <em>not</em> a leap year.</li>
+            <li><strong>Exception to the exception:</strong> If the year is divisible by 400, it <em>is</em> a leap year after all.</li>
+          </ul>
+          <p>That's why the year 2000 was a leap year, but the year 1900 was not.</p>
+        `
+        },
+        {
+            slug: 'what-is-a-business-day',
+            title: 'What is a Business Day? Definition and Legal Regulations',
+            description: 'Learn everything about the term business day, how it differs from a working day and what to consider for deadlines.',
+            publishedAt: 'March 25, 2024',
+            readTime: '3 min',
+            content: `
+          <h2>Definition: Business Day</h2>
+          <p>A business day is a day on which work is normally performed. Unlike the calendar day or working day, weekends and public holidays are excluded.</p>
+          
+          <h2>Difference to Working Day</h2>
+          <p>These terms are often confused. In many regions, all calendar days that are not Sundays or public holidays are considered working days (including Saturdays). A business day, however, mostly refers to the individual 5-day week (Monday to Friday).</p>
+          
+          <h2>Relevance for Deadlines</h2>
+          <p>When employment contracts mention "business days", Saturdays do not count. But if they say "working days", Saturday must be included in the deadline calculation. With our calculator, you can precisely distinguish both variants.</p>
+        `
+        },
+        {
+            slug: 'weeks-in-a-year',
+            title: 'How Many Weeks Are in a Year?',
+            description: 'Does a year always have 52 weeks? Find out more about ISO weeks, leap years, and why some years have 53 weeks.',
+            publishedAt: 'March 20, 2024',
+            readTime: '2 min',
+            content: `
+          <h2>The 52-Week Rule</h2>
+          <p>Normally, a year is assumed to have 52 weeks. If you divide 365 by 7 (days per week), you get exactly 52.14. A normal year thus has 52 full weeks and one remainder day. A leap year has 52 weeks and 2 remainder days.</p>
+    
+          <h2>When is there a 53rd Calendar Week?</h2>
+          <p>The week numbering follows the strict ISO 8601 standard. It states internationally:</p>
+          <blockquote style="border-left: 4px solid #ff0055; padding-left: 1rem; margin-top: 1rem; margin-bottom: 1rem; font-style: italic; background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 0.5rem;">
+            Week 1 is the week that contains the first Thursday of the year.
+          </blockquote>
+          <p>Because of this, it happens that a year has 53 calendar weeks. This happens whenever a common year starts on a Thursday (or a leap year starts on a Wednesday or Thursday).</p>
+        `
+        },
+        {
+            slug: 'iso-8601-explained',
+            title: 'ISO 8601 Explained: The International Standard for Date and Time',
+            description: 'Why ISO 8601 is the most important standard for digital time measurement and how to apply it correctly.',
+            publishedAt: 'March 26, 2024',
+            readTime: '4 min',
+            content: `
+          <h2>What is ISO 8601?</h2>
+          <p>ISO 8601 is the international ISO standard for the representation of date and time. It ensures that time data is globally unambiguous and machine-readable.</p>
+          
+          <h2>Formatting (YYYY-MM-DD)</h2>
+          <p>The most well-known feature is the descending sorting: year, month, day. The format <code>2024-03-24</code> is absolutely unambiguous and avoids confusion between the US format (MM/DD/YYYY) and the European format (DD.MM.YYYY).</p>
+          
+          <h2>Why we use ISO 8601</h2>
+          <p>For computer scientists and mathematicians, this standard is essential because date inputs can be sorted lexicographically correct. Our date calculator relies entirely on these standardized timestamps internally to guarantee maximum mathematical precision.</p>
+        `
+        }
     ]
 };
 
 export function getArticles(locale: string): Article[] {
-    return articles['de'];
+    return articles[locale] || articles['de'];
 }
 
 export function getArticleBySlug(slug: string, locale: string = 'de') {
-    return articles['de']?.find(a => a.slug === slug);
+    return (articles[locale] || articles['de'])?.find(a => a.slug === slug);
 }

@@ -7,6 +7,10 @@ export const INTENT_TRANSLATIONS: Record<string, Record<string, string>> = {
     de: { 
         addieren: 'addieren', differenz: 'differenz', arbeitstage: 'arbeitstage', alter: 'alter', 
         ratgeber: 'ratgeber', 'ueber-uns': 'ueber-uns', agb: 'agb', datenschutz: 'datenschutz', impressum: 'impressum', sitemap: 'sitemap' 
+    },
+    en: { 
+        addieren: 'add', differenz: 'difference', arbeitstage: 'business', alter: 'age', 
+        ratgeber: 'guide', 'ueber-uns': 'about-us', agb: 'terms', datenschutz: 'privacy', impressum: 'imprint', sitemap: 'sitemap' 
     }
 };
 
@@ -16,6 +20,12 @@ export const SLUG_TOKEN_TRANSLATIONS: Record<string, Record<string, string>> = {
         'ab-heute': 'ab-heute', 'tage-bis': 'tage-bis',
         'weihnachten': 'weihnachten', 'silvester': 'silvester', 'neujahr': 'neujahr',
         'ostern': 'ostern', 'sommeranfang': 'sommeranfang', 'urlaub': 'urlaub'
+    },
+    en: { 
+        'tage': 'days', 'monate': 'months', 'jahre': 'years', 
+        'ab-heute': 'from-today', 'tage-bis': 'days-until',
+        'weihnachten': 'christmas', 'silvester': 'new-years-eve', 'neujahr': 'new-year',
+        'ostern': 'easter', 'sommeranfang': 'summer-solstice', 'urlaub': 'vacation'
     }
 };
 

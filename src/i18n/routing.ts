@@ -1,7 +1,7 @@
 import { defineRouting } from 'next-intl/routing';
 import { createNavigation } from 'next-intl/navigation';
 
-export const locales = ['de'] as const;
+export const locales = ['de', 'en'] as const;
 
 export const routing = defineRouting({
     locales,
@@ -9,22 +9,22 @@ export const routing = defineRouting({
     localePrefix: 'as-needed',
     localeDetection: false,
     pathnames: {
-        '/': '/',
-        '/ueber-uns': '/ueber-uns',
-        '/agb': '/agb',
-        '/datenschutz': '/datenschutz',
-        '/impressum': '/impressum',
-        '/sitemap': '/sitemap',
-        '/addieren': '/addieren',
-        '/differenz': '/differenz',
-        '/arbeitstage': '/arbeitstage',
-        '/alter': '/alter',
-        '/ratgeber': '/ratgeber',
-        '/ratgeber/[slug]': '/ratgeber/[slug]',
-        '/addieren/[...slug]': '/addieren/[...slug]',
-        '/differenz/[...slug]': '/differenz/[...slug]',
-        '/arbeitstage/[...slug]': '/arbeitstage/[...slug]',
-        '/alter/[...slug]': '/alter/[...slug]'
+        '/': { de: '/', en: '/' },
+        '/ueber-uns': { de: '/ueber-uns', en: '/about-us' },
+        '/agb': { de: '/agb', en: '/terms' },
+        '/datenschutz': { de: '/datenschutz', en: '/privacy' },
+        '/impressum': { de: '/impressum', en: '/imprint' },
+        '/sitemap': { de: '/sitemap', en: '/sitemap' },
+        '/addieren': { de: '/addieren', en: '/add' },
+        '/differenz': { de: '/differenz', en: '/difference' },
+        '/arbeitstage': { de: '/arbeitstage', en: '/business' },
+        '/alter': { de: '/alter', en: '/age' },
+        '/ratgeber': { de: '/ratgeber', en: '/guide' },
+        '/ratgeber/[slug]': { de: '/ratgeber/[slug]', en: '/guide/[slug]' },
+        '/addieren/[...slug]': { de: '/addieren/[...slug]', en: '/add/[...slug]' },
+        '/differenz/[...slug]': { de: '/differenz/[...slug]', en: '/difference/[...slug]' },
+        '/arbeitstage/[...slug]': { de: '/arbeitstage/[...slug]', en: '/business/[...slug]' },
+        '/alter/[...slug]': { de: '/alter/[...slug]', en: '/age/[...slug]' }
     }
 });
 

@@ -6,14 +6,6 @@ const withNextIntl = createNextIntlPlugin();
 const nextConfig: NextConfig = {
   async redirects() {
     return [
-      // English SEO Fallbacks
-      { source: '/en/add/:slug*', destination: '/addieren', permanent: true },
-      { source: '/en/difference/:slug*', destination: '/differenz', permanent: true },
-      { source: '/en/business/:slug*', destination: '/arbeitstage', permanent: true },
-      { source: '/en/age/:slug*', destination: '/alter', permanent: true },
-      { source: '/en/guide/:slug*', destination: '/ratgeber', permanent: true },
-      { source: '/en/:path*', destination: '/', permanent: true },
-
       // Spanish SEO Fallbacks
       { source: '/es/sumar/:slug*', destination: '/addieren', permanent: true },
       { source: '/es/diferencia/:slug*', destination: '/differenz', permanent: true },
