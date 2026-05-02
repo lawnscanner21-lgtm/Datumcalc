@@ -35,21 +35,12 @@ export function InternalLinksBlock({ locale, intent, slug }: { locale: string; i
 
     // Add more event & guide links
     const events = [
-<<<<<<< HEAD
-        { de: 'Tage bis Weihnachten', slug: 'tage-bis-weihnachten' },
-        { de: 'Tage bis Silvester', slug: 'tage-bis-silvester' },
-        { de: 'Tage bis Neujahr', slug: 'tage-bis-neujahr' },
-        { de: 'Tage bis Ostern', slug: 'tage-bis-ostern' },
-        { de: 'Tage bis Sommeranfang', slug: 'tage-bis-sommeranfang' },
-        { de: 'Tage bis zum Urlaub', slug: 'tage-bis-urlaub' }
-=======
         { key: 'weihnachten', slug: 'tage-bis-weihnachten' },
         { key: 'silvester', slug: 'tage-bis-silvester' },
         { key: 'neujahr', slug: 'tage-bis-neujahr' },
         { key: 'ostern', slug: 'tage-bis-ostern' },
         { key: 'sommeranfang', slug: 'tage-bis-sommeranfang' },
         { key: 'urlaub', slug: 'tage-bis-urlaub' }
->>>>>>> d18ca7e68d4050a9b4703bbc6f55753ba1c17284
     ];
 
     events.forEach(e => {
