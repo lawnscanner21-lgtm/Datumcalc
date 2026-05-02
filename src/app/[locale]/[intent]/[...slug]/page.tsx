@@ -7,13 +7,13 @@ import { InternalLinksBlock } from '@/components/seo/InternalLinksBlock';
 import { ConversionTools } from '@/components/seo/ConversionTools';
 import { TrustSignals } from '@/components/seo/TrustSignals';
 import { addDays, addMonths, addYears, differenceInDays, format } from 'date-fns';
-import { de, enUS, es, fr, it, pt } from 'date-fns/locale';
+import { de, enUS } from 'date-fns/locale';
 import { resolveCanonicalQuery, CANONICAL_QUERIES } from '@/lib/seo/queryModel';
 import { locales } from '@/i18n/routing';
 import { SITE_URL } from '@/lib/constants';
 import { INTENT_TRANSLATIONS, translateSlug, reverseTranslateSlug, getCanonicalPath } from '@/lib/seo/translations';
 
-const dateLocales: Record<string, any> = { de, en: enUS, es, fr, it, pt };
+const dateLocales: Record<string, any> = { de, en: enUS };
 
 const intentToModeMap: Record<string, string> = {
     'differenz': 'difference',

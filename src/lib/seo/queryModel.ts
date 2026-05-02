@@ -14,47 +14,25 @@ export interface QueryDefinition {
 
 // Master map of how queries cluster
 export const CANONICAL_QUERIES: Record<string, QueryDefinition> = {
-    // Top volume days
-    '7-tage-ab-heute': { canonicalSlug: '7-tage-ab-heute', intentType: 'Transactional', priority: 'High', calcMode: 'add_subtract', isIndexable: true },
-    '14-tage-ab-heute': { canonicalSlug: '14-tage-ab-heute', intentType: 'Transactional', priority: 'High', calcMode: 'add_subtract', isIndexable: true },
-    '21-tage-ab-heute': { canonicalSlug: '21-tage-ab-heute', intentType: 'Transactional', priority: 'High', calcMode: 'add_subtract', isIndexable: true },
+    // Top volume days (Requested)
     '30-tage-ab-heute': { canonicalSlug: '30-tage-ab-heute', intentType: 'Transactional', priority: 'High', calcMode: 'add_subtract', isIndexable: true },
-    '45-tage-ab-heute': { canonicalSlug: '45-tage-ab-heute', intentType: 'Transactional', priority: 'Medium', calcMode: 'add_subtract', isIndexable: true },
     '60-tage-ab-heute': { canonicalSlug: '60-tage-ab-heute', intentType: 'Transactional', priority: 'High', calcMode: 'add_subtract', isIndexable: true },
     '90-tage-ab-heute': { canonicalSlug: '90-tage-ab-heute', intentType: 'Transactional', priority: 'High', calcMode: 'add_subtract', isIndexable: true },
     '100-tage-ab-heute': { canonicalSlug: '100-tage-ab-heute', intentType: 'Transactional', priority: 'High', calcMode: 'add_subtract', isIndexable: true },
-    '120-tage-ab-heute': { canonicalSlug: '120-tage-ab-heute', intentType: 'Transactional', priority: 'Medium', calcMode: 'add_subtract', isIndexable: true },
-    '180-tage-ab-heute': { canonicalSlug: '180-tage-ab-heute', intentType: 'Transactional', priority: 'High', calcMode: 'add_subtract', isIndexable: true },
-    '365-tage-ab-heute': { canonicalSlug: '365-tage-ab-heute', intentType: 'Transactional', priority: 'High', calcMode: 'add_subtract', isIndexable: true },
-    '500-tage-ab-heute': { canonicalSlug: '500-tage-ab-heute', intentType: 'Transactional', priority: 'Medium', calcMode: 'add_subtract', isIndexable: true },
-    '1000-tage-ab-heute': { canonicalSlug: '1000-tage-ab-heute', intentType: 'Transactional', priority: 'Medium', calcMode: 'add_subtract', isIndexable: true },
 
-    // Top volume months
-    '1-monat-ab-heute': { canonicalSlug: '1-monat-ab-heute', intentType: 'Transactional', priority: 'High', calcMode: 'add_subtract', isIndexable: true },
-    '2-monate-ab-heute': { canonicalSlug: '2-monate-ab-heute', intentType: 'Transactional', priority: 'High', calcMode: 'add_subtract', isIndexable: true },
-    '3-monate-ab-heute': { canonicalSlug: '3-monate-ab-heute', intentType: 'Transactional', priority: 'High', calcMode: 'add_subtract', isIndexable: true },
+    // Top volume months (Requested)
     '6-monate-ab-heute': { canonicalSlug: '6-monate-ab-heute', intentType: 'Transactional', priority: 'High', calcMode: 'add_subtract', isIndexable: true },
-    '12-monate-ab-heute': { canonicalSlug: '12-monate-ab-heute', intentType: 'Transactional', priority: 'High', calcMode: 'add_subtract', isIndexable: true },
 
-    // Top volume years
+    // Top volume years (Requested)
     '1-jahr-ab-heute': { canonicalSlug: '1-jahr-ab-heute', intentType: 'Transactional', priority: 'High', calcMode: 'add_subtract', isIndexable: true },
-    '2-jahre-ab-heute': { canonicalSlug: '2-jahre-ab-heute', intentType: 'Transactional', priority: 'High', calcMode: 'add_subtract', isIndexable: true },
-    '5-jahre-ab-heute': { canonicalSlug: '5-jahre-ab-heute', intentType: 'Transactional', priority: 'Medium', calcMode: 'add_subtract', isIndexable: true },
-    '10-jahre-ab-heute': { canonicalSlug: '10-jahre-ab-heute', intentType: 'Transactional', priority: 'Medium', calcMode: 'add_subtract', isIndexable: true },
     
-    // Top Events
+    // Top Events (Requested)
     'tage-bis-weihnachten': { canonicalSlug: 'tage-bis-weihnachten', intentType: 'Informational', priority: 'High', calcMode: 'difference', isIndexable: true },
     'tage-bis-silvester': { canonicalSlug: 'tage-bis-silvester', intentType: 'Informational', priority: 'High', calcMode: 'difference', isIndexable: true },
+    'tage-bis-neujahr': { canonicalSlug: 'tage-bis-neujahr', intentType: 'Informational', priority: 'High', calcMode: 'difference', isIndexable: true },
     'tage-bis-ostern': { canonicalSlug: 'tage-bis-ostern', intentType: 'Informational', priority: 'High', calcMode: 'difference', isIndexable: true },
     'tage-bis-sommeranfang': { canonicalSlug: 'tage-bis-sommeranfang', intentType: 'Informational', priority: 'High', calcMode: 'difference', isIndexable: true },
-    'tage-bis-winteranfang': { canonicalSlug: 'tage-bis-winteranfang', intentType: 'Informational', priority: 'Medium', calcMode: 'difference', isIndexable: true },
-    'tage-bis-fruehlingsanfang': { canonicalSlug: 'tage-bis-fruehlingsanfang', intentType: 'Informational', priority: 'Medium', calcMode: 'difference', isIndexable: true },
-    'tage-bis-herbstanfang': { canonicalSlug: 'tage-bis-herbstanfang', intentType: 'Informational', priority: 'Medium', calcMode: 'difference', isIndexable: true },
-    'tage-bis-neujahr': { canonicalSlug: 'tage-bis-neujahr', intentType: 'Informational', priority: 'High', calcMode: 'difference', isIndexable: true },
     'tage-bis-urlaub': { canonicalSlug: 'tage-bis-urlaub', intentType: 'Informational', priority: 'Medium', calcMode: 'difference', isIndexable: true },
-
-    // Business & Special
-    'arbeitstage-jahr': { canonicalSlug: 'arbeitstage-jahr', intentType: 'Informational', priority: 'High', calcMode: 'business_days', isIndexable: true },
 };
 
 // Aliases -> Canonical (Cannibalization control)

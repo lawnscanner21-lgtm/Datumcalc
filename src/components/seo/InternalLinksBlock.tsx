@@ -14,38 +14,33 @@ export function InternalLinksBlock({ locale, intent, slug }: { locale: string; i
 
     const isDe = locale === 'de';
     
-    if (numValue > 0) {
-        const values = [
-            Math.round(numValue * 0.8),
-            Math.round(numValue * 0.9),
-            Math.round(numValue * 1.1),
-            Math.round(numValue * 1.2)
-        ];
-        
-        values.forEach(v => {
-            const locLabel = translateSlug(`${v}-tage-ab-heute`, locale).replace(/-/g, ' ');
-            links.push({ 
-                label: locLabel, 
-                href: ROUTES.getAddieren(translateSlug(`${v}-tage-ab-heute`, locale)), 
-                type: isDe ? 'Variation' : 'Variation' 
-            });
+    const allowedAddieren = [
+        '30-tage-ab-heute',
+        '60-tage-ab-heute',
+        '90-tage-ab-heute',
+        '100-tage-ab-heute',
+        '6-monate-ab-heute',
+        '1-jahr-ab-heute'
+    ];
+
+    allowedAddieren.forEach(s => {
+        const locSlug = translateSlug(s, locale);
+        const locLabel = locSlug.replace(/-/g, ' ');
+        links.push({ 
+            label: locLabel, 
+            href: ROUTES.getAddieren(locSlug), 
+            type: isDe ? 'Beliebt' : 'Popular' 
         });
-    } else {
-        const standard = [30, 90, 100, 365];
-        standard.forEach(v => {
-            const locLabel = translateSlug(`${v}-tage-ab-heute`, locale).replace(/-/g, ' ');
-            links.push({ 
-                label: locLabel, 
-                href: ROUTES.getAddieren(translateSlug(`${v}-tage-ab-heute`, locale)), 
-                type: isDe ? 'Beliebt' : 'Popular' 
-            });
-        });
-    }
+    });
 
     // Add more event & guide links
     const events = [
         { key: 'weihnachten', slug: 'tage-bis-weihnachten' },
-        { key: 'silvester', slug: 'tage-bis-silvester' }
+        { key: 'silvester', slug: 'tage-bis-silvester' },
+        { key: 'neujahr', slug: 'tage-bis-neujahr' },
+        { key: 'ostern', slug: 'tage-bis-ostern' },
+        { key: 'sommeranfang', slug: 'tage-bis-sommeranfang' },
+        { key: 'urlaub', slug: 'tage-bis-urlaub' }
     ];
 
     events.forEach(e => {

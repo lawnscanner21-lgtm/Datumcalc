@@ -101,7 +101,7 @@ export function getCanonicalPath(locale: string, intent: string, slug?: string):
     // Robust intent lookup
     let finalInternalIntent = internalIntent;
     if (!finalInternalIntent) {
-        for (const loc of ['de', 'en', 'es', 'fr', 'it', 'pt']) {
+        for (const loc of ['de', 'en']) {
             const found = Object.keys(INTENT_TRANSLATIONS[loc]).find(k => INTENT_TRANSLATIONS[loc][k] === intent);
             if (found) {
                 finalInternalIntent = found;

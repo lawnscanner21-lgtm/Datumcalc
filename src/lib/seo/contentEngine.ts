@@ -18,10 +18,8 @@ const EXPLANATION_TEMPLATES: Record<string, ((num: number, unit: string) => stri
     ]
 };
 
-// Fallback for other locales
-['es', 'fr', 'it', 'pt'].forEach(loc => {
-    EXPLANATION_TEMPLATES[loc] = EXPLANATION_TEMPLATES['en'];
-});
+// Fallback for other locales - Only en is needed as fallback for missing ones, though we only support de/en now
+if (!EXPLANATION_TEMPLATES['de']) EXPLANATION_TEMPLATES['de'] = EXPLANATION_TEMPLATES['en'];
 
 const USE_CASES: Record<string, string[]> = {
     de: [
@@ -41,9 +39,8 @@ const USE_CASES: Record<string, string[]> = {
         'Expiry dates for licenses and certificates'
     ]
 };
-['es', 'fr', 'it', 'pt'].forEach(loc => {
-    USE_CASES[loc] = USE_CASES['en'];
-});
+// Fallback for other locales - Only en is needed as fallback
+if (!USE_CASES['de']) USE_CASES['de'] = USE_CASES['en'];
 
 function pickVariation<T>(arr: T[], seed: number): T {
     const index = Math.abs(seed) % arr.length;
