@@ -76,10 +76,6 @@ export default async function IntentHubPage({ params }: { params: Promise<{ loca
     // NORMALIZE: Ensure strictly localized intent URL
     const correctPath = getCanonicalPath(locale, internalIntent);
     const correctIntent = INTENT_TRANSLATIONS[locale][internalIntent] || internalIntent;
-    
-    if (intent.toLowerCase() !== correctIntent.toLowerCase()) {
-        permanentRedirect(correctPath);
-    }
 
     const intentMap: Record<string, string> = { 
         'addieren': 'add_subtract',

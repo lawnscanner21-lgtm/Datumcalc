@@ -2,6 +2,7 @@ import { Link } from '@/i18n/routing';
 import { ROUTES } from '@/lib/routes';
 import { CheckCircle2, CalendarCheck2, Clock4, Users, ShieldCheck } from 'lucide-react';
 import { SITE_URL } from '@/lib/constants';
+import { translateSlug } from '@/lib/seo/translations';
 
 const siteUrl = SITE_URL;
 const dateModified = new Date().toISOString().split('T')[0];
@@ -144,22 +145,34 @@ export function HomepageSEO({ locale = 'de' }: { locale?: string }) {
     const c = CONTENT[loc];
 
     const topQueries = [
-        { title: loc === 'de' ? '30 Tage ab heute' : '30 days from today',   href: ROUTES.getAddieren(loc === 'de' ? '30-tage-ab-heute' : '30-days-from-today') },
-        { title: loc === 'de' ? '60 Tage ab heute' : '60 days from today',   href: ROUTES.getAddieren(loc === 'de' ? '60-tage-ab-heute' : '60-days-from-today') },
-        { title: loc === 'de' ? '90 Tage ab heute' : '90 days from today',   href: ROUTES.getAddieren(loc === 'de' ? '90-tage-ab-heute' : '90-days-from-today') },
-        { title: loc === 'de' ? '100 Tage ab heute' : '100 days from today',  href: ROUTES.getAddieren(loc === 'de' ? '100-tage-ab-heute' : '100-days-from-today') },
-        { title: loc === 'de' ? '6 Monate ab heute' : '6 months from today',  href: ROUTES.getAddieren(loc === 'de' ? '6-monate-ab-heute' : '6-months-from-today') },
-        { title: loc === 'de' ? '1 Jahr ab heute' : '1 year from today',    href: ROUTES.getAddieren(loc === 'de' ? '1-jahr-ab-heute' : '1-year-from-today') },
-    ];
-
+        '30-tage-ab-heute',
+        '60-tage-ab-heute',
+        '90-tage-ab-heute',
+        '100-tage-ab-heute',
+        '6-monate-ab-heute',
+        '1-jahr-ab-heute'
+    ].map(canonical => {
+        const locSlug = translateSlug(canonical, loc);
+        return {
+            title: locSlug.replace(/-/g, ' '),
+            href: ROUTES.getAddieren(locSlug)
+        };
+    });
+ 
     const eventQueries = [
-        { title: loc === 'de' ? 'Tage bis Weihnachten' : 'Days until Christmas',    href: ROUTES.getDifferenz(loc === 'de' ? 'tage-bis-weihnachten' : 'days-until-christmas') },
-        { title: loc === 'de' ? 'Tage bis Silvester' : 'Days until New Year\'s Eve',      href: ROUTES.getDifferenz(loc === 'de' ? 'tage-bis-silvester' : 'days-until-new-years-eve') },
-        { title: loc === 'de' ? 'Tage bis Ostern' : 'Days until Easter',         href: ROUTES.getDifferenz(loc === 'de' ? 'tage-bis-ostern' : 'days-until-easter') },
-        { title: loc === 'de' ? 'Tage bis Sommeranfang' : 'Days until start of summer',   href: ROUTES.getDifferenz(loc === 'de' ? 'tage-bis-sommeranfang' : 'days-until-start-of-summer') },
-        { title: loc === 'de' ? 'Tage bis Neujahr' : 'Days until New Year',        href: ROUTES.getDifferenz(loc === 'de' ? 'tage-bis-neujahr' : 'days-until-new-year') },
-        { title: loc === 'de' ? 'Tage bis zum Urlaub' : 'Days until vacation',     href: ROUTES.getDifferenz(loc === 'de' ? 'tage-bis-urlaub' : 'days-until-vacation') },
-    ];
+        'tage-bis-weihnachten',
+        'tage-bis-silvester',
+        'tage-bis-ostern',
+        'tage-bis-sommeranfang',
+        'tage-bis-neujahr',
+        'tage-bis-urlaub'
+    ].map(slug => {
+        const locSlug = translateSlug(slug, loc);
+        return {
+            title: locSlug.replace(/-/g, ' '),
+            href: ROUTES.getDifferenz(locSlug)
+        };
+    });
 
     const faqJsonLd = {
         '@context': 'https://schema.org',
@@ -256,18 +269,28 @@ export function HomepageSEO({ locale = 'de' }: { locale?: string }) {
                             ))}
                         </ul>
                     </div>
-                    {/* Guides */}
                     <div className="bg-white/[0.02] p-7 rounded-3xl border border-white/5 hover:bg-white/[0.04] hover:border-white/10 transition-all duration-300">
                         <h3 className="text-white font-bold text-xl mb-5 flex items-center gap-2">
                             <CheckCircle2 className="w-5 h-5 text-green-400" aria-hidden="true" />
                             {c.hero.ratgeber}
                         </h3>
                         <ul className="space-y-3">
-                            {[1,2,3].map((_, i) => (
-                                <li key={i}>
-                                    <span className="text-white/40 text-sm">Coming Soon</span>
-                                </li>
-                            ))}
+                            {[
+                                { de: 'schaltjahre-erklaert', en: 'leap-years-explained' },
+                                { de: 'was-ist-ein-arbeitstag', en: 'what-is-a-business-day' },
+                                { de: 'wochen-im-jahr', en: 'weeks-in-a-year' },
+                                { de: 'iso-8601-erklaert', en: 'iso-8601-explained' }
+                            ].map((g, i) => {
+                                const slug = loc === 'de' ? g.de : g.en;
+                                return (
+                                    <li key={i}>
+                                        <Link href={ROUTES.getRatgeber(slug)} className="text-white/60 hover:text-white transition-colors flex items-center gap-2 group text-sm">
+                                            <span className="text-green-400/40 group-hover:text-green-400 text-xs" aria-hidden="true">▶</span>
+                                            {slug.replace(/-/g, ' ')}
+                                        </Link>
+                                    </li>
+                                );
+                            })}
                         </ul>
                     </div>
                 </div>

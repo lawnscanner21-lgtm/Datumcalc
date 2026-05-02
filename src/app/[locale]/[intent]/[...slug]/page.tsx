@@ -7,13 +7,13 @@ import { InternalLinksBlock } from '@/components/seo/InternalLinksBlock';
 import { ConversionTools } from '@/components/seo/ConversionTools';
 import { TrustSignals } from '@/components/seo/TrustSignals';
 import { addDays, addMonths, addYears, differenceInDays, format } from 'date-fns';
-import { de, enUS, es, fr, it, pt } from 'date-fns/locale';
+import { de, enUS } from 'date-fns/locale';
 import { resolveCanonicalQuery, CANONICAL_QUERIES } from '@/lib/seo/queryModel';
 import { locales } from '@/i18n/routing';
 import { SITE_URL } from '@/lib/constants';
 import { INTENT_TRANSLATIONS, translateSlug, reverseTranslateSlug, getCanonicalPath } from '@/lib/seo/translations';
 
-const dateLocales: Record<string, any> = { de, en: enUS, es, fr, it, pt };
+const dateLocales: Record<string, any> = { de, en: enUS };
 
 const intentToModeMap: Record<string, string> = {
     'differenz': 'difference',
@@ -131,9 +131,9 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     const correctSlug = translateSlug(canonicalSlug || canonicalSlugStr, locale);
     const correctPath = getCanonicalPath(locale, internalIntent, correctSlug);
 
-    // STRICT ENFORCEMENT: Redirect if accessed via mismatched segments (like GSC errors)
-    const expectedIntent = INTENT_TRANSLATIONS[locale][internalIntent] || internalIntent;
-    if (intent.toLowerCase() !== expectedIntent.toLowerCase() || slugStr.toLowerCase() !== correctSlug.toLowerCase()) {
+    // STRICT ENFORCEMENT: Redirect only if the SLUG part is non-canonical.
+    // next-intl middleware handles the localized intent segment (e.g. /add/ vs /addieren/)
+    if (slugStr.toLowerCase() !== correctSlug.toLowerCase()) {
         permanentRedirect(correctPath); 
     }
 
@@ -244,9 +244,9 @@ export default async function ProgrammaticPage({
     
     const correctSlug = translateSlug(canonicalSlugStr, locale);
     const correctPath = getCanonicalPath(locale, internalIntent, correctSlug);
-    const expectedIntent = INTENT_TRANSLATIONS[locale][internalIntent] || internalIntent;
     
-    if (intent.toLowerCase() !== expectedIntent.toLowerCase() || slugStr.toLowerCase() !== correctSlug.toLowerCase()) {
+    // STRICT ENFORCEMENT: Redirect only if the SLUG part is non-canonical.
+    if (slugStr.toLowerCase() !== correctSlug.toLowerCase()) {
         permanentRedirect(correctPath);
     }
 

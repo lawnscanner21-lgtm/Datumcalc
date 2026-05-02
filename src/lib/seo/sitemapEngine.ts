@@ -2,6 +2,7 @@ import { CANONICAL_QUERIES } from './queryModel';
 import { locales } from '@/i18n/routing';
 import { INTENT_TRANSLATIONS, translateSlug, getCanonicalPath } from './translations';
 import { SITE_URL } from '@/lib/constants';
+import { getArticles } from '@/lib/articles';
 
 const CALC_MODE_TO_INTENT: Record<string, string> = {
     add_subtract: 'addieren',
@@ -26,7 +27,7 @@ function getLocalizedUrl(path: string, locale: string) {
 }
 
 export function getCoreSitemapUrls() {
-    const internalPaths = ['', 'ratgeber', 'ueber-uns', 'datenschutz', 'impressum', 'agb'];
+    const internalPaths = ['', 'addieren', 'differenz', 'arbeitstage', 'alter', 'ratgeber', 'sitemap', 'ueber-uns', 'datenschutz', 'impressum', 'agb'];
     const urls: any[] = [];
 
     locales.forEach(locale => {
@@ -35,7 +36,6 @@ export function getCoreSitemapUrls() {
             if (path === '') {
                 canonicalPath = locale === 'de' ? '/' : `/${locale}`;
             } else {
-                // Use getCanonicalPath to resolve translated segments like /en/guide
                 canonicalPath = getCanonicalPath(locale, path);
             }
 
@@ -44,6 +44,18 @@ export function getCoreSitemapUrls() {
                 lastModified: STATIC_LASTMOD,
                 changeFrequency: path === '' ? 'daily' : 'monthly',
                 priority: path === '' ? 1.0 : 0.5
+            });
+        });
+
+        // Add individual guide/ratgeber articles
+        const articles = getArticles(locale);
+        articles.forEach(article => {
+            const canonicalPath = getCanonicalPath(locale, 'ratgeber', article.slug);
+            urls.push({
+                url: `${SITE_URL}${canonicalPath}`,
+                lastModified: STATIC_LASTMOD,
+                changeFrequency: 'monthly',
+                priority: 0.6
             });
         });
     });
