@@ -105,5 +105,11 @@
         "theDateIs": "Das Datum ist",
         "verified": "Mathematisch & kalendarisch verifiziert",
         "description": "Exakte ISO-8601-konforme Berechnung für {slug}."
+    },
+    "Sitemap": {
+        "subtitle": "Alle Inhalte und Werkzeuge von datums-rechner.com auf einen Blick.",
+        "calculators": "Rechner & Tools",
+        "commonSpans": "Häufige Zeitspannen",
+        "legal": "Rechtliches"
     }
 }

@@ -7,14 +7,14 @@
         "titles": {
             "imprint": "Imprint",
             "privacy": "Privacy Policy",
-            "terms": "Terms of Service",
+            "terms": "Terms of Use",
             "about": "About Us",
             "sitemap": "Sitemap"
         }
     },
     "Header": {
         "title": "Date Calculator",
-        "logoTagline": "Free online date calculator",
+        "logoTagline": "Free Online Date Calculator",
         "skipToContent": "Skip to content",
         "Nav": {
             "ariaLabel": "Main Navigation",
@@ -24,16 +24,16 @@
             "addierenDesc": "Add or subtract days from a date",
             "arbeitstage": "Business Days",
             "arbeitstageDesc": "Calculate net business days between dates",
-            "ratgeber": "Guides",
-            "ratgeberDesc": "Knowledge articles about dates and time",
-            "cta": "Calculate now",
-            "languageLabel": "Select language",
-            "openMenu": "Open menu",
-            "closeMenu": "Close menu",
+            "ratgeber": "Guide",
+            "ratgeberDesc": "Knowledge base about dates and time",
+            "cta": "Calculate Now",
+            "languageLabel": "Select Language",
+            "openMenu": "Open Menu",
+            "closeMenu": "Close Menu",
             "mobileNavLabel": "Mobile Navigation",
             "alter": "Age",
             "alterDesc": "Calculate your exact age",
-            "verified": "Mathematically & Calendrically verified"
+            "verified": "Mathematically & calendar verified"
         }
     },
     "Modes": {
@@ -43,18 +43,18 @@
         "ageCalculator": "Age Calculator"
     },
     "Article": {
-        "readTime": "read",
+        "readTime": "Read time",
         "takeaways": "Key Takeaways",
         "takeawaysItem1": "All calculations are based on standardized algorithms (ISO 8601).",
-        "takeawaysItem2": "Better recognize patterns to set deadlines more precisely.",
-        "takeawaysItem3": "The mathematics behind the calendars make daily work noticeably easier.",
-        "theory": "Put theory into practice",
-        "practice": "Calculate your date right now",
-        "factCheck": "Fact Check: Currently verified",
+        "takeawaysItem2": "Recognize patterns better to set deadlines more precisely.",
+        "takeawaysItem3": "The math behind calendars makes daily work noticeably easier.",
+        "theory": "Putting theory into practice",
+        "practice": "Calculate your date now",
+        "factCheck": "Fact check: Currently verified",
         "authorTitle": "Mathematician & Author"
     },
     "SmartInput": {
-        "placeholder": "What do you want to calculate? (e.g. 100 days from today)",
+        "placeholder": "What would you like to calculate? (e.g., 100 days from today)",
         "button": "Calculate",
         "popular": "Popular searches:",
         "example1": "100 days from today",
@@ -80,13 +80,13 @@
         "add": "Add",
         "subtract": "Subtract",
         "businessDays": "Business Days",
-        "holidays": "Include Holidays",
+        "holidays": "Include holidays",
         "birthDate": "Birth Date",
         "currentAge": "Current Age",
         "nextBirthday": "Next Birthday",
-        "yearsAbbr": "y",
-        "monthsAbbr": "m",
-        "daysAbbr": "d"
+        "yearsAbbr": "Y",
+        "monthsAbbr": "M",
+        "daysAbbr": "D"
     },
     "Events": {
         "weihnachten": "Christmas",
@@ -103,7 +103,13 @@
         "until": "Until",
         "areYet": "there are still",
         "theDateIs": "The date is",
-        "verified": "Mathematically & Calendrically verified",
+        "verified": "Mathematically & calendar verified",
         "description": "Exact ISO-8601 compliant calculation for {slug}."
+    },
+    "Sitemap": {
+        "subtitle": "All content and tools from datums-rechner.com at a glance.",
+        "calculators": "Calculators & Tools",
+        "commonSpans": "Common Time Spans",
+        "legal": "Legal"
     }
 }

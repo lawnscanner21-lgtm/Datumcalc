@@ -1,8 +1,8 @@
 import { Link } from '@/i18n/routing';
 import { ROUTES } from '@/lib/routes';
-import { LanguageSwitcher } from './LanguageSwitcher';
 import { ShieldCheck, Calculator, CalendarClock } from 'lucide-react';
 import { useTranslations, useLocale } from 'next-intl';
+import { LanguageSwitcher } from './LanguageSwitcher';
 
 export function Footer() {
     const locale = useLocale();
@@ -64,9 +64,7 @@ export function Footer() {
                 <div className="w-full py-8 border-t border-white/5 border-b mb-8 text-center bg-gradient-to-r from-transparent via-white/[0.02] to-transparent">
                     <p className="mb-4 text-xs font-bold uppercase tracking-[0.2em] text-white/30">{t('Nav.languageLabel')}</p>
                     <LanguageSwitcher />
-                </div>
-
-                {/* Bottom: Legal */}
+                </div>                {/* Bottom: Legal */}
                 <div className="flex flex-col md:flex-row justify-between items-center w-full gap-6 text-sm text-white/40">
                     <p className="order-2 md:order-1">© {new Date().getFullYear()} Datumsrechner. Alle Rechte vorbehalten.</p>
                     

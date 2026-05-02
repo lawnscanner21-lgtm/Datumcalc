@@ -11,22 +11,6 @@ export const INTENT_TRANSLATIONS: Record<string, Record<string, string>> = {
     en: { 
         addieren: 'add', differenz: 'difference', arbeitstage: 'business', alter: 'age', 
         ratgeber: 'guide', 'ueber-uns': 'about-us', agb: 'terms', datenschutz: 'privacy', impressum: 'imprint', sitemap: 'sitemap' 
-    },
-    es: { 
-        addieren: 'sumar', differenz: 'diferencia', arbeitstage: 'laborables', alter: 'edad', 
-        ratgeber: 'guia', 'ueber-uns': 'sobre-nosotros', agb: 'terminos', datenschutz: 'privacidad', impressum: 'aviso-legal', sitemap: 'sitemap' 
-    },
-    fr: { 
-        addieren: 'ajouter', differenz: 'difference', arbeitstage: 'ouvrables', alter: 'age', 
-        ratgeber: 'guide', 'ueber-uns': 'a-propos', agb: 'conditions', datenschutz: 'confidentialite', impressum: 'mentions-legales', sitemap: 'sitemap' 
-    },
-    it: { 
-        addieren: 'aggiungere', differenz: 'differenza', arbeitstage: 'lavorativi', alter: 'eta', 
-        ratgeber: 'guida', 'ueber-uns': 'chi-siamo', agb: 'condizioni', datenschutz: 'privacy', impressum: 'note-legali', sitemap: 'sitemap' 
-    },
-    pt: { 
-        addieren: 'adicionar', differenz: 'diferenca', arbeitstage: 'uteis', alter: 'idade', 
-        ratgeber: 'guia', 'ueber-uns': 'sobre-nos', agb: 'termos', datenschutz: 'privacidade', impressum: 'aviso-legal', sitemap: 'sitemap' 
     }
 };
 
@@ -40,6 +24,7 @@ export const SLUG_TOKEN_TRANSLATIONS: Record<string, Record<string, string>> = {
     en: { 
         'tage': 'days', 'monate': 'months', 'jahre': 'years', 
         'ab-heute': 'from-today', 'tage-bis': 'days-until',
+<<<<<<< HEAD
         'weihnachten': 'christmas', 'silvester': 'new-year', 'neujahr': 'new-year',
         'ostern': 'easter', 'sommeranfang': 'summer-solstice', 'urlaub': 'vacation'
     },
@@ -66,6 +51,10 @@ export const SLUG_TOKEN_TRANSLATIONS: Record<string, Record<string, string>> = {
         'ab-heute': 'a-partir-de-hoje', 'tage-bis': 'dias-ate',
         'weihnachten': 'natal', 'silvester': 'ano-novo', 'neujahr': 'ano-novo',
         'ostern': 'pascoa', 'sommeranfang': 'solsticio-de-verao', 'urlaub': 'ferias'
+=======
+        'weihnachten': 'christmas', 'silvester': 'new-years-eve', 'neujahr': 'new-year',
+        'ostern': 'easter', 'sommeranfang': 'summer-solstice', 'urlaub': 'vacation'
+>>>>>>> d18ca7e68d4050a9b4703bbc6f55753ba1c17284
     }
 };
 
@@ -141,7 +130,7 @@ export function getCanonicalPath(locale: string, intent: string, slug?: string):
     // Robust intent lookup
     let finalInternalIntent = internalIntent;
     if (!finalInternalIntent) {
-        for (const loc of ['de', 'en', 'es', 'fr', 'it', 'pt']) {
+        for (const loc of ['de', 'en']) {
             const found = Object.keys(INTENT_TRANSLATIONS[loc]).find(k => INTENT_TRANSLATIONS[loc][k] === intent);
             if (found) {
                 finalInternalIntent = found;

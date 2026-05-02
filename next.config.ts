@@ -6,39 +6,37 @@ const withNextIntl = createNextIntlPlugin();
 const nextConfig: NextConfig = {
   async redirects() {
     return [
-      // Redirect /de/* -> /* (default locale should not have a prefix)
+      // Spanish SEO Fallbacks
+      { source: '/es/sumar/:slug*', destination: '/addieren', permanent: true },
+      { source: '/es/diferencia/:slug*', destination: '/differenz', permanent: true },
+      { source: '/es/laborables/:slug*', destination: '/arbeitstage', permanent: true },
+      { source: '/es/edad/:slug*', destination: '/alter', permanent: true },
+      { source: '/es/guia/:slug*', destination: '/ratgeber', permanent: true },
+      { source: '/es/:path*', destination: '/', permanent: true },
 
+      // French SEO Fallbacks
+      { source: '/fr/ajouter/:slug*', destination: '/addieren', permanent: true },
+      { source: '/fr/difference/:slug*', destination: '/differenz', permanent: true },
+      { source: '/fr/ouvrables/:slug*', destination: '/arbeitstage', permanent: true },
+      { source: '/fr/age/:slug*', destination: '/alter', permanent: true },
+      { source: '/fr/guide/:slug*', destination: '/ratgeber', permanent: true },
+      { source: '/fr/:path*', destination: '/', permanent: true },
 
-      // Stale German calculator routes served under wrong locale prefixes
-      { source: '/en/addieren/:slug*', destination: '/en/add/:slug*', permanent: true },
-      { source: '/en/differenz/:slug*', destination: '/en/difference/:slug*', permanent: true },
-      { source: '/en/arbeitstage/:slug*', destination: '/en/business/:slug*', permanent: true },
-      { source: '/en/alter/:slug*', destination: '/en/age/:slug*', permanent: true },
-      { source: '/en/ratgeber/:slug*', destination: '/en/guide/:slug*', permanent: true },
+      // Italian SEO Fallbacks
+      { source: '/it/aggiungere/:slug*', destination: '/addieren', permanent: true },
+      { source: '/it/differenza/:slug*', destination: '/differenz', permanent: true },
+      { source: '/it/lavorativi/:slug*', destination: '/arbeitstage', permanent: true },
+      { source: '/it/eta/:slug*', destination: '/alter', permanent: true },
+      { source: '/it/guida/:slug*', destination: '/ratgeber', permanent: true },
+      { source: '/it/:path*', destination: '/', permanent: true },
 
-      { source: '/es/addieren/:slug*', destination: '/es/sumar/:slug*', permanent: true },
-      { source: '/es/differenz/:slug*', destination: '/es/diferencia/:slug*', permanent: true },
-      { source: '/es/arbeitstage/:slug*', destination: '/es/laborables/:slug*', permanent: true },
-      { source: '/es/alter/:slug*', destination: '/es/edad/:slug*', permanent: true },
-      { source: '/es/ratgeber/:slug*', destination: '/es/guia/:slug*', permanent: true },
-
-      { source: '/fr/addieren/:slug*', destination: '/fr/ajouter/:slug*', permanent: true },
-      { source: '/fr/differenz/:slug*', destination: '/fr/difference/:slug*', permanent: true },
-      { source: '/fr/arbeitstage/:slug*', destination: '/fr/ouvrables/:slug*', permanent: true },
-      { source: '/fr/alter/:slug*', destination: '/fr/age/:slug*', permanent: true },
-      { source: '/fr/ratgeber/:slug*', destination: '/fr/guide/:slug*', permanent: true },
-
-      { source: '/it/addieren/:slug*', destination: '/it/aggiungere/:slug*', permanent: true },
-      { source: '/it/differenz/:slug*', destination: '/it/differenza/:slug*', permanent: true },
-      { source: '/it/arbeitstage/:slug*', destination: '/it/lavorativi/:slug*', permanent: true },
-      { source: '/it/alter/:slug*', destination: '/it/eta/:slug*', permanent: true },
-      { source: '/it/ratgeber/:slug*', destination: '/it/guida/:slug*', permanent: true },
-
-      { source: '/pt/addieren/:slug*', destination: '/pt/adicionar/:slug*', permanent: true },
-      { source: '/pt/differenz/:slug*', destination: '/pt/diferenca/:slug*', permanent: true },
-      { source: '/pt/arbeitstage/:slug*', destination: '/pt/uteis/:slug*', permanent: true },
-      { source: '/pt/alter/:slug*', destination: '/pt/idade/:slug*', permanent: true },
-      { source: '/pt/ratgeber/:slug*', destination: '/pt/guia/:slug*', permanent: true },
+      // Portuguese SEO Fallbacks
+      { source: '/pt/adicionar/:slug*', destination: '/addieren', permanent: true },
+      { source: '/pt/diferenca/:slug*', destination: '/differenz', permanent: true },
+      { source: '/pt/uteis/:slug*', destination: '/arbeitstage', permanent: true },
+      { source: '/pt/idade/:slug*', destination: '/alter', permanent: true },
+      { source: '/pt/guia/:slug*', destination: '/ratgeber', permanent: true },
+      { source: '/pt/:path*', destination: '/', permanent: true },
     ];
   },
 };

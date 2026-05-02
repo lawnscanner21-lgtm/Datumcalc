@@ -140,9 +140,9 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     const correctSlug = translateSlug(canonicalSlug || canonicalSlugStr, locale);
     const correctPath = getCanonicalPath(locale, internalIntent, correctSlug);
 
-    // STRICT ENFORCEMENT: Redirect if accessed via mismatched segments (like GSC errors)
-    const expectedIntent = INTENT_TRANSLATIONS[locale][internalIntent] || internalIntent;
-    if (intent.toLowerCase() !== expectedIntent.toLowerCase() || slugStr.toLowerCase() !== correctSlug.toLowerCase()) {
+    // STRICT ENFORCEMENT: Redirect only if the SLUG part is non-canonical.
+    // next-intl middleware handles the localized intent segment (e.g. /add/ vs /addieren/)
+    if (slugStr.toLowerCase() !== correctSlug.toLowerCase()) {
         permanentRedirect(correctPath); 
     }
 
@@ -253,9 +253,9 @@ export default async function ProgrammaticPage({
     
     const correctSlug = translateSlug(canonicalSlugStr, locale);
     const correctPath = getCanonicalPath(locale, internalIntent, correctSlug);
-    const expectedIntent = INTENT_TRANSLATIONS[locale][internalIntent] || internalIntent;
     
-    if (intent.toLowerCase() !== expectedIntent.toLowerCase() || slugStr.toLowerCase() !== correctSlug.toLowerCase()) {
+    // STRICT ENFORCEMENT: Redirect only if the SLUG part is non-canonical.
+    if (slugStr.toLowerCase() !== correctSlug.toLowerCase()) {
         permanentRedirect(correctPath);
     }
 
