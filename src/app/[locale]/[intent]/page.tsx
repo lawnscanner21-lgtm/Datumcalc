@@ -1,5 +1,5 @@
 import { CANONICAL_QUERIES } from '@/lib/seo/queryModel';
-import { Link } from '@/i18n/routing';
+import NextLink from 'next/link';
 import { notFound, permanentRedirect } from 'next/navigation';
 import { locales } from '@/i18n/routing';
 import { setRequestLocale } from 'next-intl/server';
@@ -101,12 +101,12 @@ export default async function IntentHubPage({ params }: { params: Promise<{ loca
         <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
             <div className="text-center mb-16 space-y-4">
                 <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight capitalize py-2">
-                    {locale === 'de' ? 'Kategorie' : 'Category'}: {intent}
+                    {locale === 'de' ? 'Kategorie' : 'Category'}: {correctIntent}
                 </h1>
                 <p className="text-lg text-white/60 max-w-2xl mx-auto">
                     {locale === 'de' 
-                        ? `Alle Berechnungen rund um das Thema ${intent}. Wählen Sie Ihr gewünschtes Szenario für exakte Ergebnisse.`
-                        : `All calculations related to ${intent}. Choose your desired scenario for exact results.`}
+                        ? `Alle Berechnungen rund um das Thema ${correctIntent}. Wählen Sie Ihr gewünschtes Szenario für exakte Ergebnisse.`
+                        : `All calculations related to ${correctIntent}. Choose your desired scenario for exact results.`}
                 </p>
             </div>
 
@@ -123,12 +123,12 @@ export default async function IntentHubPage({ params }: { params: Promise<{ loca
                                 const href = getCanonicalPath(locale, internalIntent!, locSlug);
                                 return (
                                     <li key={def.canonicalSlug}>
-                                        <Link href={href as any} className="text-white hover:text-neon flex items-center justify-between group p-3 rounded-lg hover:bg-white/5 transition-colors border border-transparent hover:border-white/5">
+                                        <NextLink href={href} className="text-white hover:text-neon flex items-center justify-between group p-3 rounded-lg hover:bg-white/5 transition-colors border border-transparent hover:border-white/5">
                                             <span>{locSlug.replace(/-/g, ' ')}</span>
                                             <svg className="w-5 h-5 opacity-0 group-hover:opacity-100 transition-opacity text-neon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
                                             </svg>
-                                        </Link>
+                                        </NextLink>
                                     </li>
                                 );
                             })}
@@ -148,12 +148,12 @@ export default async function IntentHubPage({ params }: { params: Promise<{ loca
                                 const href = getCanonicalPath(locale, internalIntent!, locSlug);
                                 return (
                                     <li key={def.canonicalSlug}>
-                                        <Link href={href as any} className="text-white hover:text-neon flex items-center justify-between group p-3 rounded-lg hover:bg-white/5 transition-colors border border-transparent hover:border-white/5">
+                                        <NextLink href={href} className="text-white hover:text-neon flex items-center justify-between group p-3 rounded-lg hover:bg-white/5 transition-colors border border-transparent hover:border-white/5">
                                             <span className="capitalize">{locSlug.replace(/-/g, ' ')}</span>
                                             <svg className="w-5 h-5 opacity-0 group-hover:opacity-100 transition-opacity text-neon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
                                             </svg>
-                                        </Link>
+                                        </NextLink>
                                     </li>
                                 );
                             })}
