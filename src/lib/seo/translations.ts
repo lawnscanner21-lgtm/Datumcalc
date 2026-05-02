@@ -24,7 +24,6 @@ export const SLUG_TOKEN_TRANSLATIONS: Record<string, Record<string, string>> = {
     en: { 
         'tage': 'days', 'monate': 'months', 'jahre': 'years', 
         'ab-heute': 'from-today', 'tage-bis': 'days-until',
-<<<<<<< HEAD
         'weihnachten': 'christmas', 'silvester': 'new-year', 'neujahr': 'new-year',
         'ostern': 'easter', 'sommeranfang': 'summer-solstice', 'urlaub': 'vacation'
     },
@@ -51,10 +50,6 @@ export const SLUG_TOKEN_TRANSLATIONS: Record<string, Record<string, string>> = {
         'ab-heute': 'a-partir-de-hoje', 'tage-bis': 'dias-ate',
         'weihnachten': 'natal', 'silvester': 'ano-novo', 'neujahr': 'ano-novo',
         'ostern': 'pascoa', 'sommeranfang': 'solsticio-de-verao', 'urlaub': 'ferias'
-=======
-        'weihnachten': 'christmas', 'silvester': 'new-years-eve', 'neujahr': 'new-year',
-        'ostern': 'easter', 'sommeranfang': 'summer-solstice', 'urlaub': 'vacation'
->>>>>>> d18ca7e68d4050a9b4703bbc6f55753ba1c17284
     }
 };
 
