@@ -7,13 +7,13 @@ import { InternalLinksBlock } from '@/components/seo/InternalLinksBlock';
 import { ConversionTools } from '@/components/seo/ConversionTools';
 import { TrustSignals } from '@/components/seo/TrustSignals';
 import { addDays, addMonths, addYears, differenceInDays, format } from 'date-fns';
-import { de, enUS, es, fr, it, pt } from 'date-fns/locale';
+import { de, enUS } from 'date-fns/locale';
 import { resolveCanonicalQuery, CANONICAL_QUERIES } from '@/lib/seo/queryModel';
 import { locales } from '@/i18n/routing';
 import { SITE_URL } from '@/lib/constants';
 import { INTENT_TRANSLATIONS, translateSlug, reverseTranslateSlug, getCanonicalPath } from '@/lib/seo/translations';
 
-const dateLocales: Record<string, any> = { de, en: enUS, es, fr, it, pt };
+const dateLocales: Record<string, any> = { de, en: enUS };
 
 const intentToModeMap: Record<string, string> = {
     'differenz': 'difference',
@@ -86,6 +86,15 @@ async function computeInstantResult(intent: string, slugStr: string, localeStr: 
                     else if (yr === 2026) targetDate = new Date(2026, 3, 5);
                     else targetDate = new Date(yr, 3, 10);
                     eventName = tEvents('ostern');
+                    found = true;
+                } else if (eventStr === 'neujahr') {
+                    targetDate = new Date(today.getFullYear() + 1, 0, 1);
+                    eventName = tEvents('neujahr');
+                    found = true;
+                } else if (eventStr === 'urlaub') {
+                    // Fallback to a generic summer vacation start if not specified
+                    targetDate = new Date(today.getFullYear(), 6, 1);
+                    eventName = tEvents('urlaub');
                     found = true;
                 }
 

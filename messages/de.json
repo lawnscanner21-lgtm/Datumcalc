@@ -2,11 +2,7 @@
     "Common": {
         "languages": {
             "de": "Deutsch",
-            "en": "English",
-            "es": "Español",
-            "fr": "Français",
-            "it": "Italiano",
-            "pt": "Português"
+            "en": "English"
         },
         "titles": {
             "imprint": "Impressum",
@@ -95,8 +91,10 @@
     "Events": {
         "weihnachten": "Weihnachten",
         "silvester": "Silvester",
+        "neujahr": "Neujahr",
         "sommeranfang": "Sommeranfang",
-        "ostern": "Ostern"
+        "ostern": "Ostern",
+        "urlaub": "Urlaub"
     },
     "SlugPage": {
         "in": "In",

@@ -43,7 +43,11 @@ export function InternalLinksBlock({ locale, intent, slug }: { locale: string; i
     // Add more event & guide links
     const events = [
         { de: 'Tage bis Weihnachten', slug: 'tage-bis-weihnachten' },
-        { de: 'Tage bis Silvester', slug: 'tage-bis-silvester' }
+        { de: 'Tage bis Silvester', slug: 'tage-bis-silvester' },
+        { de: 'Tage bis Neujahr', slug: 'tage-bis-neujahr' },
+        { de: 'Tage bis Ostern', slug: 'tage-bis-ostern' },
+        { de: 'Tage bis Sommeranfang', slug: 'tage-bis-sommeranfang' },
+        { de: 'Tage bis zum Urlaub', slug: 'tage-bis-urlaub' }
     ];
 
     events.forEach(e => {
