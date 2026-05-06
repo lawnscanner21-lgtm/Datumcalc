@@ -265,6 +265,10 @@ export default async function ProgrammaticPage({
 
     const { canonicalSlug, isExact } = resolveCanonicalQuery(canonicalSlugStr);
     
+    if (!canonicalSlug) {
+        notFound();
+    }
+
     if (!isExact && canonicalSlug) {
         const locSlug = translateSlug(canonicalSlug, locale);
         const targetPath = getCanonicalPath(locale, internalIntent, locSlug);
