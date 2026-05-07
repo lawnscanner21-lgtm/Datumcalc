@@ -6,6 +6,7 @@ import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, setRequestLocale } from 'next-intl/server';
 import { locales } from '@/i18n/routing';
 import { SITE_URL } from "@/lib/constants";
+import Script from 'next/script';
 import "../globals.css";
 
 const inter = Inter({
@@ -159,6 +160,19 @@ export default async function LocaleLayout({
     return (
         <html lang={locale} className={`${inter.variable} h-full antialiased dark`}>
             <head>
+                <Script
+                    src="https://www.googletagmanager.com/gtag/js?id=G-8WZW69GJ0K"
+                    strategy="afterInteractive"
+                />
+                <Script id="google-analytics" strategy="afterInteractive">
+                    {`
+                      window.dataLayer = window.dataLayer || [];
+                      function gtag(){dataLayer.push(arguments);}
+                      gtag('js', new Date());
+
+                      gtag('config', 'G-8WZW69GJ0K');
+                    `}
+                </Script>
                 <script
                     type="application/ld+json"
                     dangerouslySetInnerHTML={{ __html: JSON.stringify(webAppSchema) }}
