@@ -333,7 +333,8 @@ export default async function IntentHubPage({ params }: { params: Promise<{ loca
 
 export function generateStaticParams() {
     return locales.flatMap(locale => {
-        const intents = Object.values(INTENT_TRANSLATIONS[locale]);
+        // Return canonical keys (the ones in next-intl routing.ts)
+        const intents = ['addieren', 'differenz', 'arbeitstage', 'alter'];
         return intents.map(intent => ({ locale, intent }));
     });
 }
