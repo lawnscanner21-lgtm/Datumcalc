@@ -346,7 +346,7 @@ export function generateStaticParams() {
                 
                 params.push({
                     locale,
-                    intent: internalIntent,
+                    intent: locIntent,
                     slug: [locSlug]
                 });
             }

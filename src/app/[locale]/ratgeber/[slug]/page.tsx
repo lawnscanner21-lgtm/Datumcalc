@@ -10,7 +10,7 @@ import { INTENT_TRANSLATIONS, getCanonicalPath } from '@/lib/seo/translations';
 
 export const dynamic = 'force-static';
 export const revalidate = false; 
-export const dynamicParams = false; 
+export const dynamicParams = true; 
 
 export function generateStaticParams() {
     return locales.flatMap(locale => {
@@ -28,7 +28,19 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     const article = getArticleBySlug(slug, locale);
     const siteUrl = SITE_URL;
 
-    if (!article) return {};
+    if (!article) {
+        for (const loc of locales) {
+            if (loc !== locale) {
+                const altArticle = getArticleBySlug(slug, loc);
+                if (altArticle) {
+                    const locSlug = getLocalizedArticleSlug(slug, loc, locale);
+                    const targetPath = getCanonicalPath(locale, 'ratgeber', locSlug);
+                    permanentRedirect(targetPath);
+                }
+            }
+        }
+        return {};
+    }
 
     const languages: Record<string, string> = {};
     locales.forEach(loc => {
@@ -52,6 +64,16 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
     const article = getArticleBySlug(slug, locale);
 
     if (!article) {
+        for (const loc of locales) {
+            if (loc !== locale) {
+                const altArticle = getArticleBySlug(slug, loc);
+                if (altArticle) {
+                    const locSlug = getLocalizedArticleSlug(slug, loc, locale);
+                    const targetPath = getCanonicalPath(locale, 'ratgeber', locSlug);
+                    permanentRedirect(targetPath);
+                }
+            }
+        }
         notFound();
     }
 

@@ -335,6 +335,9 @@ export function generateStaticParams() {
     return locales.flatMap(locale => {
         // Return canonical keys (the ones in next-intl routing.ts)
         const intents = ['addieren', 'differenz', 'arbeitstage', 'alter'];
-        return intents.map(intent => ({ locale, intent }));
+        return intents.map(intent => {
+            const locIntent = INTENT_TRANSLATIONS[locale][intent] || intent;
+            return { locale, intent: locIntent };
+        });
     });
 }

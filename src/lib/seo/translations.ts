@@ -24,7 +24,7 @@ export const SLUG_TOKEN_TRANSLATIONS: Record<string, Record<string, string>> = {
     en: { 
         'tage': 'days', 'monate': 'months', 'jahr': 'year', 'jahre': 'years', 
         'ab-heute': 'from-today', 'tage-bis': 'days-until',
-        'weihnachten': 'christmas', 'silvester': 'new-year', 'neujahr': 'new-year',
+        'weihnachten': 'christmas', 'silvester': 'new-years-eve', 'neujahr': 'new-year',
         'ostern': 'easter', 'sommeranfang': 'summer-solstice', 'urlaub': 'vacation'
     },
     es: { 
@@ -36,19 +36,19 @@ export const SLUG_TOKEN_TRANSLATIONS: Record<string, Record<string, string>> = {
     fr: { 
         'tage': 'jours', 'monate': 'mois', 'jahr': 'an', 'jahre': 'annees', 
         'ab-heute': 'a-partir-d-aujourd-hui', 'tage-bis': 'jours-jusqu-a',
-        'weihnachten': 'noel', 'silvester': 'nouvel-an', 'neujahr': 'nouvel-an',
+        'weihnachten': 'noel', 'silvester': 'saint-sylvestre', 'neujahr': 'nouvel-an',
         'ostern': 'paques', 'sommeranfang': 'solstice-d-ete', 'urlaub': 'vacances'
     },
     it: { 
         'tage': 'giorni', 'monate': 'mesi', 'jahr': 'anno', 'jahre': 'anni', 
         'ab-heute': 'da-oggi', 'tage-bis': 'giorni-fino-a',
-        'weihnachten': 'natale', 'silvester': 'capodanno', 'neujahr': 'capodanno',
+        'weihnachten': 'natale', 'silvester': 'vigilia-di-capodanno', 'neujahr': 'capodanno',
         'ostern': 'pasqua', 'sommeranfang': 'solstizio-d-estate', 'urlaub': 'vacanze'
     },
     pt: { 
         'tage': 'dias', 'monate': 'meses', 'jahr': 'ano', 'jahre': 'anos', 
         'ab-heute': 'a-partir-de-hoje', 'tage-bis': 'dias-ate',
-        'weihnachten': 'natal', 'silvester': 'ano-novo', 'neujahr': 'ano-novo',
+        'weihnachten': 'natal', 'silvester': 'vespera-de-ano-novo', 'neujahr': 'ano-novo',
         'ostern': 'pascoa', 'sommeranfang': 'solsticio-de-verao', 'urlaub': 'ferias'
     }
 };
