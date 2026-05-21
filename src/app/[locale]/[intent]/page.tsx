@@ -336,8 +336,7 @@ export function generateStaticParams() {
         // Return canonical keys (the ones in next-intl routing.ts)
         const intents = ['addieren', 'differenz', 'arbeitstage', 'alter'];
         return intents.map(intent => {
-            const locIntent = INTENT_TRANSLATIONS[locale][intent] || intent;
-            return { locale, intent: locIntent };
+            return { locale, intent };
         });
     });
 }

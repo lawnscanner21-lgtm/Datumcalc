@@ -341,12 +341,11 @@ export function generateStaticParams() {
                 const internalIntent = def.calcMode === 'add_subtract' ? 'addieren' : 
                                      def.calcMode === 'difference' ? 'differenz' : 
                                      def.calcMode === 'business_days' ? 'arbeitstage' : 'alter';
-                const locIntent = INTENT_TRANSLATIONS[locale][internalIntent] || internalIntent;
                 const locSlug = translateSlug(def.canonicalSlug, locale);
                 
                 params.push({
                     locale,
-                    intent: locIntent,
+                    intent: internalIntent,
                     slug: [locSlug]
                 });
             }
